@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 
 class NavBar extends Component {
-  state = {};
+  /*constructor(props) {
+    super(props);
+    console.log(this.props);
+  }*/
+  //state = { data: [{ test: "test" }] };
+
+  logState() {
+    //console.log(this.state);
+  }
+
   render() {
     return (
       <div>
@@ -28,9 +37,12 @@ class NavBar extends Component {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link nav-tiny-link" href="/">
+              <button
+                onClick={this.props.loadApplications}
+                className="btn btn-secondary btn-sm"
+              >
                 Job Postings
-              </a>
+              </button>
             </li>
           </ul>
         </nav>

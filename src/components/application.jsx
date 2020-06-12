@@ -2,16 +2,23 @@ import React, { Component } from "react";
 import axios from "axios";
 
 class Application extends Component {
+  //   constructor(props) {
+  //     super(props);
+  //     console.log(this.props);
+  //     this.state = {
+  //       application: [],
+  //     };
+  //   }
   state = {
     application: [],
   };
 
   async componentDidMount() {
-    const { data: application } = await axios.get(
-      "https://localhost:44311/api/Applications/1"
-    );
+    const url = "https://localhost:44311/api/Applications/" + this.props.appId;
+    const { data: application } = await axios.get(url);
     this.setState({ application });
     //console.log(application.employmentHistory);
+    console.log(this.props);
   }
 
   //FORMAT A PHONE NUMBER FROM API
@@ -48,6 +55,12 @@ class Application extends Component {
     return (
       <div>
         <h2>Job Application</h2>
+        <button
+          onClick={this.props.viewApplications}
+          className="btn btn-info btn-sm"
+        >
+          Go back
+        </button>
         <table className="table table-sm">
           <thead className="thead-dark">
             <tr>
@@ -95,7 +108,6 @@ class Application extends Component {
             </tr>
           </tbody>
         </table>
-
         <table
           style={{ marginBottom: 0, paddingBottom: 0 }}
           className="table table-sm"
@@ -118,7 +130,7 @@ class Application extends Component {
             </tr>
           </thead>
           <tbody>
-            {employmentHistory != undefined ? (
+            {employmentHistory !== undefined ? (
               employmentHistory.map((emp) => (
                 <tr key={"emp" + emp.id}>
                   <td>{emp.employerName}</td>
@@ -140,7 +152,6 @@ class Application extends Component {
             )}
           </tbody>
         </table>
-
         <table
           style={{ marginBottom: 0, paddingBottom: 0 }}
           className="table table-sm"
@@ -161,7 +172,7 @@ class Application extends Component {
             </tr>
           </thead>
           <tbody>
-            {application.education != undefined ? (
+            {application.education !== undefined ? (
               application.education.map((edu) => (
                 <tr key={"edu" + edu.id}>
                   <td>{edu.schoolName}</td>
@@ -181,7 +192,6 @@ class Application extends Component {
             )}
           </tbody>
         </table>
-
         <table
           style={{ marginBottom: 0, paddingBottom: 0 }}
           className="table table-sm"
@@ -201,7 +211,7 @@ class Application extends Component {
             </tr>
           </thead>
           <tbody>
-            {application.references != undefined ? (
+            {application.references !== undefined ? (
               application.references.map((ref) => (
                 <tr key={"ref" + ref.id}>
                   <td>{ref.name}</td>
