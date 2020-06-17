@@ -14,7 +14,9 @@ class Application extends Component {
   };
 
   async componentDidMount() {
-    const url = "https://localhost:44311/api/Applications/" + this.props.appId;
+    const url =
+      "https://md-doc-api.azurewebsites.net/api/Applications/" +
+      this.props.appId;
     const { data: application } = await axios.get(url);
     this.setState({ application });
     //console.log(application.employmentHistory);

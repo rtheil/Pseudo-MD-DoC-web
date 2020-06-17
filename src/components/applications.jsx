@@ -10,7 +10,7 @@ class Applications extends Component {
 
   async componentDidMount() {
     const { data: applications } = await axios
-      .get("https://192.168.1.15:44311/api/Applications")
+      .get("https://md-doc-api.azurewebsites.net/api/Applications")
       .catch((error) => {
         console.log(error.message);
       });
