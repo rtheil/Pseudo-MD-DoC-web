@@ -1,83 +1,71 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class NavBar extends Component {
-  /*constructor(props) {
-    super(props);
-    console.log(this.props);
-  }*/
-  //state = { data: [{ test: "test" }] };
-
-  logState() {
-    //console.log(this.state);
-  }
-
   render() {
     return (
       <div>
         <nav className="nav-dark">
           <ul className="nav justify-content-end">
             <li className="nav-item">
-              <a className="nav-tiny-link" href="/">
+              <Link className="nav-tiny-link" to="/">
                 Maryland.gov
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link nav-tiny-link" href="/">
+              <Link className="nav-link nav-tiny-link" to="/">
                 Phone Directory
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link nav-tiny-link" href="/">
+              <Link className="nav-link nav-tiny-link" to="/">
                 Site Agencies
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link nav-tiny-link" href="/">
+              <Link className="nav-link nav-tiny-link" to="/">
                 Online Services
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <button
-                onClick={this.props.loadApplications}
-                className="btn btn-secondary btn-sm"
-              >
+              <Link className="nav-link nav-tiny-link" to="/applications">
                 Job Postings
-              </button>
+              </Link>
             </li>
           </ul>
         </nav>
         <div className="nav-image-bar"></div>
         <nav style={{ backgroundColor: "#920807", paddingTop: 4 }}>
-          <ul className="nav nav-tabs nav-fill">
+          <ul className="nav nav-fill">
             <li className="nav-item">
-              <a href="/" className="nav-link nav-small-link active">
+              <Link to="/" className="nav-link nav-small-link active">
                 HOME
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/" className="nav-link nav-small-link">
+              <Link to="/" className="nav-link nav-small-link">
                 ABOUT
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/" className="nav-link nav-small-link">
+              <Link to="/" className="nav-link nav-small-link">
                 PRETRIAL DETENTION
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/" className="nav-link nav-small-link">
+              <Link to="/" className="nav-link nav-small-link">
                 CORRECTIONS
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/" className="nav-link nav-small-link">
+              <Link to="/" className="nav-link nav-small-link">
                 PAROLE & PROBATION
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/" className="nav-link nav-small-link">
+              <Link to="/" className="nav-link nav-small-link">
                 REHABILITATION
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

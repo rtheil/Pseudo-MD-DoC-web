@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Application from "./application";
+import { Link } from "react-router-dom";
 
 class Applications extends Component {
   state = {
@@ -18,26 +19,11 @@ class Applications extends Component {
     console.log(this.state);
   }
 
-  handleViewApplication = (application) => {
-    this.setState({ applicationid: application.id });
-    console.log(application);
-  };
-
-  handleViewApplications = (application) => {
-    this.setState({ applicationid: null });
-    console.log(application);
-  };
-
   render() {
     if (this.state.applicationid !== null)
-      return (
-        <Application
-          appId={this.state.applicationid}
-          viewApplications={this.handleViewApplications}
-        />
-      );
+      return <Application appId={this.state.applicationid} />;
     else if (this.state.applications.length === 0)
-      return <p>No applications</p>;
+      return <p>Waiting for Azure API startup (~45 seconds)</p>;
 
     //ALL APPLICATIONS
     return (
@@ -65,12 +51,7 @@ class Applications extends Component {
                 </td>
                 <td>{app.applicationStatus}</td>
                 <td>
-                  <button
-                    onClick={() => this.handleViewApplication(app)}
-                    className="btn btn-primary btn-sm"
-                  >
-                    View
-                  </button>
+                  <Link to={"/applications/" + app.id}>View</Link>
                 </td>
               </tr>
             ))}
