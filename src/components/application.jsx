@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Form, Col, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import TextInput from "./textInput";
+import YesNoSelect from "./yesNoSelect";
 
 class Application extends Component {
   state = {
@@ -15,6 +16,7 @@ class Application extends Component {
       emailAddress: "",
       password: "",
       confirmPassword: "",
+      address: "",
       city: "",
       state: "",
       zip: "",
@@ -27,24 +29,24 @@ class Application extends Component {
 
       //EMPLOYMENT
       employment: [],
-      employerName: "",
-      employerStartDate: "",
-      employerEndDate: "",
-      employerPhoneNumber: "",
-      employerJobTitle: "",
+      employerName: "My Employer",
+      employerStartDate: "1/1/2020",
+      employerEndDate: "10/31/2020",
+      employerPhoneNumber: "123-456-7890",
+      employerJobTitle: "Job Expert",
 
       //EDUCATION
       education: [],
-      schoolName: "",
-      schoolStartDate: "",
-      schoolEndDate: "",
-      schoolDiploma: "",
+      schoolName: "University",
+      schoolStartDate: "1/1/2020",
+      schoolEndDate: "10/31/2020",
+      schoolDiploma: "Bachelor Degree",
 
       //REFERENCES
       references: [],
-      referenceName: "",
-      referencePhoneNumber: "",
-      referenceRelation: "",
+      referenceName: "My Brother",
+      referencePhoneNumber: "123-45-6789",
+      referenceRelation: "Friend",
     },
   };
 
@@ -280,12 +282,7 @@ class Application extends Component {
     return (
       <div className="container-lg mb-5">
         <Form>
-          <div
-            className="p-1 mt-2"
-            style={{ backgroundColor: "#333333", color: "white" }}
-          >
-            <h4>Personal Information</h4>
-          </div>
+          <div className="p-1 mt-2 app-section-bar">Personal Information</div>
           <Form.Row>
             <TextInput
               name="firstName"
@@ -376,50 +373,26 @@ class Application extends Component {
               value={newApplication.ssn}
               size="2"
             />
-            <Form.Group as={Col}>
-              <Form.Label>US Citizen?</Form.Label>
-              <Form.Control
-                as="select"
-                className="mr-sm-2"
-                sm="1"
-                id="isCitizen"
-                custom
-              >
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-              </Form.Control>
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label>Felony Conviction?</Form.Label>
-              <Form.Control
-                as="select"
-                className="mr-sm-2"
-                id="hasFelony"
-                custom
-              >
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-              </Form.Control>
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Form.Label>Drug Test?</Form.Label>
-              <Form.Control
-                as="select"
-                className="mr-sm-2"
-                id="willDrugTest"
-                custom
-              >
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-              </Form.Control>
-            </Form.Group>
+            <YesNoSelect
+              name="isCitizen"
+              label="US Citizen?"
+              value={newApplication.isCitizen}
+              onChange={this.handleChange}
+            />
+            <YesNoSelect
+              name="hasFelony"
+              label="Felony Conviction"
+              value={newApplication.hasFelony}
+              onChange={this.handleChange}
+            />
+            <YesNoSelect
+              name="willDrugTest"
+              label="Drug Test?"
+              value={newApplication.willDrugTest}
+              onChange={this.handleChange}
+            />
           </Form.Row>
-          <div
-            className="p-1"
-            style={{ backgroundColor: "#333333", color: "white" }}
-          >
-            Employment History
-          </div>
+          <div className="p-1 mt-2 app-section-bar">Employment History</div>
           <Form.Row>
             <TextInput
               onChange={this.handleChange}
@@ -458,10 +431,11 @@ class Application extends Component {
             />
             <Button
               variant="success"
-              className="mt-4 mb-4"
+              size="sm"
+              className="mt-sm-auto mb-3"
               onClick={this.handleAddEmployment}
             >
-              +
+              &nbsp;+&nbsp;
             </Button>
           </Form.Row>
           <div className="container-lg">
@@ -469,21 +443,29 @@ class Application extends Component {
               this.state.newApplication.employment.map((item, i) => {
                 return (
                   <div key={item.employerName + i} className="row">
+                    <div className="col">
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={this.handleRemoveEmployment}
+                        idx={i}
+                      >
+                        &nbsp;-&nbsp;
+                      </Button>{" "}
+                      {item.referenceName}
+                    </div>
+
                     <div className="col">{item.employerName}</div>
                     <div className="col">{item.startDate}</div>
                     <div className="col">{item.endDate}</div>
                     <div className="col">{item.phoneNumber}</div>
                     <div className="col">{item.jobTitle}</div>
+                    <div className="col"></div>
                   </div>
                 );
               })}
           </div>
-          <div
-            className="p-1"
-            style={{ backgroundColor: "#333333", color: "white" }}
-          >
-            Education
-          </div>
+          <div className="p-1 mt-2 app-section-bar">Education</div>
           <Form.Row>
             <TextInput
               name="schoolName"
@@ -511,18 +493,40 @@ class Application extends Component {
             />
             <Button
               variant="success"
-              className="mt-4 mb-4"
+              size="sm"
+              className="mt-sm-auto mb-3"
               onClick={this.handleAddEducation}
             >
-              +
+              &nbsp;+&nbsp;
             </Button>
+            <div className="container-lg">
+              {this.state.newApplication.education !== undefined &&
+                this.state.newApplication.education.map((item, i) => {
+                  return (
+                    <div key={item.schoolName + i} className="row">
+                      <div className="col">
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={this.handleRemoveEducation}
+                          idx={i}
+                        >
+                          &nbsp;-&nbsp;
+                        </Button>{" "}
+                        {item.referenceName}
+                      </div>
+
+                      <div className="col">{item.schoolName}</div>
+                      <div className="col">{item.startDate}</div>
+                      <div className="col">{item.endDate}</div>
+                      <div className="col">{item.Diploma}</div>
+                      <div className="col"></div>
+                    </div>
+                  );
+                })}
+            </div>
           </Form.Row>
-          <div
-            className="p-1"
-            style={{ backgroundColor: "#333333", color: "white" }}
-          >
-            References
-          </div>
+          <div className="p-1 mt-2 app-section-bar">References</div>
           <Form.Row>
             <TextInput
               name="referenceName"
@@ -544,12 +548,37 @@ class Application extends Component {
             />
             <Button
               variant="success"
-              className="mt-4 mb-4"
+              size="sm"
+              className="mt-sm-auto mb-3"
               onClick={this.handleAddReference}
             >
-              +
+              &nbsp;+&nbsp;
             </Button>
+            <div className="container-lg">
+              {this.state.newApplication.references !== undefined &&
+                this.state.newApplication.references.map((item, i) => {
+                  return (
+                    <div key={item.referenceName + i} className="row">
+                      <div className="col">
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={this.handleRemoveReference}
+                          idx={i}
+                        >
+                          &nbsp;-&nbsp;
+                        </Button>{" "}
+                        {item.referenceName}
+                      </div>
+                      <div className="col">{item.referencePhoneNumber}</div>
+                      <div className="col">{item.referenceRelation}</div>
+                      <div className="col"></div>
+                    </div>
+                  );
+                })}
+            </div>
           </Form.Row>
+          <div className="p-1 mt-2 mb-2 app-section-bar">Final Steps</div>
           <Button variant="success" type="submit">
             Submit Application
           </Button>
@@ -569,21 +598,27 @@ class Application extends Component {
       phoneNumber: newApplication.employerPhoneNumber,
       jobTitle: newApplication.employerJobTitle,
     };
-    console.log(employerItem);
 
     //ADD TO LOCAL ARRAY
     newApplication.employment.push(employerItem);
 
     //REMOVE FROM STATE TO EMPTY FIELDS
-    newApplication.employerName = "";
-    newApplication.employerStartDate = "";
-    newApplication.employerEndDate = "";
-    newApplication.employerPhoneNumber = "";
-    newApplication.employerJobTitle = "";
+    // newApplication.employerName = "";
+    // newApplication.employerStartDate = "";
+    // newApplication.employerEndDate = "";
+    // newApplication.employerPhoneNumber = "";
+    // newApplication.employerJobTitle = "";
 
     //SET THE STATE
     this.setState({ newApplication });
-    console.log(newApplication);
+    //console.log(newApplication);
+  };
+
+  handleRemoveEmployment = ({ target }) => {
+    console.log(target);
+    let newApplication = { ...this.state.newApplication };
+    newApplication.employment = newApplication.employment.splice(target.idx, 1);
+    this.setState(newApplication);
   };
 
   handleAddEducation = (e) => {
@@ -596,18 +631,25 @@ class Application extends Component {
       endDate: newApplication.schoolEndDate,
       Diploma: newApplication.schoolDiploma,
     };
-    console.log(educationItem);
+    //console.log(educationItem);
     //ADD TO LOCAL ARRAY
     newApplication.education.push(educationItem);
     //REMOVE FROM STATE
-    newApplication.schoolName = "";
-    newApplication.schoolStartDate = "";
-    newApplication.schoolEndDate = "";
-    newApplication.schoolDiploma = "";
+    // newApplication.schoolName = "";
+    // newApplication.schoolStartDate = "";
+    // newApplication.schoolEndDate = "";
+    // newApplication.schoolDiploma = "";
 
     //SET STATE
     this.setState({ newApplication });
-    console.log(newApplication);
+    //console.log(newApplication);
+  };
+
+  handleRemoveEducation = ({ target }) => {
+    console.log(target);
+    let newApplication = { ...this.state.newApplication };
+    newApplication.education = newApplication.education.splice(target.idx, 1);
+    this.setState(newApplication);
   };
 
   handleAddReference = (e) => {
@@ -620,10 +662,21 @@ class Application extends Component {
       referenceRelation: newApplication.referenceRelation,
     };
     newApplication.references.push(referenceItem);
+    //REMOVE FROM STATE
+    // newApplication.referenceName = "";
+    // newApplication.referencePhoneNumber = "";
+    // newApplication.referenceRelation = "";
 
     //SET STATE
     this.setState({ newApplication });
-    console.log(newApplication);
+    //console.log(newApplication);
+  };
+
+  handleRemoveReference = ({ target }) => {
+    console.log(target);
+    let newApplication = { ...this.state.newApplication };
+    newApplication.references = newApplication.references.splice(target.idx, 1);
+    this.setState(newApplication);
   };
 
   handleChange = (e) => {

@@ -41,3 +41,9 @@ code {
 /*mdgov_crownLogo{
   background-image:
 }*/
+
+.app-section-bar {
+  background-color: #333333;
+  color: white;
+  font-weight: bold;
+}
