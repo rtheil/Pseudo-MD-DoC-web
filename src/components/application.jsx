@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import TextInput from "./textInput";
 import YesNoSelect from "./yesNoSelect";
+import Joi from "@hapi/joi";
+import ButtonInput from "./buttonInput";
 
 class Application extends Component {
   state = {
@@ -11,18 +13,15 @@ class Application extends Component {
     newApplication: {
       //INFO
       firstName: "",
-      mi: "",
+      middleInitial: "",
       lastName: "",
-      emailAddress: "",
-      password: "",
-      confirmPassword: "",
       address: "",
       city: "",
       state: "",
-      zip: "",
+      zipCode: "",
       homePhone: "",
       cellPhone: "",
-      ssn: "",
+      socialSecurityNumber: "",
       isCitizen: false,
       hasFelony: false,
       willDrugTest: false,
@@ -49,6 +48,12 @@ class Application extends Component {
       referenceRelation: "Friend",
     },
   };
+
+  appSchema = Joi.object({
+    firstName: Joi.string().required(),
+    mi: Joi.string().required().max(1),
+    lastName: Joi.string().required(),
+  });
 
   async loadApplication() {
     console.log(this.props.match.params.Id);
@@ -291,7 +296,7 @@ class Application extends Component {
               value={newApplication.firstName}
             />
             <TextInput
-              name="mi"
+              name="middleInitial"
               onChange={this.handleChange}
               label="MI"
               value={newApplication.mi}
@@ -306,34 +311,16 @@ class Application extends Component {
           </Form.Row>
           <Form.Row>
             <TextInput
-              name="emailAddress"
+              name="address"
               onChange={this.handleChange}
-              label="Email Address"
+              label="Street Address"
               value={newApplication.eMailAddress}
-              type="email"
             />
-            <TextInput
-              name="password"
-              onChange={this.handleChange}
-              label="Password"
-              value={newApplication.password}
-              type="password"
-              size="3"
-            />
-            <TextInput
-              name="confirmPassword"
-              onChange={this.handleChange}
-              label="Confirm Password"
-              value={newApplication.confirmPassword}
-              type="password"
-              size="3"
-            />
-          </Form.Row>
-          <Form.Row>
             <TextInput
               name="city"
               onChange={this.handleChange}
               label="City"
+              size="2"
               value={newApplication.city}
             />
             <TextInput
@@ -341,12 +328,13 @@ class Application extends Component {
               onChange={this.handleChange}
               label="State"
               value={newApplication.state}
-              size="2"
+              size="1"
             />
             <TextInput
-              name="zip"
+              name="zipCode"
               onChange={this.handleChange}
               label="Zip"
+              size="1"
               value={newApplication.zip}
             />
           </Form.Row>
@@ -367,14 +355,14 @@ class Application extends Component {
           </Form.Row>
           <Form.Row>
             <TextInput
-              name="ssn"
+              name="socialSecurityNumber"
               onChange={this.handleChange}
               label="SSN"
               value={newApplication.ssn}
               size="2"
             />
             <YesNoSelect
-              name="isCitizen"
+              name="isUsCitizen"
               label="US Citizen?"
               value={newApplication.isCitizen}
               onChange={this.handleChange}
@@ -394,12 +382,20 @@ class Application extends Component {
           </Form.Row>
           <div className="p-1 mt-2 app-section-bar">Employment History</div>
           <Form.Row>
+            <ButtonInput
+              name="addEmployment"
+              text="&nbsp;+&nbsp;"
+              label="&nbsp;"
+              variant="success"
+              size="auto"
+              onClick={this.handleAddEmployment}
+            />
             <TextInput
               onChange={this.handleChange}
               label="Employer Name"
               name="employerName"
               value={newApplication.employerName}
-              size="2"
+              size="3"
             />
             <TextInput
               onChange={this.handleChange}
@@ -429,21 +425,13 @@ class Application extends Component {
               value={newApplication.employerJobTitle}
               size="2"
             />
-            <Button
-              variant="success"
-              size="sm"
-              className="mt-sm-auto mb-3"
-              onClick={this.handleAddEmployment}
-            >
-              &nbsp;+&nbsp;
-            </Button>
           </Form.Row>
           <div className="container-lg">
             {this.state.newApplication.employment !== undefined &&
               this.state.newApplication.employment.map((item, i) => {
                 return (
-                  <div key={item.employerName + i} className="row">
-                    <div className="col">
+                  <div key={item.employerName + i} className="row mb-1">
+                    <div className="ml-1 pl-1">
                       <Button
                         variant="danger"
                         size="sm"
@@ -451,22 +439,27 @@ class Application extends Component {
                         idx={i}
                       >
                         &nbsp;-&nbsp;
-                      </Button>{" "}
-                      {item.referenceName}
+                      </Button>
                     </div>
-
                     <div className="col">{item.employerName}</div>
                     <div className="col">{item.startDate}</div>
                     <div className="col">{item.endDate}</div>
                     <div className="col">{item.phoneNumber}</div>
                     <div className="col">{item.jobTitle}</div>
-                    <div className="col"></div>
                   </div>
                 );
               })}
           </div>
           <div className="p-1 mt-2 app-section-bar">Education</div>
           <Form.Row>
+            <ButtonInput
+              name="addEducation"
+              text="&nbsp;+&nbsp;"
+              label="&nbsp;"
+              variant="success"
+              size="auto"
+              onClick={this.handleAddEducation}
+            />
             <TextInput
               name="schoolName"
               onChange={this.handleChange}
@@ -491,20 +484,12 @@ class Application extends Component {
               label="Diploma"
               value={newApplication.schoolDiploma}
             />
-            <Button
-              variant="success"
-              size="sm"
-              className="mt-sm-auto mb-3"
-              onClick={this.handleAddEducation}
-            >
-              &nbsp;+&nbsp;
-            </Button>
             <div className="container-lg">
               {this.state.newApplication.education !== undefined &&
                 this.state.newApplication.education.map((item, i) => {
                   return (
-                    <div key={item.schoolName + i} className="row">
-                      <div className="col">
+                    <div key={item.schoolName + i} className="row mb-1">
+                      <div className="ml-1 pl-1">
                         <Button
                           variant="danger"
                           size="sm"
@@ -512,15 +497,12 @@ class Application extends Component {
                           idx={i}
                         >
                           &nbsp;-&nbsp;
-                        </Button>{" "}
-                        {item.referenceName}
+                        </Button>
                       </div>
-
                       <div className="col">{item.schoolName}</div>
                       <div className="col">{item.startDate}</div>
                       <div className="col">{item.endDate}</div>
                       <div className="col">{item.Diploma}</div>
-                      <div className="col"></div>
                     </div>
                   );
                 })}
@@ -528,6 +510,14 @@ class Application extends Component {
           </Form.Row>
           <div className="p-1 mt-2 app-section-bar">References</div>
           <Form.Row>
+            <ButtonInput
+              name="addReference"
+              text="&nbsp;+&nbsp;"
+              label="&nbsp;"
+              variant="success"
+              size="auto"
+              onClick={this.handleAddReference}
+            />
             <TextInput
               name="referenceName"
               onChange={this.handleChange}
@@ -546,20 +536,12 @@ class Application extends Component {
               label="Relation"
               value={newApplication.referenceRelation}
             />
-            <Button
-              variant="success"
-              size="sm"
-              className="mt-sm-auto mb-3"
-              onClick={this.handleAddReference}
-            >
-              &nbsp;+&nbsp;
-            </Button>
             <div className="container-lg">
               {this.state.newApplication.references !== undefined &&
                 this.state.newApplication.references.map((item, i) => {
                   return (
-                    <div key={item.referenceName + i} className="row">
-                      <div className="col">
+                    <div key={item.referenceName + i} className="row mb-1">
+                      <div className="ml-1 pl-1">
                         <Button
                           variant="danger"
                           size="sm"
@@ -567,12 +549,11 @@ class Application extends Component {
                           idx={i}
                         >
                           &nbsp;-&nbsp;
-                        </Button>{" "}
-                        {item.referenceName}
+                        </Button>
                       </div>
+                      <div className="col">{item.referenceName}</div>
                       <div className="col">{item.referencePhoneNumber}</div>
                       <div className="col">{item.referenceRelation}</div>
-                      <div className="col"></div>
                     </div>
                   );
                 })}
