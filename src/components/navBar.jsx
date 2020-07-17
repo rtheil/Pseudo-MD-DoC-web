@@ -8,22 +8,22 @@ class NavBar extends Component {
         <nav className="nav-dark">
           <ul className="nav justify-content-end">
             <li className="nav-item">
-              <Link className="nav-tiny-link" to="/">
+              <Link className="nav-tiny-link" to="/fake">
                 Maryland.gov
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link nav-tiny-link" to="/">
+              <Link className="nav-link nav-tiny-link" to="/fake">
                 Phone Directory
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link nav-tiny-link" to="/">
+              <Link className="nav-link nav-tiny-link" to="/fake">
                 Site Agencies
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link nav-tiny-link" to="/">
+              <Link className="nav-link nav-tiny-link" to="/fake">
                 Online Services
               </Link>
             </li>
@@ -43,27 +43,27 @@ class NavBar extends Component {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/" className="nav-link nav-small-link">
+              <Link to="/fake" className="nav-link nav-small-link">
                 ABOUT
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/" className="nav-link nav-small-link">
+              <Link to="/fake" className="nav-link nav-small-link">
                 PRETRIAL DETENTION
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/" className="nav-link nav-small-link">
+              <Link to="/fake" className="nav-link nav-small-link">
                 CORRECTIONS
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/" className="nav-link nav-small-link">
+              <Link to="/fake" className="nav-link nav-small-link">
                 PAROLE & PROBATION
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/" className="nav-link nav-small-link">
+              <Link to="/fake" className="nav-link nav-small-link">
                 REHABILITATION
               </Link>
             </li>

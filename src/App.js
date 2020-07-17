@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import NavBar from "./components/navBar";
 import Jobs from "./components/jobs";
+import AllFake from "./components/allFake";
 
 class App extends Component {
   state = {
@@ -32,8 +33,8 @@ class App extends Component {
         <Router>
           <div className="App">
             <NavBar />
-            {/* <NavBar /> */}
             <Switch>
+              <Route path="/fake" component={AllFake} />
               <Route path="/applications/new" component={Application} />
               <Route path="/applications/:Id" component={Application} />
               <Route path="/applications" component={Applications} />

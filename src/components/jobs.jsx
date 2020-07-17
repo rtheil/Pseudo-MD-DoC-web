@@ -7,7 +7,7 @@ class Jobs extends Component {
     return (
       <div className="container-lg">
         <div className="row">
-          <div className="col-3 ">
+          <div className="col-3 border-right">
             Job Seekers
             <hr className="mt-1" />
             <Link to="/jobs">State Jobs</Link>
