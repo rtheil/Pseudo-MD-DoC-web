@@ -33,7 +33,7 @@ class App extends Component {
             <NavBar />
             {/* <NavBar /> */}
             <Switch>
-              <Route path="/application/new" component={Application} />
+              <Route path="/applications/new" component={Application} />
               <Route path="/applications/:Id" component={Application} />
               <Route path="/applications" component={Applications} />
               <Route path="/404" />

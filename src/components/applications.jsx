@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Application from "./application";
 import { Link } from "react-router-dom";
+import { Spinner, Button } from "react-bootstrap";
 
 class Applications extends Component {
   state = {
@@ -23,12 +24,22 @@ class Applications extends Component {
     if (this.state.applicationid !== null)
       return <Application appId={this.state.applicationid} />;
     else if (this.state.applications.length === 0)
-      return <p>Waiting for Azure API startup (~45 seconds)</p>;
+      return (
+        <React.Fragment>
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+          &nbsp;Waiting for Azure API startup
+        </React.Fragment>
+      );
 
     //ALL APPLICATIONS
     return (
-      <div>
+      <div className="container">
         <h2>Employment Applications</h2>
+        <Link to="/applications/new" className="btn btn-success btn-sm mb-2">
+          + New Application
+        </Link>
         <table className="table">
           <thead className="thead thead-dark">
             <tr>
@@ -51,7 +62,12 @@ class Applications extends Component {
                 </td>
                 <td>{app.applicationStatus}</td>
                 <td>
-                  <Link to={"/applications/" + app.id}>View</Link>
+                  <Link
+                    to={"/applications/" + app.id}
+                    className="btn btn-primary btn-sm mb-2"
+                  >
+                    View
+                  </Link>
                 </td>
               </tr>
             ))}

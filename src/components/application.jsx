@@ -1,292 +1,68 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import TextInput from "./textInput";
 import YesNoSelect from "./yesNoSelect";
 import Joi from "@hapi/joi";
 import ButtonInput from "./buttonInput";
+import ApplicationView from "./applicationView";
+import Formatting from "../formatting";
+
+const apiUrl = "https://md-doc-api.azurewebsites.net/api";
+//const apiUrl = "https://localhost:5001/api";
 
 class Application extends Component {
   state = {
     application: {},
+    errors: {},
     newApplication: {
       //INFO
-      firstName: "",
-      middleInitial: "",
-      lastName: "",
-      address: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      homePhone: "",
-      cellPhone: "",
-      socialSecurityNumber: "",
-      isCitizen: false,
+      firstName: "Steve",
+      middleInitial: "R",
+      lastName: "Smith",
+      eMailAddress: "test@test.com",
+      address: "123 Cherry Street",
+      city: "Langley Falls",
+      state: "VA",
+      zipCode: "00001",
+      homePhone: "(123) 456-7890",
+      cellPhone: "(123) 456-7890",
+      socialSecurityNumber: "123-45-6789",
+      isUsCitizen: true,
       hasFelony: false,
-      willDrugTest: false,
+      willDrugTest: true,
 
       //EMPLOYMENT
-      employment: [],
+      employmentHistory: [],
       employerName: "My Employer",
-      employerStartDate: "1/1/2020",
-      employerEndDate: "10/31/2020",
-      employerPhoneNumber: "123-456-7890",
+      employerStartDate: "2020-01-01",
+      employerEndDate: "2020-10-31",
+      employerPhoneNumber: "(123) 456-7890",
       employerJobTitle: "Job Expert",
 
       //EDUCATION
       education: [],
       schoolName: "University",
-      schoolStartDate: "1/1/2020",
-      schoolEndDate: "10/31/2020",
-      schoolDiploma: "Bachelor Degree",
+      schoolStartDate: "1997-01-01",
+      schoolEndDate: "2001-05-01",
+      schoolDegree: "Bachelor Degree",
 
       //REFERENCES
       references: [],
       referenceName: "My Brother",
-      referencePhoneNumber: "123-45-6789",
+      referencePhoneNumber: "(123) 456-7890",
       referenceRelation: "Friend",
     },
   };
 
-  appSchema = Joi.object({
-    firstName: Joi.string().required(),
-    mi: Joi.string().required().max(1),
-    lastName: Joi.string().required(),
-  });
-
-  async loadApplication() {
-    console.log(this.props.match.params.Id);
-    if (this.props.match.params.Id !== undefined) {
-      const url =
-        "https://md-doc-api.azurewebsites.net/api/Applications/" +
-        this.props.match.params.Id;
-      const { data: application } = await axios.get(url);
-      this.setState({ application });
-      //console.log(this.props);
-    }
-  }
-
-  componentDidMount() {
-    this.loadApplication();
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.location !== prevProps.location) {
-      this.loadApplication();
-    }
-  }
-
-  //FORMAT A PHONE NUMBER FROM API
-  formatPhoneNumber(phoneNumber) {
-    var cleaned = ("" + phoneNumber).replace(/\D/g, "");
-    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-    if (match) {
-      return "(" + match[1] + ") " + match[2] + "-" + match[3];
-    }
-    return null;
-  }
-
-  //FORMAT A ZULU DATE FROM THE API
-  formatDate(date) {
-    const d = new Date(date);
-    const ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
-    const mo = new Intl.DateTimeFormat("en", { month: "numeric" }).format(d);
-    const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
-    return mo + "/" + da + "/" + ye;
-  }
-
-  //FORMAT A SOCIAL SECURITY NUMBER FROM API
-  formatSsn(ssn) {
-    const cleaned = "" + ssn;
-    const match = cleaned.match(/^(\d{3})(\d{2})(\d{4})$/);
-    if (match) return match[1] + "-" + match[2] + "-" + match[3];
-    return "Invalid";
-  }
-
-  ApplicationView = () => {
-    const { application } = this.state;
-    const { employmentHistory } = this.state.application;
-    return (
-      <div>
-        {" "}
-        <h2>Job Application</h2>
-        <Link to="/applications">Back to Applications list</Link>
-        <table className="table table-sm">
-          <thead className="thead-dark">
-            <tr>
-              <th>Name</th>
-              <th>Address</th>
-              <th>City, State Zip</th>
-              <th>Phones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                {application.firstName} {application.middleInitial}.{" "}
-                {application.lastName}
-              </td>
-              <td>{application.address}</td>
-              <td>
-                {application.city}, {application.state} {application.zip}
-              </td>
-              <td>
-                {this.formatPhoneNumber(application.homePhone)}
-                <br />
-                {this.formatPhoneNumber(application.cellPhone)}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table className="table table-sm">
-          <thead className="thead-dark">
-            <tr>
-              <th>Email</th>
-              <th>SSN</th>
-              <th>US Citizen</th>
-              <th>Felony</th>
-              <th>Will Drug Test</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{application.eMailAddress}</td>
-              <td>{this.formatSsn(application.socialSecurityNumber)}</td>
-              <td>{application.isUsCitizen ? "Yes" : "No"}</td>
-              <td>{application.hasFelony ? "Yes" : "No"}</td>
-              <td>{application.willDrugTest ? "Yes" : "No"}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          style={{ marginBottom: 0, paddingBottom: 0 }}
-          className="table table-sm"
-        >
-          <thead className="thead-dark">
-            <tr>
-              <th>Employment History</th>
-            </tr>
-          </thead>
-        </table>
-        <table className="table table-sm">
-          <thead className="thead-light">
-            <tr>
-              <th>Employer</th>
-              <th>Start</th>
-              <th>End</th>
-              <th>Phone</th>
-              <th>Job Title</th>
-              <th>Can Contact</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employmentHistory !== undefined ? (
-              employmentHistory.map((emp) => (
-                <tr key={"emp" + emp.id}>
-                  <td>{emp.employerName}</td>
-                  <td>{this.formatDate(emp.startDate)}</td>
-                  <td>
-                    {emp.endDate === null
-                      ? "Still Employed"
-                      : this.formatDate(emp.endDate)}
-                  </td>
-                  <td>{this.formatPhoneNumber(emp.phone)}</td>
-                  <td>{emp.position}</td>
-                  <td>{emp.canContact ? "Yes" : "No"}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td>NONE</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        <table
-          style={{ marginBottom: 0, paddingBottom: 0 }}
-          className="table table-sm"
-        >
-          <thead className="thead-dark">
-            <tr>
-              <th>Education</th>
-            </tr>
-          </thead>
-        </table>
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
-              <th>School Name</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Diploma</th>
-            </tr>
-          </thead>
-          <tbody>
-            {application.education !== undefined ? (
-              application.education.map((edu) => (
-                <tr key={"edu" + edu.id}>
-                  <td>{edu.schoolName}</td>
-                  <td>{this.formatDate(edu.startDate)}</td>
-                  <td>
-                    {edu.endDate === null
-                      ? "Incomplete"
-                      : this.formatDate(edu.endDate)}
-                  </td>
-                  <td>{edu.degree}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td>None</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        <table
-          style={{ marginBottom: 0, paddingBottom: 0 }}
-          className="table table-sm"
-        >
-          <thead className="thead-dark">
-            <tr>
-              <th>References</th>
-            </tr>
-          </thead>
-        </table>
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Relation</th>
-            </tr>
-          </thead>
-          <tbody>
-            {application.references !== undefined ? (
-              application.references.map((ref) => (
-                <tr key={"ref" + ref.id}>
-                  <td>{ref.name}</td>
-                  <td>{this.formatPhoneNumber(ref.phoneNumber)}</td>
-                  <td>{ref.relation}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td>None</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
   NewApplication = () => {
-    const { newApplication } = this.state;
-
+    const { newApplication, errors } = this.state;
+    console.log("error:", errors.error);
+    console.log("state", this.state);
     return (
       <div className="container-lg mb-5">
-        <Form>
+        <Form onSubmit={this.handleSubmit}>
           <div className="p-1 mt-2 app-section-bar">Personal Information</div>
           <Form.Row>
             <TextInput
@@ -294,12 +70,14 @@ class Application extends Component {
               onChange={this.handleChange}
               label="First Name"
               value={newApplication.firstName}
+              error={errors.firstName}
             />
             <TextInput
               name="middleInitial"
               onChange={this.handleChange}
               label="MI"
-              value={newApplication.mi}
+              value={newApplication.middleInitial}
+              error={errors.middleInitial}
               size="1"
             />
             <TextInput
@@ -307,6 +85,7 @@ class Application extends Component {
               onChange={this.handleChange}
               label="Last Name"
               value={newApplication.lastName}
+              error={errors.lastName}
             />
           </Form.Row>
           <Form.Row>
@@ -314,7 +93,8 @@ class Application extends Component {
               name="address"
               onChange={this.handleChange}
               label="Street Address"
-              value={newApplication.eMailAddress}
+              value={newApplication.address}
+              error={errors.address}
             />
             <TextInput
               name="city"
@@ -322,12 +102,14 @@ class Application extends Component {
               label="City"
               size="2"
               value={newApplication.city}
+              error={errors.city}
             />
             <TextInput
               name="state"
               onChange={this.handleChange}
               label="State"
               value={newApplication.state}
+              error={errors.state}
               size="1"
             />
             <TextInput
@@ -335,7 +117,8 @@ class Application extends Component {
               onChange={this.handleChange}
               label="Zip"
               size="1"
-              value={newApplication.zip}
+              value={newApplication.zipCode}
+              error={errors.zipCode}
             />
           </Form.Row>
           <Form.Row>
@@ -343,6 +126,8 @@ class Application extends Component {
               name="homePhone"
               onChange={this.handleChange}
               label="Home Phone"
+              value={newApplication.homePhone}
+              error={errors.homePhone}
               size="5"
             />
             <TextInput
@@ -350,6 +135,7 @@ class Application extends Component {
               onChange={this.handleChange}
               label="Cell Phone"
               value={newApplication.cellPhone}
+              error={errors.cellPhone}
               size="5"
             />
           </Form.Row>
@@ -358,13 +144,14 @@ class Application extends Component {
               name="socialSecurityNumber"
               onChange={this.handleChange}
               label="SSN"
-              value={newApplication.ssn}
+              value={newApplication.socialSecurityNumber}
+              error={errors.socialSecurityNumber}
               size="2"
             />
             <YesNoSelect
               name="isUsCitizen"
               label="US Citizen?"
-              value={newApplication.isCitizen}
+              value={newApplication.isUsCitizen}
               onChange={this.handleChange}
             />
             <YesNoSelect
@@ -396,20 +183,25 @@ class Application extends Component {
               name="employerName"
               value={newApplication.employerName}
               size="3"
+              error={errors.employerName}
             />
             <TextInput
               onChange={this.handleChange}
               label="Start Date"
               name="employerStartDate"
+              type="date"
               value={newApplication.employerStartDate}
               size="2"
+              error={errors.employerStartDate}
             />
             <TextInput
               onChange={this.handleChange}
               label="End Date"
               name="employerEndDate"
+              type="date"
               value={newApplication.employerEndDate}
               size="2"
+              error={errors.employerEndDate}
             />
             <TextInput
               onChange={this.handleChange}
@@ -417,6 +209,7 @@ class Application extends Component {
               name="employerPhoneNumber"
               value={newApplication.employerPhoneNumber}
               size="2"
+              error={errors.employerPhoneNumber}
             />
             <TextInput
               onChange={this.handleChange}
@@ -424,11 +217,12 @@ class Application extends Component {
               name="employerJobTitle"
               value={newApplication.employerJobTitle}
               size="2"
+              error={errors.employerJobTitle}
             />
           </Form.Row>
           <div className="container-lg">
-            {this.state.newApplication.employment !== undefined &&
-              this.state.newApplication.employment.map((item, i) => {
+            {this.state.newApplication.employmentHistory !== undefined &&
+              this.state.newApplication.employmentHistory.map((item, i) => {
                 return (
                   <div key={item.employerName + i} className="row mb-1">
                     <div className="ml-1 pl-1">
@@ -444,8 +238,8 @@ class Application extends Component {
                     <div className="col">{item.employerName}</div>
                     <div className="col">{item.startDate}</div>
                     <div className="col">{item.endDate}</div>
-                    <div className="col">{item.phoneNumber}</div>
-                    <div className="col">{item.jobTitle}</div>
+                    <div className="col">{item.phone}</div>
+                    <div className="col">{item.position}</div>
                   </div>
                 );
               })}
@@ -465,24 +259,30 @@ class Application extends Component {
               onChange={this.handleChange}
               label="School Name"
               value={newApplication.schoolName}
+              error={errors.schoolName}
             />
             <TextInput
               name="schoolStartDate"
               onChange={this.handleChange}
               label="Start Date"
+              type="date"
               value={newApplication.schoolStartDate}
+              error={errors.schoolStartDate}
             />
             <TextInput
               name="schoolEndDate"
               onChange={this.handleChange}
               label="End Date"
+              type="date"
               value={newApplication.schoolEndDate}
+              error={errors.schoolEndDate}
             />
             <TextInput
-              name="schoolDiploma"
+              name="schoolDegree"
               onChange={this.handleChange}
-              label="Diploma"
-              value={newApplication.schoolDiploma}
+              label="Degree"
+              value={newApplication.schoolDegree}
+              error={errors.schoolDegree}
             />
             <div className="container-lg">
               {this.state.newApplication.education !== undefined &&
@@ -502,7 +302,7 @@ class Application extends Component {
                       <div className="col">{item.schoolName}</div>
                       <div className="col">{item.startDate}</div>
                       <div className="col">{item.endDate}</div>
-                      <div className="col">{item.Diploma}</div>
+                      <div className="col">{item.degree}</div>
                     </div>
                   );
                 })}
@@ -523,24 +323,30 @@ class Application extends Component {
               onChange={this.handleChange}
               label="Name"
               value={newApplication.referenceName}
+              error={errors.referenceName}
             />
             <TextInput
               name="referencePhoneNumber"
               onChange={this.handleChange}
               label="Phone Number"
               value={newApplication.referencePhoneNumber}
+              error={errors.referencePhoneNumber}
             />
             <TextInput
               name="referenceRelation"
               onChange={this.handleChange}
               label="Relation"
               value={newApplication.referenceRelation}
+              error={errors.referenceRelation}
             />
             <div className="container-lg">
               {this.state.newApplication.references !== undefined &&
                 this.state.newApplication.references.map((item, i) => {
                   return (
-                    <div key={item.referenceName + i} className="row mb-1">
+                    <div
+                      key={item.referenceName + "_" + i}
+                      className="row mb-1"
+                    >
                       <div className="ml-1 pl-1">
                         <Button
                           variant="danger"
@@ -551,21 +357,115 @@ class Application extends Component {
                           &nbsp;-&nbsp;
                         </Button>
                       </div>
-                      <div className="col">{item.referenceName}</div>
-                      <div className="col">{item.referencePhoneNumber}</div>
-                      <div className="col">{item.referenceRelation}</div>
+                      <div className="col">{item.name}</div>
+                      <div className="col">{item.phoneNumber}</div>
+                      <div className="col">{item.relation}</div>
                     </div>
                   );
                 })}
             </div>
           </Form.Row>
-          <div className="p-1 mt-2 mb-2 app-section-bar">Final Steps</div>
+          <div className="p-1 mt-2 mb-2 app-section-bar">Review and Submit</div>
           <Button variant="success" type="submit">
             Submit Application
           </Button>
         </Form>
       </div>
     );
+  };
+
+  appSchema = Joi.object({
+    firstName: Joi.string().required().min(2),
+    middleInitial: Joi.string().required().max(1),
+    lastName: Joi.string().required().min(2),
+    address: Joi.string().required().min(5),
+    city: Joi.string().required().min(2),
+    state: Joi.string().required().min(2).max(2),
+    zipCode: Joi.string().required().min(5).max(5),
+    homePhone: Joi.string()
+      .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
+      .message("Invalid Phone Number"),
+    cellPhone: Joi.string()
+      .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
+      .message("Invalid Phone Number"),
+    socialSecurityNumber: Joi.string()
+      .regex(/^\d{3}-\d{2}-\d{4}$/)
+      .message("Invalid SSN"),
+    isUsCitizen: Joi.boolean(),
+    hasFelony: Joi.boolean(),
+    willDrugTest: Joi.boolean(),
+    employmentHistory: Joi.array().min(1).required(),
+    education: Joi.array().min(1).required(),
+    references: Joi.array().min(1).required(),
+  });
+
+  employmentSchema = Joi.object({
+    employerName: Joi.string().required().min(3),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    phone: Joi.string()
+      .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
+      .message("Invalid Phone Number"),
+    position: Joi.string().required().min(5),
+  });
+
+  educationSchema = Joi.object({
+    schoolName: Joi.string().required().min(3),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    degree: Joi.string().required().min(3),
+  });
+
+  referenceSchema = Joi.object({
+    name: Joi.string().required().min(3),
+    phoneNumber: Joi.string()
+      .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
+      .message("Invalid Phone Number"),
+    relation: Joi.string().required().min(3),
+  });
+
+  async loadApplication() {
+    console.log(this.props.match.params.Id);
+    if (this.props.match.params.Id !== undefined) {
+      const url = apiUrl + "/Applications/" + this.props.match.params.Id;
+      const { data: application } = await axios.get(url);
+      this.setState({ application });
+      //console.log(this.props);
+    }
+  }
+
+  componentDidMount() {
+    this.loadApplication();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.location !== prevProps.location) {
+      this.loadApplication();
+    }
+  }
+
+  handleValidate = (schema, item) => {
+    //VALIDATE
+    const results = schema.validate(item, {
+      abortEarly: true,
+    });
+
+    //IF ERRORS, LOOP
+    const errors = {};
+    if (results.error)
+      for (let item of results.error.details) {
+        /*eslint no-useless-escape: "off"*/
+        let pattern = /\"\w+\" /gm;
+        let msg = item.message.replace(pattern, "");
+        msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+        msg = msg.replace("Is not allowed to", "Can't");
+        errors[item.path[0]] = msg;
+        //item.message.replace(/\"\w+\" /gm, "");
+
+        console.log(item.path[0], item.message.replace(pattern, ""));
+      }
+
+    return errors;
   };
 
   handleAddEmployment = (e) => {
@@ -576,14 +476,20 @@ class Application extends Component {
       employerName: newApplication.employerName,
       startDate: newApplication.employerStartDate,
       endDate: newApplication.employerEndDate,
-      phoneNumber: newApplication.employerPhoneNumber,
-      jobTitle: newApplication.employerJobTitle,
+      phone: newApplication.employerPhoneNumber,
+      position: newApplication.employerJobTitle,
     };
 
-    //ADD TO LOCAL ARRAY
-    newApplication.employment.push(employerItem);
+    //VALIDATE FIRST
+    const errors = this.handleValidate(this.employmentSchema, employerItem);
+    console.log("employer add errors", errors);
+    //console.log(errors.error.details);
 
-    //REMOVE FROM STATE TO EMPTY FIELDS
+    //ADD TO LOCAL ARRAY
+    if (Object.keys(errors).length === 0)
+      newApplication.employmentHistory.push(employerItem);
+
+    //REMOVE FROM STATE TO EMPTY FIELDS (UNCOMMENT FOR PRODUCTION)
     // newApplication.employerName = "";
     // newApplication.employerStartDate = "";
     // newApplication.employerEndDate = "";
@@ -591,14 +497,17 @@ class Application extends Component {
     // newApplication.employerJobTitle = "";
 
     //SET THE STATE
-    this.setState({ newApplication });
+    this.setState({ newApplication, errors });
     //console.log(newApplication);
   };
 
   handleRemoveEmployment = ({ target }) => {
     console.log(target);
     let newApplication = { ...this.state.newApplication };
-    newApplication.employment = newApplication.employment.splice(target.idx, 1);
+    newApplication.employmentHistory = newApplication.employment.splice(
+      target.idx,
+      1
+    );
     this.setState(newApplication);
   };
 
@@ -610,19 +519,25 @@ class Application extends Component {
       schoolName: newApplication.schoolName,
       startDate: newApplication.schoolStartDate,
       endDate: newApplication.schoolEndDate,
-      Diploma: newApplication.schoolDiploma,
+      degree: newApplication.schoolDegree,
     };
-    //console.log(educationItem);
+
+    //VALIDATE FIRST
+    const errors = this.handleValidate(this.educationSchema, educationItem);
+    console.log("education add errors", errors);
+    //console.log(errors.error.details);
+
     //ADD TO LOCAL ARRAY
-    newApplication.education.push(educationItem);
-    //REMOVE FROM STATE
+    if (Object.keys(errors).length === 0)
+      newApplication.education.push(educationItem);
+    //REMOVE FROM STATE (UNCOMMENT FOR PRODUCTION)
     // newApplication.schoolName = "";
     // newApplication.schoolStartDate = "";
     // newApplication.schoolEndDate = "";
-    // newApplication.schoolDiploma = "";
+    // newApplication.schoolDegree = "";
 
     //SET STATE
-    this.setState({ newApplication });
+    this.setState({ newApplication, errors });
     //console.log(newApplication);
   };
 
@@ -638,18 +553,26 @@ class Application extends Component {
 
     //LOCAL REFERENCE ITEM
     let referenceItem = {
-      referenceName: newApplication.referenceName,
-      referencePhoneNumber: newApplication.referencePhoneNumber,
-      referenceRelation: newApplication.referenceRelation,
+      name: newApplication.referenceName,
+      phoneNumber: newApplication.referencePhoneNumber,
+      relation: newApplication.referenceRelation,
     };
-    newApplication.references.push(referenceItem);
-    //REMOVE FROM STATE
+
+    //VALIDATE FIRST
+    const errors = this.handleValidate(this.referenceSchema, referenceItem);
+    console.log("Reference add errors", errors);
+    //console.log(errors.error.details);
+
+    //ADD TO LOCAL ARRAY
+    if (Object.keys(errors).length === 0)
+      newApplication.references.push(referenceItem);
+    //REMOVE FROM STATE (UNCOMMENT FOR PRODUCTION)
     // newApplication.referenceName = "";
     // newApplication.referencePhoneNumber = "";
     // newApplication.referenceRelation = "";
 
     //SET STATE
-    this.setState({ newApplication });
+    this.setState({ newApplication, errors });
     //console.log(newApplication);
   };
 
@@ -661,11 +584,85 @@ class Application extends Component {
   };
 
   handleChange = (e) => {
+    console.log("handleChange", e);
     const newApplication = { ...this.state.newApplication };
-    newApplication[e.currentTarget.id] = e.currentTarget.value;
+    if (e.currentTarget.id.includes("Phone"))
+      newApplication[e.currentTarget.id] = Formatting.formatPhoneNumber(
+        e.currentTarget.value,
+        false
+      );
+    else if (e.currentTarget.id.includes("socialSecurity"))
+      newApplication[e.currentTarget.id] = Formatting.formatSsn(
+        e.currentTarget.value
+      );
+    else newApplication[e.currentTarget.id] = e.currentTarget.value;
     this.setState({ newApplication });
-    //console.log(e.currentTarget.id, e.currentTarget.value);
-    //console.log(e.currentTarget);
+  };
+
+  handleSubmit = async (e) => {
+    console.log("HANDLESUBMIT");
+    e.preventDefault();
+    const newApplication = { ...this.state.newApplication };
+
+    let appItem = {
+      firstName: newApplication.firstName,
+      middleInitial: newApplication.middleInitial,
+      lastName: newApplication.lastName,
+      address: newApplication.address,
+      city: newApplication.city,
+      state: newApplication.state,
+      zipCode: newApplication.zipCode,
+      homePhone: Formatting.formatPhoneNumber(newApplication.homePhone),
+      cellPhone: Formatting.formatPhoneNumber(newApplication.cellPhone),
+      socialSecurityNumber: Formatting.formatSsn(
+        newApplication.socialSecurityNumber
+      ),
+      isUsCitizen: newApplication.isUsCitizen,
+      hasFelony: newApplication.hasFelony,
+      willDrugTest: newApplication.willDrugTest,
+      employmentHistory: newApplication.employmentHistory,
+      education: newApplication.education,
+      references: newApplication.references,
+    };
+
+    // //CHECK PERSONAL INFO
+    const errors = this.handleValidate(this.appSchema, appItem);
+    console.log("validate errors", errors);
+    this.setState({ errors });
+    if (Object.keys(errors).length > 0) return;
+
+    // //CLEAN SOME ITEMS FOR API
+    newApplication.homePhone = Formatting.formatPhoneNumber(
+      newApplication.homePhone,
+      true
+    );
+    newApplication.cellPhone = Formatting.formatPhoneNumber(
+      newApplication.cellPhone,
+      true
+    );
+    newApplication.socialSecurityNumber = Formatting.formatSsn(
+      newApplication.socialSecurityNumber,
+      true
+    );
+
+    //SUCCESS. SUBMIT THE FORM TO API.
+    console.log("VALIDATE SUCCESS", newApplication);
+
+    await axios
+      .post(apiUrl + "/Applications", newApplication)
+      .then((response) => {
+        console.log("server response:", response);
+        if (response.status === 201) {
+          console.log("STATUS 201: ", response);
+          //const {id} = response.data;
+          console.log("applicationId:", response.data.id);
+          //<Redirect to={"/applications/new/"+id}/>
+          this.props.history.push("/applications/" + response.data.id);
+        }
+      })
+      .catch((error) => {
+        console.log("post error:", error.response.data.errors);
+      });
   };
 
   render() {
@@ -673,7 +670,7 @@ class Application extends Component {
     return (
       <div>
         {this.props.match.params.Id !== undefined ? (
-          <this.ApplicationView />
+          <ApplicationView application={this.state.application} />
         ) : (
           <this.NewApplication />
         )}

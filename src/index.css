@@ -47,3 +47,14 @@ code {
   color: white;
   font-weight: bold;
 }
+
+.error-box {
+  background-color: lightcoral;
+  color: black;
+  border-color: red;
+  border-radius: 5%;
+  padding: 1px;
+  margin-left: 5px;
+  margin-top: 1px;
+  font-size: 14px;
+}
