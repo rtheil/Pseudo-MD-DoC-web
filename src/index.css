@@ -34,7 +34,7 @@ code {
 }
 
 .nav-image-bar {
-  background-image: url("https://picsum.photos/id/692/800/130");
+  background-image: url("/images/courthouse.jpg");
   height: 130px;
 }
 
@@ -57,4 +57,15 @@ code {
   margin-left: 5px;
   margin-top: 1px;
   font-size: 14px;
+}
+
+.bg-gray {
+  background-color: rgb(232, 232, 232);
+  color: black;
+}
+
+.bg-forest {
+  background-color: rgb(163, 184, 153);
+  color: black;
+  padding-left: 10px;
 }

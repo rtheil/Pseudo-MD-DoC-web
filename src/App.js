@@ -9,6 +9,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import NavBar from "./components/navBar";
+import Jobs from "./components/jobs";
 
 class App extends Component {
   state = {
@@ -36,6 +37,7 @@ class App extends Component {
               <Route path="/applications/new" component={Application} />
               <Route path="/applications/:Id" component={Application} />
               <Route path="/applications" component={Applications} />
+              <Route path="/jobs" component={Jobs} />
               <Route path="/404" />
               <Route path="/" component={Home} />
               <Redirect to="/404" />

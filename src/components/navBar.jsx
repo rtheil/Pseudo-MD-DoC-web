@@ -28,7 +28,7 @@ class NavBar extends Component {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link nav-tiny-link" to="/applications">
+              <Link className="nav-link nav-tiny-link" to="/jobs">
                 Job Postings
               </Link>
             </li>
