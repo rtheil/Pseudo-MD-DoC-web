@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Application from "./application";
 import { Link } from "react-router-dom";
-import { Spinner, Button } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 
 class Applications extends Component {
   state = {
