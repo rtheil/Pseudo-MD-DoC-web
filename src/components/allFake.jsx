@@ -6,7 +6,7 @@ const AllFake = () => {
       <h3 className="bg-danger text-white mt-3">
         This web site is entirely fake!
       </h3>
-      <div container>
+      <div>
         Welcome to my project. My name is Ricky, and I'm a full-stack engineer
         of more than 2 decades. This web site is an example of my abilities as a
         full-stack web application developer. This web site uses the following
