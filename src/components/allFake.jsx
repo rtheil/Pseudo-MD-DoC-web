@@ -6,33 +6,71 @@ const AllFake = () => {
       <h3 className="bg-danger text-white mt-3">
         This web site is entirely fake!
       </h3>
-      <div>
-        Welcome to my project. My name is Ricky, and I'm a full-stack engineer
-        of more than 2 decades. This web site is an example of my abilities as a
-        full-stack web application developer. This web site uses the following
-        technologies:
+      <div className="d-flex p-2 justify-content-center">
+        <div style={{ width: 600 }}>
+          Welcome to my project. My name is Ricky, and I'm a full-stack engineer
+          of more than 2 decades. This web site is an example of my abilities as
+          a full-stack web application developer.
+        </div>
       </div>
-      <div className="row">
-        <div className="col-4"></div>
-        <div className="col-5 text-left">
+      <hr />
+      <div className="d-flex justify-content-center">
+        <div className="text-left">
+          <h5>Engineered with the following tools</h5>
           <ul>
             <li>.Net Core 3 API written in C#</li>
-            <li>Microsoft Entity Framework 3</li>
-            <li>Microsoft SQL server on Azure</li>
-            <li>Azure App Service for API and web app</li>
-            <li>Node 12 and React with Bootstrap 4</li>
+            <li>
+              <a href="https://docs.microsoft.com/en-us/ef/core/">
+                Microsoft Entity Framework Core
+              </a>
+            </li>
+            <li>
+              <a href="https://azure.microsoft.com/en-us/services/sql-database/">
+                Azure SQL Database
+              </a>
+            </li>
+            <li>
+              <a href="https://azure.microsoft.com/en-us/free/apps">
+                Azure App Service
+              </a>{" "}
+              for API and web app
+            </li>
+            <li>
+              <a href="https://nodejs.org">Node 12</a> and{" "}
+              <a href="https://www.npmjs.com/package/react">React</a> with{" "}
+              <a href="https://getbootstrap.com/">Bootstrap 4</a>
+            </li>
             <li>
               Other Node packages
               <ul>
-                <li>@hapi/joi</li>
-                <li>Axios</li>
-                <li>react-bootstrap</li>
-                <li>react-router-dom</li>
+                <li>
+                  <a href="https://www.npmjs.com/package/@hapi/joi">
+                    @hapi/joi
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.npmjs.com/package/axios">Axios</a>
+                </li>
+                <li>
+                  <a href="https://www.npmjs.com/package/react-bootstrap">
+                    react-bootstrap
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.npmjs.com/package/react-router-dom">
+                    react-router-dom
+                  </a>
+                </li>
               </ul>
             </li>
+            <li>
+              Git repositories for{" "}
+              <a href="https://github.com/rtheil/Pseudo-MD-DoC-web">Frontend</a>{" "}
+              and <a href="https://github.com/rtheil/Pseudo-MD-DoC-API">API</a>
+            </li>
+            <li>Github CI/CD Pipeline to Azure for frontend</li>
           </ul>
         </div>
-        <div className="col-3"></div>
       </div>
     </div>
   );
