@@ -12,7 +12,7 @@ class Jobs extends Component {
             <hr className="mt-1" />
             <Link to="/jobs">State Jobs</Link>
             <br />
-            <Link to="/">My Applications</Link>
+            <Link to="/applications">My Applications</Link>
             <br />
             <Link to="/">Update Contact Info</Link>
             <br />

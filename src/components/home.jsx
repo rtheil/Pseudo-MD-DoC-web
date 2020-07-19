@@ -13,7 +13,7 @@ class Home extends Component {
     return (
       <div className="container-lg">
         <div className="row">
-          <div className="col-3 border-right">
+          <div className="col-3-sm border-right pl-1">
             <div className="font-weight-bold">Top Links</div>
             <ul>
               <li>
@@ -127,7 +127,7 @@ class Home extends Component {
             </ul>
           </div>
 
-          <div className="col-8">
+          <div className="col-sm">
             <hr className="border-dark" />
             <div className="font-weight-bold">
               Rivers Look Blue, but They Aren't
@@ -141,7 +141,9 @@ class Home extends Component {
               {loremIpsum2}
             </div>
             <hr className="border-dark" />
-            <div className="font-weight-bold">The Forest Has Green</div>
+            <div className="font-weight-bold">
+              Trees are Green, Rocks are gray
+            </div>
             <div className="" style={{ fontSize: 16 }}>
               <img
                 src="https://picsum.photos/id/1043/150"
@@ -152,7 +154,7 @@ class Home extends Component {
             </div>
             <hr className="border-dark" />
             <div className="font-weight-bold">
-              Jellyfish: Do They Have a Brain?
+              Jellyfish: Do they wear pants?
             </div>
             <div className="" style={{ fontSize: 16 }}>
               <img
