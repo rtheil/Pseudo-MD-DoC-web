@@ -32,7 +32,7 @@ class App extends Component {
       <div>
         <Router>
           <div className="App">
-            <div className="Site container">
+            <div className="Site container pl-0 pr-0">
               <NavBar />
               <Switch>
                 <Route path="/fake" component={AllFake} />
