@@ -11,11 +11,11 @@ import {
 import NavBar from "./components/navBar";
 import Jobs from "./components/jobs";
 import AllFake from "./components/allFake";
+import Footer from "./components/footer";
+import LoginBox from "./components/loginBox";
 
 class App extends Component {
-  state = {
-    mode: "applications",
-  };
+  state = {};
 
   handleIncrement = () => {
     this.setState({ count: this.state.count + 1 });
@@ -32,17 +32,21 @@ class App extends Component {
       <div>
         <Router>
           <div className="App">
-            <NavBar />
-            <Switch>
-              <Route path="/fake" component={AllFake} />
-              <Route path="/applications/new" component={Application} />
-              <Route path="/applications/:Id" component={Application} />
-              <Route path="/applications" component={Applications} />
-              <Route path="/jobs" component={Jobs} />
-              <Route path="/404" />
-              <Route path="/" component={Home} />
-              <Redirect to="/404" />
-            </Switch>
+            <div className="Site container">
+              <NavBar />
+              <Switch>
+                <Route path="/fake" component={AllFake} />
+                <Route path="/login" component={LoginBox} />
+                <Route path="/applications/new" component={Application} />
+                <Route path="/applications/:Id" component={Application} />
+                <Route path="/applications" component={Applications} />
+                <Route path="/jobs" component={Jobs} />
+                <Route path="/404" />
+                <Route path="/" component={Home} />
+                <Redirect to="/404" />
+              </Switch>
+              <Footer />
+            </div>
           </div>
         </Router>
       </div>
