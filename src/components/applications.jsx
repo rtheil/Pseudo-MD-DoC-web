@@ -29,7 +29,7 @@ class Applications extends Component {
           <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>
-          &nbsp;Waiting for Azure API startup
+          &nbsp;Loading data
         </React.Fragment>
       );
 
@@ -56,7 +56,7 @@ class Applications extends Component {
                 <td>
                   {app.firstName} {app.lastName}
                 </td>
-                <td>XX/XX/XXXX</td>
+                <td>{app.dateReceived}</td>
                 <td>
                   {app.city}, {app.state}
                 </td>

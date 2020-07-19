@@ -504,7 +504,7 @@ class Application extends Component {
   handleRemoveEmployment = ({ target }) => {
     console.log(target);
     let newApplication = { ...this.state.newApplication };
-    newApplication.employmentHistory = newApplication.employment.splice(
+    newApplication.employmentHistory = newApplication.employmentHistory.splice(
       target.idx,
       1
     );
