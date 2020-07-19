@@ -20,7 +20,7 @@ class LoginBox extends Component {
   });
 
   handleLoginSubmit = (e) => {
-    const { loginInfo } = this.state;
+    //const { loginInfo } = this.state;
     e.preventDefault();
     //CALL API AND SEND USER/PASS
     console.log("submit login clicked", this.state.loginInfo);
@@ -33,7 +33,7 @@ class LoginBox extends Component {
   });
 
   handleForgotSubmit = (e) => {
-    const { loginInfo } = this.state;
+    //const { loginInfo } = this.state;
     e.preventDefault();
     console.log("submit forgot password clicked", this.state.loginInfo);
   };
