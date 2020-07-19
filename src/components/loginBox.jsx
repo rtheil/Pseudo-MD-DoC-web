@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Joi from "@hapi/joi";
+//import config from "react-global-configuration";
 
 class LoginBox extends Component {
   state = {

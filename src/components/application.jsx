@@ -8,9 +8,7 @@ import Joi from "@hapi/joi";
 import ButtonInput from "./buttonInput";
 import ApplicationView from "./applicationView";
 import Formatting from "../formatting";
-
-const apiUrl = "https://md-doc-api.azurewebsites.net/api";
-//const apiUrl = "https://localhost:5001/api";
+import config from "react-global-configuration";
 
 class Application extends Component {
   state = {
@@ -427,7 +425,8 @@ class Application extends Component {
   async loadApplication() {
     console.log(this.props.match.params.Id);
     if (this.props.match.params.Id !== undefined) {
-      const url = apiUrl + "/Applications/" + this.props.match.params.Id;
+      const url =
+        config.get("api.url") + "/Applications/" + this.props.match.params.Id;
       const { data: application } = await axios.get(url);
       this.setState({ application });
       //console.log(this.props);
@@ -649,7 +648,7 @@ class Application extends Component {
     console.log("VALIDATE SUCCESS", newApplication);
 
     await axios
-      .post(apiUrl + "/Applications", newApplication)
+      .post(config.get("api.url") + "/Applications", newApplication)
       .then((response) => {
         console.log("server response:", response);
         if (response.status === 201) {

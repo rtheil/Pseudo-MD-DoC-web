@@ -3,6 +3,10 @@ import axios from "axios";
 import Application from "./application";
 import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
+import config from "react-global-configuration";
+
+//const apiUrl = config.get("api.url");
+//console.log("config:", config.serialize());
 
 class Applications extends Component {
   state = {
@@ -12,12 +16,12 @@ class Applications extends Component {
 
   async componentDidMount() {
     const { data: applications } = await axios
-      .get("https://md-doc-api.azurewebsites.net/api/Applications")
+      .get(config.get("api.url") + "/Applications")
       .catch((error) => {
         console.log(error.message);
       });
     this.setState({ applications });
-    console.log(this.state);
+    //console.log(this.state);
   }
 
   render() {
