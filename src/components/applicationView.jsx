@@ -79,8 +79,8 @@ const ApplicationView = ({ application }) => {
           </tr>
         </thead>
         <tbody>
-          {application.employmentHistory !== undefined ? (
-            application.employmentHistory.map((emp) => (
+          {application.employment !== undefined ? (
+            application.employment.map((emp) => (
               <tr key={"emp" + emp.id}>
                 <td>{emp.employerName}</td>
                 <td>{Formatting.formatDate(emp.startDate)}</td>

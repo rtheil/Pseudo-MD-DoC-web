@@ -32,7 +32,7 @@ class Application extends Component {
       willDrugTest: true,
 
       //EMPLOYMENT
-      employmentHistory: [],
+      employment: [],
       employerName: "My Employer",
       employerStartDate: "2020-01-01",
       employerEndDate: "2020-10-31",
@@ -219,8 +219,8 @@ class Application extends Component {
             />
           </Form.Row>
           <div className="container-lg">
-            {this.state.newApplication.employmentHistory !== undefined &&
-              this.state.newApplication.employmentHistory.map((item, i) => {
+            {this.state.newApplication.employment !== undefined &&
+              this.state.newApplication.employment.map((item, i) => {
                 return (
                   <div key={item.employerName + i} className="row mb-1">
                     <div className="ml-1 pl-1">
@@ -392,7 +392,7 @@ class Application extends Component {
     isUsCitizen: Joi.boolean(),
     hasFelony: Joi.boolean(),
     willDrugTest: Joi.boolean(),
-    employmentHistory: Joi.array().min(1).required(),
+    employment: Joi.array().min(1).required(),
     education: Joi.array().min(1).required(),
     references: Joi.array().min(1).required(),
   });
@@ -486,7 +486,7 @@ class Application extends Component {
 
     //ADD TO LOCAL ARRAY
     if (Object.keys(errors).length === 0)
-      newApplication.employmentHistory.push(employerItem);
+      newApplication.employment.push(employerItem);
 
     //REMOVE FROM STATE TO EMPTY FIELDS (UNCOMMENT FOR PRODUCTION)
     // newApplication.employerName = "";
@@ -503,10 +503,7 @@ class Application extends Component {
   handleRemoveEmployment = ({ target }) => {
     console.log(target);
     let newApplication = { ...this.state.newApplication };
-    newApplication.employmentHistory = newApplication.employmentHistory.splice(
-      target.idx,
-      1
-    );
+    newApplication.employment = newApplication.employment.splice(target.idx, 1);
     this.setState(newApplication);
   };
 
@@ -619,7 +616,7 @@ class Application extends Component {
       isUsCitizen: newApplication.isUsCitizen,
       hasFelony: newApplication.hasFelony,
       willDrugTest: newApplication.willDrugTest,
-      employmentHistory: newApplication.employmentHistory,
+      employment: newApplication.employment,
       education: newApplication.education,
       references: newApplication.references,
     };
