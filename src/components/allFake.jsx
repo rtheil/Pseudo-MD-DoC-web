@@ -68,7 +68,11 @@ const AllFake = () => {
               <a href="https://github.com/rtheil/Pseudo-MD-DoC-web">Frontend</a>{" "}
               and <a href="https://github.com/rtheil/Pseudo-MD-DoC-API">API</a>
             </li>
-            <li>Github CI/CD Pipeline to Azure for frontend</li>
+            <li>
+              Github CI/CD Pipelines
+              <ul className="li">Publish API to Azure App Service</ul>
+              <ul className="li">Publish frontend to Azure App Service</ul>
+            </li>
           </ul>
         </div>
       </div>
