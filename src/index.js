@@ -5,6 +5,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import App from "./App";
 import config from "react-global-configuration";
 
+//REDUX
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducer from "./reducers/reducer";
+
+const store = createStore(reducer);
+
 //DEV CONFIG
 config.set({ api: { url: "https://localhost:5001/api" } }, { freeze: false });
 
@@ -15,13 +22,15 @@ config.set(
 );
 
 //UNCOMMENT DURING TESTING
-config.setEnvironment("production");
+//config.setEnvironment("production");
 
 //console.log("API URL:", config.get("api.url"));
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -41,9 +41,11 @@ class LoginBox extends Component {
       .then((response) => {
         if (response.status === 200) {
           console.log("server response:", response);
-          const { token } = response.data;
-          console.log("User token:", token);
-          this.setState({ token });
+          //const { Id,token } = response.data;
+          //console.log("User token:", token);
+
+          let currentUser = response.data;
+          this.setState({ currentUser });
           console.log(this.state);
         } else {
           console.log(

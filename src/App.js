@@ -14,8 +14,28 @@ import AllFake from "./components/allFake";
 import Footer from "./components/footer";
 import LoginBox from "./components/loginBox";
 
+import { connect } from "react-redux";
+
+function mapStateToProps(state) {
+  return { currentUser: state.currentUser };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setUser: (userObj) => {
+      dispatch({ type: "SET_USER", payload: userObj });
+    },
+  };
+}
+
 class App extends Component {
   state = {};
+
+  componentDidMount = () => {
+    const user = { name: "Ricky" };
+    //console.log(this.props);
+    this.props.setUser(user);
+  };
 
   handleIncrement = () => {
     this.setState({ count: this.state.count + 1 });
@@ -28,6 +48,7 @@ class App extends Component {
   };
 
   render() {
+    console.log(this.props.currentUser);
     return (
       <div>
         <Router>
@@ -54,4 +75,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
