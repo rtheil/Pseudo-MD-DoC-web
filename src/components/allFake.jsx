@@ -64,6 +64,14 @@ const AllFake = () => {
               </ul>
             </li>
             <li>
+              API NuGet Packages
+              <ul>
+                <li>Entity Framework Core</li>
+                <li>JWT</li>
+                <li></li>
+              </ul>
+            </li>
+            <li>
               Git repositories for{" "}
               <a href="https://github.com/rtheil/Pseudo-MD-DoC-web">Frontend</a>{" "}
               and <a href="https://github.com/rtheil/Pseudo-MD-DoC-API">API</a>
