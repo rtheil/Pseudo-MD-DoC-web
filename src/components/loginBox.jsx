@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Joi from "@hapi/joi";
-//import config from "react-global-configuration";
+import Axios from "axios";
+import config from "react-global-configuration";
 
 class LoginBox extends Component {
   state = {
     loginInfo: {
       emailAddress: "rtheil@codirt.com",
-      password: "E#dha7ktz8cwypwm",
+      password: "r5Y@m6#Bj3XS7ttY",
     },
   };
 
@@ -21,11 +22,45 @@ class LoginBox extends Component {
   });
 
   handleLoginSubmit = (e) => {
-    //const { loginInfo } = this.state;
+    const { loginInfo } = this.state;
     e.preventDefault();
+    console.log("submit login clicked", loginInfo);
+
     //CALL API AND SEND USER/PASS
-    console.log("submit login clicked", this.state.loginInfo);
+    const authInfo = this.authenticate();
+
+    console.log("auth info:", authInfo);
   };
+
+  async authenticate() {
+    console.log("login details:", this.state.loginInfo);
+    await Axios.post(
+      config.get("api.url") + "/users/authenticate",
+      this.state.loginInfo
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("server response:", response);
+          const { token } = response.data;
+          console.log("User token:", token);
+          this.setState({ token });
+          console.log(this.state);
+        } else {
+          console.log(
+            "Authentication received response other than 200",
+            response
+          );
+        }
+      })
+      .catch((error) => {
+        const { message } = error.response.data;
+        if (message !== undefined) console.log("Error Message:", message);
+        else {
+          console.log("post error:", error.response.data.errors);
+          console.log(error.response.data.errors.Password[0]); //"The Password field is required."
+        }
+      });
+  }
 
   forgotSchema = Joi.object({
     emailAddress: Joi.string()
@@ -34,9 +69,9 @@ class LoginBox extends Component {
   });
 
   handleForgotSubmit = (e) => {
-    //const { loginInfo } = this.state;
+    const { loginInfo } = this.state;
     e.preventDefault();
-    console.log("submit forgot password clicked", this.state.loginInfo);
+    console.log("submit forgot password clicked", loginInfo);
   };
 
   createSchema = Joi.object({
