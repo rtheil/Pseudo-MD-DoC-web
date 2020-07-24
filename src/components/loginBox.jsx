@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Joi from "@hapi/joi";
-import Axios from "axios";
-import config from "react-global-configuration";
+//import Axios from "axios";
+//import config from "react-global-configuration";
 import { connect } from "react-redux";
+import { login } from "../services/userService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -27,6 +28,27 @@ class LoginBox extends Component {
         password: "r5Y@m6#Bj3XS7ttY",
       },
     };
+    const { match } = this.props;
+    //LOG USER OUT
+    if (match.path === "/logout") {
+      this.handleLogout();
+    }
+    this.handleLogin();
+  }
+
+  componentDidUpdate() {
+    this.handleLogin();
+  }
+
+  handleLogout() {
+    const { history, setUser } = this.props;
+    setUser({});
+    history.push("/");
+  }
+
+  handleLogin() {
+    const { history, currentUser } = this.props;
+    if (currentUser.token !== undefined) history.push("/");
   }
 
   loginSchema = Joi.object({
@@ -37,53 +59,15 @@ class LoginBox extends Component {
     saveInfo: Joi.boolean(),
   });
 
-  handleLoginSubmit = (e) => {
+  handleLoginSubmit = async (e) => {
     e.preventDefault();
-    this.authenticate();
+
+    //CALL USER SERVICE
+    const currentUser = await login(this.state.loginInfo);
+
+    //UPDATE REDUX
+    this.props.setUser(currentUser);
   };
-
-  async authenticate() {
-    //const { cookies } = this.props;
-    console.log("login details:", this.state.loginInfo);
-    await Axios.post(
-      config.get("api.url") + "/users/authenticate",
-      this.state.loginInfo
-    )
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("server response:", response);
-          const currentUser = response.data;
-
-          //LOCAL STATE
-          this.setState({ currentUser });
-          console.log(this.state);
-
-          //REDUX STORE
-          this.props.setUser(this.state.currentUser);
-          console.log("authenticate props", this.props.currentUser);
-
-          //MOVE ON TO HOME PAGE (CHANGE TO PREVIOUS PAGE)
-          this.props.history.push("/");
-        } else {
-          console.log(
-            "Authentication received response other than 200",
-            response
-          );
-        }
-      })
-      .catch((error) => {
-        console.log(error.response);
-        //const { message } = error.response.data;
-        const message = "";
-        if (message !== undefined) console.log("Error Message:", message);
-        else {
-          console.log("post error:", error.response.data.errors);
-          console.log(error.response.data.errors.Password[0]); //"The Password field is required."
-        }
-        return;
-      });
-    //this.goAccount();
-  }
 
   forgotSchema = Joi.object({
     emailAddress: Joi.string()
@@ -249,17 +233,6 @@ class LoginBox extends Component {
   };
 
   render() {
-    const { history, match, currentUser, setUser } = this.props;
-    console.log("loginBox match:", match);
-    console.log("loginBox currentUser:", currentUser);
-    //console.log(this.props.history);
-    //LOG USER OUT
-    if (match.path === "/logout") {
-      setUser({});
-      history.push("/");
-    }
-    //IF USER LOGGED IN, GO ELSEWHERE
-    if (this.props.currentUser.token !== undefined) history.push("/");
     return (
       <Router>
         <Switch>
