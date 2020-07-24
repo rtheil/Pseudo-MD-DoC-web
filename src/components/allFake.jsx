@@ -41,6 +41,11 @@ const AllFake = () => {
               <a href="https://getbootstrap.com/">Bootstrap 4</a>
             </li>
             <li>
+              <a href="https://www.npmjs.com/package/react-redux">
+                React Redux state management
+              </a>
+            </li>
+            <li>
               Other Node packages
               <ul>
                 <li>
@@ -67,8 +72,8 @@ const AllFake = () => {
               API NuGet Packages
               <ul>
                 <li>Entity Framework Core</li>
-                <li>JWT</li>
-                <li></li>
+                <li>Javascript Web Tokens</li>
+                <li>??</li>
               </ul>
             </li>
             <li>
