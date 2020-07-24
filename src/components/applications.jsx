@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import Application from "./application";
 import { Link } from "react-router-dom";
-import { Spinner } from "react-bootstrap";
 import config from "react-global-configuration";
 import { connect } from "react-redux";
+import LoadingMessage from "./loadingMessage";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -37,14 +37,7 @@ class Applications extends Component {
     if (this.state.applicationid !== null)
       return <Application appId={this.state.applicationid} />;
     else if (this.state.applications.length === 0)
-      return (
-        <React.Fragment>
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-          &nbsp;Loading data
-        </React.Fragment>
-      );
+      return <LoadingMessage message="Loading Applications..." />;
 
     //ALL APPLICATIONS
     return (
