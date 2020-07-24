@@ -4,9 +4,11 @@ import Application from "./application";
 import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import config from "react-global-configuration";
+import { connect } from "react-redux";
 
-//const apiUrl = config.get("api.url");
-//console.log("config:", config.serialize());
+function mapStateToProps(state) {
+  return { currentUser: state.currentUser };
+}
 
 class Applications extends Component {
   state = {
@@ -15,12 +17,19 @@ class Applications extends Component {
   };
 
   async componentDidMount() {
-    const { data: applications } = await axios
-      .get(config.get("api.url") + "/Applications")
+    console.log(this.props.currentUser);
+    await axios
+      .get(config.get("api.url") + "/Applications", {
+        headers: { Authorization: "Bearer " + this.props.currentUser.token },
+      })
+      .then((response) => {
+        const applications = response.data;
+        console.log("applications", response.data);
+        this.setState({ applications });
+      })
       .catch((error) => {
         console.log(error.message);
       });
-    this.setState({ applications });
     //console.log(this.state);
   }
 
@@ -82,4 +91,4 @@ class Applications extends Component {
   }
 }
 
-export default Applications;
+export default connect(mapStateToProps)(Applications);

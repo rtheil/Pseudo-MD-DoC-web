@@ -9,6 +9,11 @@ import ButtonInput from "./buttonInput";
 import ApplicationView from "./applicationView";
 import Formatting from "../formatting";
 import config from "react-global-configuration";
+import { connect } from "react-redux";
+
+function mapStateToProps(state) {
+  return { currentUser: state.currentUser };
+}
 
 class Application extends Component {
   state = {
@@ -427,8 +432,17 @@ class Application extends Component {
     if (this.props.match.params.Id !== undefined) {
       const url =
         config.get("api.url") + "/Applications/" + this.props.match.params.Id;
-      const { data: application } = await axios.get(url);
-      this.setState({ application });
+      await axios
+        .get(url, {
+          headers: { Authorization: "Bearer " + this.props.currentUser.token },
+        })
+        .then((response) => {
+          const application = response.data;
+          this.setState({ application });
+        })
+        .catch((error) => {
+          //ERROR
+        });
       //console.log(this.props);
     }
   }
@@ -675,4 +689,4 @@ class Application extends Component {
   }
 }
 
-export default Application;
+export default connect(mapStateToProps)(Application);
