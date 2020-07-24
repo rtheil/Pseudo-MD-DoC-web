@@ -32,6 +32,16 @@ class NavBar extends Component {
                 Job Postings
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link nav-tiny-link" to="/login">
+                Login
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link nav-tiny-link" to="/logout">
+                Logout
+              </Link>
+            </li>
           </ul>
         </nav>
         <div className="nav-image-bar"></div>

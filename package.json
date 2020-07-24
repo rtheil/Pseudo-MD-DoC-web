@@ -12,6 +12,7 @@
     "bootstrap": "^4.5.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-global-configuration": "^1.4.0",
     "react-redux": "^7.2.0",

@@ -11,6 +11,7 @@ import { createStore } from "redux";
 import reducer from "./reducers/reducer";
 
 const store = createStore(reducer);
+//console.log("index.js store:", store.getState());
 
 //DEV CONFIG
 config.set({ api: { url: "https://localhost:5001/api" } }, { freeze: false });
@@ -21,10 +22,8 @@ config.set(
   { environment: "production" }
 );
 
-//UNCOMMENT DURING TESTING
-//config.setEnvironment("production");
-
-//console.log("API URL:", config.get("api.url"));
+//UNCOMMENT FOR PRODUCTION
+config.setEnvironment("production");
 
 ReactDOM.render(
   <React.StrictMode>

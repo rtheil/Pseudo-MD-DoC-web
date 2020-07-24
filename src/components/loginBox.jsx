@@ -4,14 +4,30 @@ import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Joi from "@hapi/joi";
 import Axios from "axios";
 import config from "react-global-configuration";
+import { connect } from "react-redux";
 
-class LoginBox extends Component {
-  state = {
-    loginInfo: {
-      emailAddress: "rtheil@codirt.com",
-      password: "r5Y@m6#Bj3XS7ttY",
+function mapStateToProps(state) {
+  return { currentUser: state.currentUser };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setUser: (userObj) => {
+      dispatch({ type: "SET_USER", payload: userObj });
     },
   };
+}
+
+class LoginBox extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginInfo: {
+        emailAddress: "rtheil@codirt.com",
+        password: "r5Y@m6#Bj3XS7ttY",
+      },
+    };
+  }
 
   loginSchema = Joi.object({
     emailAddress: Joi.string()
@@ -22,17 +38,12 @@ class LoginBox extends Component {
   });
 
   handleLoginSubmit = (e) => {
-    const { loginInfo } = this.state;
     e.preventDefault();
-    console.log("submit login clicked", loginInfo);
-
-    //CALL API AND SEND USER/PASS
-    const authInfo = this.authenticate();
-
-    console.log("auth info:", authInfo);
+    this.authenticate();
   };
 
   async authenticate() {
+    //const { cookies } = this.props;
     console.log("login details:", this.state.loginInfo);
     await Axios.post(
       config.get("api.url") + "/users/authenticate",
@@ -41,12 +52,18 @@ class LoginBox extends Component {
       .then((response) => {
         if (response.status === 200) {
           console.log("server response:", response);
-          //const { Id,token } = response.data;
-          //console.log("User token:", token);
+          const currentUser = response.data;
 
-          let currentUser = response.data;
+          //LOCAL STATE
           this.setState({ currentUser });
           console.log(this.state);
+
+          //REDUX STORE
+          this.props.setUser(this.state.currentUser);
+          console.log("authenticate props", this.props.currentUser);
+
+          //MOVE ON TO HOME PAGE (CHANGE TO PREVIOUS PAGE)
+          this.props.history.push("/");
         } else {
           console.log(
             "Authentication received response other than 200",
@@ -55,13 +72,17 @@ class LoginBox extends Component {
         }
       })
       .catch((error) => {
-        const { message } = error.response.data;
+        console.log(error.response);
+        //const { message } = error.response.data;
+        const message = "";
         if (message !== undefined) console.log("Error Message:", message);
         else {
           console.log("post error:", error.response.data.errors);
           console.log(error.response.data.errors.Password[0]); //"The Password field is required."
         }
+        return;
       });
+    //this.goAccount();
   }
 
   forgotSchema = Joi.object({
@@ -100,13 +121,17 @@ class LoginBox extends Component {
 
   handleChange = (e) => {
     const loginInfo = { ...this.state.loginInfo };
-    loginInfo[e.currentTarget.id] = e.currentTarget.value;
-    console.log("new state:", loginInfo);
+    if (e.currentTarget.type === "checkbox")
+      loginInfo[e.currentTarget.id] = e.currentTarget.checked;
+    else loginInfo[e.currentTarget.id] = e.currentTarget.value;
+    //console.log(e.currentTarget);
+    //console.log("new state:", loginInfo);
     this.setState({ loginInfo });
   };
 
   loginForm = () => {
     const { loginInfo } = this.state;
+    console.log("loginForm props.currentUser:", this.props.currentUser);
     return (
       <React.Fragment>
         <strong>Log in to your account</strong>
@@ -133,7 +158,7 @@ class LoginBox extends Component {
               <Link to="/login/forgot">Forgot my password</Link>
             </Form.Text>
           </Form.Group>
-          <Form.Group controlId="formBasicCheckbox">
+          <Form.Group controlId="saveInfo">
             <Form.Check
               type="checkbox"
               label="Save my login info"
@@ -224,25 +249,28 @@ class LoginBox extends Component {
   };
 
   render() {
+    const { history, match, currentUser, setUser } = this.props;
+    console.log("loginBox match:", match);
+    console.log("loginBox currentUser:", currentUser);
+    //console.log(this.props.history);
+    //LOG USER OUT
+    if (match.path === "/logout") {
+      setUser({});
+      history.push("/");
+    }
+    //IF USER LOGGED IN, GO ELSEWHERE
+    if (this.props.currentUser.token !== undefined) history.push("/");
     return (
-      <div className="d-flex justify-content-center">
-        <div
-          className="border border-secondary rounded d-flex justify-content-center container-fluid m-3"
-          style={{ width: 400 }}
-        >
-          <div className="container text-left pb-3">
-            <Router>
-              <Switch>
-                <Route path="/login/forgot" component={this.forgotForm} />
-                <Route path="/login/create" component={this.createForm} />
-                <Route path="/login" component={this.loginForm} />
-              </Switch>
-            </Router>
-          </div>
-        </div>
-      </div>
+      <Router>
+        <Switch>
+          <Route path="/login/forgot" component={this.forgotForm} />
+          <Route path="/login/create" component={this.createForm} />
+          <Route path="/login" component={this.loginForm} />
+        </Switch>
+      </Router>
     );
   }
 }
 
-export default LoginBox;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginBox);
+//export default LoginBox;

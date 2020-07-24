@@ -12,7 +12,7 @@ import NavBar from "./components/navBar";
 import Jobs from "./components/jobs";
 import AllFake from "./components/allFake";
 import Footer from "./components/footer";
-import LoginBox from "./components/loginBox";
+import LoginPage from "./components/loginPage";
 
 import { connect } from "react-redux";
 
@@ -32,9 +32,9 @@ class App extends Component {
   state = {};
 
   componentDidMount = () => {
-    const user = { name: "Ricky" };
+    //const user = { name: "Ricky" };
     //console.log(this.props);
-    this.props.setUser(user);
+    //this.props.setUser(user);
   };
 
   handleIncrement = () => {
@@ -48,7 +48,7 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.props.currentUser);
+    //console.log("App.js props:", this.props.currentUser);
     return (
       <div>
         <Router>
@@ -57,7 +57,8 @@ class App extends Component {
               <NavBar />
               <Switch>
                 <Route path="/fake" component={AllFake} />
-                <Route path="/login" component={LoginBox} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/logout" component={LoginPage} />
                 <Route path="/applications/new" component={Application} />
                 <Route path="/applications/:Id" component={Application} />
                 <Route path="/applications" component={Applications} />
@@ -76,3 +77,4 @@ class App extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+//export default App;
