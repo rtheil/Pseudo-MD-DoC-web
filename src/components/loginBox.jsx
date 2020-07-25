@@ -64,9 +64,12 @@ class LoginBox extends Component {
 
     //CALL USER SERVICE
     const currentUser = await login(this.state.loginInfo);
+    console.log("post-login props:", this.props);
 
     //UPDATE REDUX
     this.props.setUser(currentUser);
+
+    //this.props.history.goBack();
   };
 
   forgotSchema = Joi.object({

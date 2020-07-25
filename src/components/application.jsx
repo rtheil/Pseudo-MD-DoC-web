@@ -20,6 +20,7 @@ class Application extends Component {
     application: {},
     errors: {},
     newApplication: {
+      userId: this.props.currentUser.id,
       //INFO
       firstName: "Steve",
       middleInitial: "R",
@@ -378,6 +379,7 @@ class Application extends Component {
   };
 
   appSchema = Joi.object({
+    userId: Joi.number().greater(0),
     firstName: Joi.string().required().min(2),
     middleInitial: Joi.string().required().max(1),
     lastName: Joi.string().required().min(2),
@@ -442,6 +444,9 @@ class Application extends Component {
         })
         .catch((error) => {
           //ERROR
+          console.log("loadApplication error:", error.response);
+          // if (error.response.status === 401)
+          //   this.props.history.push("/login");
         });
       //console.log(this.props);
     }
@@ -615,6 +620,7 @@ class Application extends Component {
     const newApplication = { ...this.state.newApplication };
 
     let appItem = {
+      userId: newApplication.userId,
       firstName: newApplication.firstName,
       middleInitial: newApplication.middleInitial,
       lastName: newApplication.lastName,
@@ -659,24 +665,27 @@ class Application extends Component {
     console.log("VALIDATE SUCCESS", newApplication);
 
     await axios
-      .post(config.get("api.url") + "/Applications", newApplication)
+      .post(config.get("api.url") + "/Applications", newApplication, {
+        headers: { Authorization: "Bearer " + this.props.currentUser.token },
+      })
       .then((response) => {
         console.log("server response:", response);
         if (response.status === 201) {
           console.log("STATUS 201: ", response);
-          //const {id} = response.data;
           console.log("applicationId:", response.data.id);
-          //<Redirect to={"/applications/new/"+id}/>
           this.props.history.push("/applications/" + response.data.id);
         }
       })
       .catch((error) => {
         console.log("post error:", error.response.data.errors);
+        //this.props.history.push("/login");
       });
   };
 
   render() {
     //console.log(this.props.match.params);
+    if (this.props.currentUser.token === undefined)
+      this.props.history.push("/login");
     return (
       <div>
         {this.props.match.params.Id !== undefined ? (

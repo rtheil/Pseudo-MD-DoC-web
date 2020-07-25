@@ -28,7 +28,8 @@ class Applications extends Component {
         this.setState({ applications });
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log("cdm error:", error.message);
+        this.props.history.push("/login");
       });
     //console.log(this.state);
   }

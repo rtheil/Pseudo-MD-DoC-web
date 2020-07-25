@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Formatting from "../formatting";
+import LoadingMessage from "./loadingMessage";
 
 const ApplicationView = ({ application }) => {
-  console.log(application);
+  console.log("app top:", application);
   //const formatting = new Formatting();
+  if (application.id === undefined)
+    return <LoadingMessage message="Loading Application..." />;
   return (
     <div className="container">
       {" "}

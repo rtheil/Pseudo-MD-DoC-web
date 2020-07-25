@@ -46,6 +46,14 @@ code {
   height: 130px;
 }
 
+.my-account-link {
+  display: block;
+  padding: 1px;
+  font-size: 12px;
+  color: black;
+  font-weight: bold;
+}
+
 /*mdgov_crownLogo{
   background-image:
 }*/
@@ -90,4 +98,11 @@ code {
   padding-right: 15px;
   padding-left: 15px;
   font-size: 0.8em;
+}
+
+.link-unstyled,
+.link-unstyled:link,
+.link-unstyled:hover {
+  color: inherit;
+  text-decoration: inherit;
 }

@@ -6,6 +6,7 @@ class LoginPage extends Component {
   state = {};
   render() {
     //console.log("loginPage history", this.props.history);
+    const { history, match, location } = this.props;
     return (
       <div className="d-flex justify-content-center">
         <div
@@ -13,7 +14,7 @@ class LoginPage extends Component {
           style={{ width: 400 }}
         >
           <div className="container text-left pb-3">
-            <LoginBox history={this.props.history} match={this.props.match} />
+            <LoginBox history={history} match={match} location={location} />
           </div>
         </div>
       </div>
