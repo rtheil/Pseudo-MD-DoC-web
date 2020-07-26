@@ -7,6 +7,7 @@ import Joi from "@hapi/joi";
 import { connect } from "react-redux";
 import { login, register } from "../services/userService";
 import TextInput from "./textInput";
+import SubmitButton from "./submitButton";
 //import NavbarCollapse from "react-bootstrap/NavbarCollapse";
 
 function mapStateToProps(state) {
@@ -52,7 +53,7 @@ class LoginBox extends Component {
   }
 
   buttonLoading(loading) {
-    let loginButton = { ...this.state.loginButton };
+    let { loginButton } = this.state;
     loginButton.disabled = loading;
     loginButton.spinner = loading;
     if (loading) loginButton.text = " Loading...";
@@ -189,26 +190,8 @@ class LoginBox extends Component {
     //this.setState({ createInfo });
   };
 
-  loginButton = () => {
-    const { loginButton } = this.state;
-    return (
-      <Button variant="primary" type="submit" disabled={loginButton.disabled}>
-        {loginButton.spinner && (
-          <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            aria-hidden="true"
-          />
-        )}
-        {loginButton.text}
-      </Button>
-    );
-  };
-
   loginForm = () => {
-    const { loginInfo, loginError } = this.state;
+    const { loginInfo, loginError, loginButton } = this.state;
     console.log("loginForm props.currentUser:", this.props.currentUser);
     return (
       <React.Fragment>
@@ -238,7 +221,11 @@ class LoginBox extends Component {
               onChange={this.handleLoginChange}
             />
           </Form.Group>
-          <this.loginButton />
+          <SubmitButton
+            text={loginButton.text}
+            disabled={loginButton.disabled}
+            spinner={loginButton.spinner}
+          />
           <Form.Text>
             <Link to="/login/create">Create an account</Link> -{" "}
             <Link to="/login/forgot">Forgot my password</Link>
@@ -249,7 +236,7 @@ class LoginBox extends Component {
   };
 
   forgotForm = () => {
-    const { loginInfo } = this.state;
+    const { loginInfo, loginButton } = this.state;
     return (
       <React.Fragment>
         <strong>Forgot Password</strong>
@@ -263,14 +250,18 @@ class LoginBox extends Component {
             col="div"
             // error={loginError}
           />
-          <this.loginButton />
+          <SubmitButton
+            text={loginButton.text}
+            disabled={loginButton.disabled}
+            spinner={loginButton.spinner}
+          />
         </Form>
       </React.Fragment>
     );
   };
 
   createForm = () => {
-    const { createInfo, errors } = this.state;
+    const { createInfo, errors, loginButton } = this.state;
     return (
       <React.Fragment>
         <strong>Create Account</strong>
@@ -312,7 +303,11 @@ class LoginBox extends Component {
             col="div"
             error={errors.confirmPassword}
           />
-          <this.loginButton />
+          <SubmitButton
+            text={loginButton.text}
+            disabled={loginButton.disabled}
+            spinner={loginButton.spinner}
+          />
         </Form>
       </React.Fragment>
     );
