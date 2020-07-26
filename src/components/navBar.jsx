@@ -49,42 +49,72 @@ class NavBar extends Component {
             <div className="badge badge-dark container">Your Account</div>
             <br />
             <ul className="nav flex-column">
-              {this.props.currentUser.administrator && (
-                <React.Fragment>
-                  <li className="nav-item">
-                    <Link to="/applications" className="my-account-link">
-                      Job Applications
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/applications/new" className="my-account-link">
-                      New Application
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="my-account-link" to="/logout">
-                      Logout
-                    </Link>
-                  </li>
-                </React.Fragment>
-              )}
-              {this.props.currentUser.administrator === false && (
-                <div>I'm not special</div>
-              )}
-              {this.props.currentUser.token === undefined && (
-                <React.Fragment>
-                  <li className="nav-item">
-                    <Link to="/login" className="my-account-link">
-                      Log in
-                    </Link>
-                  </li>
-                  <li className="nav-item">
+              {
+                //ADMINISTRATORS
+                this.props.currentUser.administrator && (
+                  <React.Fragment>
+                    <li className="nav-item">
+                      <Link to="/applications" className="my-account-link">
+                        Job Applications
+                      </Link>
+                    </li>
+                    {/* <li className="nav-item">
+                      <Link to="/applications/new" className="my-account-link">
+                        New Application
+                      </Link>
+                    </li> */}
+                  </React.Fragment>
+                )
+              }
+              {
+                //NON-ADMINISTRATORS
+                this.props.currentUser.administrator === false && (
+                  <React.Fragment>
+                    <li className="nav-item">
+                      <Link className="my-account-link" to="/applications">
+                        My Applications
+                      </Link>
+                    </li>
+                  </React.Fragment>
+                )
+              }
+              {
+                //ALL LOGGED IN USERS
+                this.props.currentUser.token !== undefined && (
+                  <React.Fragment>
+                    <li className="nav-item">
+                      <Link className="my-account-link" to="/account">
+                        Account Details
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="my-account-link" to="/logout">
+                        Logout
+                      </Link>
+                    </li>
+                  </React.Fragment>
+                )
+              }
+              {
+                //LOGGED OUT USER
+                this.props.currentUser.token === undefined && (
+                  <React.Fragment>
+                    <span className="" style={{ fontSize: 12 }}>
+                      You are not logged in
+                    </span>
+                    <li className="nav-item">
+                      <Link to="/login" className="my-account-link">
+                        Log in
+                      </Link>
+                    </li>
+                    {/* <li className="nav-item">
                     <Link to="/login/create" className="my-account-link">
                       Register
                     </Link>
-                  </li>
-                </React.Fragment>
-              )}
+                  </li> */}
+                  </React.Fragment>
+                )
+              }
             </ul>
           </div>
           {/* )} */}

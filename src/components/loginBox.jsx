@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Joi from "@hapi/joi";
 //import Axios from "axios";
@@ -36,6 +36,7 @@ class LoginBox extends Component {
         password: "r5Y@m6#Bj3XS7ttY",
         confirmPassword: "r5Y@m6#Bj3XS7ttY",
       },
+      createForm: { formVisible: true, createMessage: "" },
       loginButton: { disabled: false, text: "Submit", spinner: false },
       loginError: "",
       errors: {},
@@ -116,7 +117,7 @@ class LoginBox extends Component {
       }
       //UPDATE REDUX
       else this.props.setUser(currentUser);
-    }, 1000);
+    }, 0);
   };
 
   forgotSchema = Joi.object({
@@ -165,7 +166,19 @@ class LoginBox extends Component {
     delete registerInfo.confirmPassword;
     const newUser = await register(registerInfo);
     console.log("Create user error:", newUser.error);
-    if (newUser.error === undefined) this.props.history.push("/login");
+    if (newUser.error === undefined) {
+      console.log("push to login page");
+      //this.props.history.push("/login");
+      let { createForm } = this.state;
+      createForm.formVisible = false;
+      createForm.message = "Account created successfully";
+      this.setState({ createForm });
+    } else {
+      //SHOW AN ERROR
+      let errors = { registerError: newUser.error.response.data.message };
+      this.setState({ errors });
+    }
+    this.buttonLoading(false);
   };
 
   handleLoginChange = (e) => {
@@ -261,54 +274,72 @@ class LoginBox extends Component {
   };
 
   createForm = () => {
-    const { createInfo, errors, loginButton } = this.state;
+    const { createInfo, errors, loginButton, createForm } = this.state;
     return (
       <React.Fragment>
-        <strong>Create Account</strong>
-        <Form onSubmit={this.handleCreateSubmit} className="mt-2">
-          <TextInput
-            type="text"
-            name="name"
-            label="Your Name"
-            onChange={this.handleCreateChange}
-            value={createInfo.name}
-            col="div"
-            error={errors.name}
-          />
-          <TextInput
-            type="email"
-            name="emailAddress"
-            label="Email Address"
-            onChange={this.handleCreateChange}
-            value={createInfo.emailAddress}
-            col="div"
-            error={errors.emailAddress}
-          />
-          <TextInput
-            type="password"
-            name="password"
-            label="Password"
-            text="Minimum 8 characters"
-            onChange={this.handleCreateChange}
-            value={createInfo.password}
-            col="div"
-            error={errors.password}
-          />
-          <TextInput
-            type="password"
-            name="confirmPassword"
-            label="Confirm Password"
-            onChange={this.handleCreateChange}
-            value={createInfo.confirmPassword}
-            col="div"
-            error={errors.confirmPassword}
-          />
-          <SubmitButton
-            text={loginButton.text}
-            disabled={loginButton.disabled}
-            spinner={loginButton.spinner}
-          />
-        </Form>
+        {!createForm.formVisible && (
+          <Alert variant="success" className="pt-0 pb-0 pr-0 pl-1 m-1">
+            <strong>{createForm.message}</strong>
+            <br />
+            <Link to="/login">Click here to log in</Link>
+          </Alert>
+        )}
+        {createForm.formVisible && (
+          <React.Fragment>
+            <strong>Create Account</strong>
+            <Form onSubmit={this.handleCreateSubmit} className="mt-2">
+              <TextInput
+                type="text"
+                name="name"
+                label="Your Name"
+                onChange={this.handleCreateChange}
+                value={createInfo.name}
+                col="div"
+                error={errors.name}
+              />
+              <TextInput
+                type="email"
+                name="emailAddress"
+                label="Email Address"
+                onChange={this.handleCreateChange}
+                value={createInfo.emailAddress}
+                col="div"
+                error={errors.emailAddress}
+              />
+              <TextInput
+                type="password"
+                name="password"
+                label="Password"
+                text="Minimum 8 characters"
+                onChange={this.handleCreateChange}
+                value={createInfo.password}
+                col="div"
+                error={errors.password}
+              />
+              <TextInput
+                type="password"
+                name="confirmPassword"
+                label="Confirm Password"
+                onChange={this.handleCreateChange}
+                value={createInfo.confirmPassword}
+                col="div"
+                error={errors.confirmPassword}
+              />
+              <SubmitButton
+                text={loginButton.text}
+                disabled={loginButton.disabled}
+                spinner={loginButton.spinner}
+              />
+              {errors.registerError && errors.registerError !== "" && (
+                <Alert variant="danger" className="pt-0 pb-0 pr-0 pl-1 mt-4">
+                  <strong>Could not create an account</strong>
+                  <br />
+                  {errors.registerError}
+                </Alert>
+              )}
+            </Form>
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
   };
