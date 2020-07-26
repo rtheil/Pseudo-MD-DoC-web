@@ -49,7 +49,7 @@ class NavBar extends Component {
             <div className="badge badge-dark container">Your Account</div>
             <br />
             <ul className="nav flex-column">
-              {this.props.currentUser.administrator === true ? (
+              {this.props.currentUser.administrator && (
                 <React.Fragment>
                   <li className="nav-item">
                     <Link to="/applications" className="my-account-link">
@@ -67,7 +67,11 @@ class NavBar extends Component {
                     </Link>
                   </li>
                 </React.Fragment>
-              ) : (
+              )}
+              {this.props.currentUser.administrator === false && (
+                <div>I'm not special</div>
+              )}
+              {this.props.currentUser.token === undefined && (
                 <React.Fragment>
                   <li className="nav-item">
                     <Link to="/login" className="my-account-link">

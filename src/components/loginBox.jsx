@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Joi from "@hapi/joi";
 //import Axios from "axios";
 //import config from "react-global-configuration";
 import { connect } from "react-redux";
-import { login } from "../services/userService";
+import { login, register } from "../services/userService";
+import TextInput from "./textInput";
+//import NavbarCollapse from "react-bootstrap/NavbarCollapse";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -27,6 +29,15 @@ class LoginBox extends Component {
         emailAddress: "rtheil@codirt.com",
         password: "r5Y@m6#Bj3XS7ttY",
       },
+      createInfo: {
+        name: "Test Name",
+        emailAddress: "test@test.com",
+        password: "r5Y@m6#Bj3XS7ttY",
+        confirmPassword: "r5Y@m6#Bj3XS7ttY",
+      },
+      loginButton: { disabled: false, text: "Submit", spinner: false },
+      loginError: "",
+      errors: {},
     };
     const { match } = this.props;
     //LOG USER OUT
@@ -39,6 +50,34 @@ class LoginBox extends Component {
   componentDidUpdate() {
     this.handleLogin();
   }
+
+  buttonLoading(loading) {
+    let loginButton = { ...this.state.loginButton };
+    loginButton.disabled = loading;
+    loginButton.spinner = loading;
+    if (loading) loginButton.text = " Loading...";
+    else loginButton.text = "Submit";
+    this.setState({ loginButton });
+  }
+
+  handleValidate = (schema, item) => {
+    //VALIDATE
+    const results = schema.validate(item, {
+      abortEarly: true,
+    });
+
+    //IF ERRORS, LOOP
+    const errors = {};
+    if (results.error)
+      for (let item of results.error.details) {
+        /*eslint no-useless-escape: "off"*/
+        //let pattern = /\"\w+\" /gm;
+        errors[item.path[0]] = item.message;
+        //console.log(item.path[0], item.message.replace(pattern, ""));
+      }
+
+    return errors;
+  };
 
   handleLogout() {
     const { history, setUser } = this.props;
@@ -62,14 +101,21 @@ class LoginBox extends Component {
   handleLoginSubmit = async (e) => {
     e.preventDefault();
 
-    //CALL USER SERVICE
-    const currentUser = await login(this.state.loginInfo);
-    console.log("post-login props:", this.props);
+    //CHANGE BUTTON
+    this.buttonLoading(true);
 
-    //UPDATE REDUX
-    this.props.setUser(currentUser);
-
-    //this.props.history.goBack();
+    //FAKE DELAY
+    setTimeout(async () => {
+      //CALL USER SERVICE
+      const currentUser = await login(this.state.loginInfo);
+      //console.log("post-login currentUser:", currentUser);
+      if (currentUser.token === undefined) {
+        this.setState({ loginError: "Incorrect Email or Password" });
+        this.buttonLoading(false);
+      }
+      //UPDATE REDUX
+      else this.props.setUser(currentUser);
+    }, 1000);
   };
 
   forgotSchema = Joi.object({
@@ -85,28 +131,43 @@ class LoginBox extends Component {
   };
 
   createSchema = Joi.object({
-    accountName: Joi.string().min(5).max(30).required(),
+    name: Joi.string().min(5).max(30).required().label("Your Name"),
     emailAddress: Joi.string()
       .email({ tlds: { allow: false } })
-      .required(),
+      .required()
+      .label("Email Address"),
     password: Joi.string()
       .min(8)
       .regex(/^(?=.*[A-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()])\S{8,}$/)
       .message(
         "Password must be at least 8 characters long, and have at least one uppercate letter, one lowercase letter, one number, and one special character."
-      ),
-    confirmPassword: Joi.string().min(8).required(),
+      )
+      .label("Password"),
+    confirmPassword: Joi.string().required().valid(Joi.ref("password")),
   });
 
-  handleCreateSubmit = (e) => {
-    const { loginInfo } = this.state;
+  handleCreateSubmit = async (e) => {
+    const { createInfo } = this.state;
     e.preventDefault();
-    console.log("submit create account clicked", this.state.loginInfo);
-    const results = this.createSchema.validate(loginInfo, { abortEarly: true });
-    console.log("Joi errors:", results.error.details);
+    console.log("submit create account clicked", this.state.createInfo);
+    //const results = this.createSchema.validate(createInfo, { abortEarly: true });
+    let errors = this.handleValidate(this.createSchema, createInfo);
+    if (errors.confirmPassword !== undefined)
+      errors.confirmPassword = "Passwords do not match";
+    console.log("Joi errors:", errors);
+    this.setState({ errors });
+
+    //IF ERRORS, STOP
+    if (Object.keys(errors).length > 0) return;
+    this.buttonLoading(true);
+    const registerInfo = { ...createInfo };
+    delete registerInfo.confirmPassword;
+    const newUser = await register(registerInfo);
+    console.log("Create user error:", newUser.error);
+    if (newUser.error === undefined) this.props.history.push("/login");
   };
 
-  handleChange = (e) => {
+  handleLoginChange = (e) => {
     const loginInfo = { ...this.state.loginInfo };
     if (e.currentTarget.type === "checkbox")
       loginInfo[e.currentTarget.id] = e.currentTarget.checked;
@@ -116,45 +177,72 @@ class LoginBox extends Component {
     this.setState({ loginInfo });
   };
 
+  handleCreateChange = (e) => {
+    const createInfo = { ...this.state.createInfo };
+    createInfo[e.currentTarget.id] = e.currentTarget.value;
+    this.setState({ createInfo });
+  };
+
+  handleForgotChange = (e) => {
+    //const createInfo = { ...this.state.createInfo };
+    //createInfo[e.currentTarget.id] = e.currentTarget.value;
+    //this.setState({ createInfo });
+  };
+
+  loginButton = () => {
+    const { loginButton } = this.state;
+    return (
+      <Button variant="primary" type="submit" disabled={loginButton.disabled}>
+        {loginButton.spinner && (
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+        )}
+        {loginButton.text}
+      </Button>
+    );
+  };
+
   loginForm = () => {
-    const { loginInfo } = this.state;
+    const { loginInfo, loginError } = this.state;
     console.log("loginForm props.currentUser:", this.props.currentUser);
     return (
       <React.Fragment>
         <strong>Log in to your account</strong>
         <Form onSubmit={this.handleLoginSubmit} className="mt-2">
-          <Form.Group controlId="emailAddress">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              onChange={this.handleChange}
-              value={loginInfo.emailAddress}
-            />
-          </Form.Group>
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              onChange={this.handleChange}
-              value={loginInfo.password}
-            />
-            <Form.Text>
-              <Link to="/login/create">Create an account</Link> -{" "}
-              <Link to="/login/forgot">Forgot my password</Link>
-            </Form.Text>
-          </Form.Group>
+          <TextInput
+            type="email"
+            name="emailAddress"
+            label="Email Address"
+            onChange={this.handleLoginChange}
+            value={loginInfo.emailAddress}
+            col="div"
+            error={loginError}
+          />
+          <TextInput
+            type="password"
+            name="password"
+            label="Password"
+            onChange={this.handleLoginChange}
+            value={loginInfo.password}
+            col="div"
+          />
           <Form.Group controlId="saveInfo">
             <Form.Check
               type="checkbox"
               label="Save my login info"
-              onChange={this.handleChange}
+              onChange={this.handleLoginChange}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
+          <this.loginButton />
+          <Form.Text>
+            <Link to="/login/create">Create an account</Link> -{" "}
+            <Link to="/login/forgot">Forgot my password</Link>
+          </Form.Text>
         </Form>
       </React.Fragment>
     );
@@ -166,70 +254,65 @@ class LoginBox extends Component {
       <React.Fragment>
         <strong>Forgot Password</strong>
         <Form onSubmit={this.handleForgotSubmit} className="mt-2">
-          <Form.Group controlId="emailAddress">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              onChange={this.handleChange}
-              value={loginInfo.emailAddress}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
+          <TextInput
+            type="email"
+            name="emailAddress"
+            label="Email Address"
+            onChange={this.handleForgotChange}
+            value={loginInfo.emailAddress}
+            col="div"
+            // error={loginError}
+          />
+          <this.loginButton />
         </Form>
       </React.Fragment>
     );
   };
 
   createForm = () => {
-    const { loginInfo } = this.state;
+    const { createInfo, errors } = this.state;
     return (
       <React.Fragment>
         <strong>Create Account</strong>
         <Form onSubmit={this.handleCreateSubmit} className="mt-2">
-          <Form.Group controlId="accountName">
-            <Form.Label>Your name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Your Name"
-              onChange={this.handleChange}
-              value={loginInfo.accountName}
-            />
-          </Form.Group>
-          <Form.Group controlId="emailAddress">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              onChange={this.handleChange}
-              value={loginInfo.emailAddress}
-            />
-          </Form.Group>
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              onChange={this.handleChange}
-              value={loginInfo.password}
-            />
-            <Form.Text>Minimum 8 characters</Form.Text>
-          </Form.Group>
-          <Form.Group controlId="confirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Confirm Password"
-              onChange={this.handleChange}
-              value={loginInfo.confirmPassword}
-            />
-          </Form.Group>
-
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
+          <TextInput
+            type="text"
+            name="name"
+            label="Your Name"
+            onChange={this.handleCreateChange}
+            value={createInfo.name}
+            col="div"
+            error={errors.name}
+          />
+          <TextInput
+            type="email"
+            name="emailAddress"
+            label="Email Address"
+            onChange={this.handleCreateChange}
+            value={createInfo.emailAddress}
+            col="div"
+            error={errors.emailAddress}
+          />
+          <TextInput
+            type="password"
+            name="password"
+            label="Password"
+            text="Minimum 8 characters"
+            onChange={this.handleCreateChange}
+            value={createInfo.password}
+            col="div"
+            error={errors.password}
+          />
+          <TextInput
+            type="password"
+            name="confirmPassword"
+            label="Confirm Password"
+            onChange={this.handleCreateChange}
+            value={createInfo.confirmPassword}
+            col="div"
+            error={errors.confirmPassword}
+          />
+          <this.loginButton />
         </Form>
       </React.Fragment>
     );
@@ -249,4 +332,3 @@ class LoginBox extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginBox);
-//export default LoginBox;

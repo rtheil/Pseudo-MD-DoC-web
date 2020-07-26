@@ -2,13 +2,27 @@ import React from "react";
 import { Form, Col, Alert } from "react-bootstrap";
 //import { Redirect } from "react-router-dom";
 
-const TextInput = ({ name, label, type, onChange, value, size, error }) => {
+const TextInput = ({
+  name,
+  label,
+  type,
+  onChange,
+  value,
+  size,
+  error,
+  col,
+  text,
+}) => {
   //console.log(name, error);
-  if (type === "") type = "text";
+
+  //DEFAULTS
+  if (type === undefined) type = "text";
+  if (col === undefined) col = Col;
+
+  //RETURN
   return (
-    <Form.Group as={Col} controlId={name} sm={size}>
+    <Form.Group as={col} controlId={name} sm={size}>
       <Form.Label size="sm">{label}</Form.Label>
-      {/* <span className="error-box">ERROR</span> */}
       <Form.Control
         placeholder={label}
         onChange={onChange}
@@ -21,6 +35,7 @@ const TextInput = ({ name, label, type, onChange, value, size, error }) => {
           {error}
         </Alert>
       )}
+      <Form.Text>{text}</Form.Text>
     </Form.Group>
   );
 };

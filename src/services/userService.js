@@ -38,8 +38,28 @@ export async function login(loginInfo) {
   return returnValue;
 }
 
-export function register() {
-  console.log("userService register");
+export async function register(createInfo) {
+  console.log("userService register", createInfo);
+  let returnValue;
+  await Axios.post(config.get("api.url") + "/users/register", createInfo)
+    .then((response) => {
+      if (response.status === 200) {
+        console.log("server response:", response);
+        console.log("response.data", response.data);
+        returnValue = {};
+      } else {
+        console.log(
+          "Authentication received response other than 200",
+          response
+        );
+        returnValue = { error: response };
+      }
+    })
+    .catch((error) => {
+      //ERROR
+      returnValue = { error: error };
+    });
+  return returnValue;
 }
 
 export function forgotPassword() {
