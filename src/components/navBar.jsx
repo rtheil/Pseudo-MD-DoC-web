@@ -107,11 +107,11 @@ class NavBar extends Component {
                         Log in
                       </Link>
                     </li>
-                    {/* <li className="nav-item">
-                    <Link to="/login/create" className="my-account-link">
-                      Register
-                    </Link>
-                  </li> */}
+                    <li className="nav-item">
+                      <Link to="/login/create" className="my-account-link">
+                        Register
+                      </Link>
+                    </li>
                   </React.Fragment>
                 )
               }
