@@ -1,27 +1,24 @@
 import React from "react";
-import { Form, Col, Alert } from "react-bootstrap";
-//import { Redirect } from "react-router-dom";
+import { Form, Col, Alert as div } from "react-bootstrap";
 
 const TextInput = ({
   name,
   label,
-  type,
+  type = "text",
   onChange,
   value,
   size,
   error,
-  col,
+  col = Col,
   text,
 }) => {
   //console.log(name, error);
-
-  //DEFAULTS
-  if (type === undefined) type = "text";
-  if (col === undefined) col = Col;
+  let className = "";
+  if (error) className = "form-error-field";
 
   //RETURN
   return (
-    <Form.Group as={col} controlId={name} sm={size}>
+    <Form.Group as={col} controlId={name} sm={size} controlId={name}>
       <Form.Label size="sm">{label}</Form.Label>
       <Form.Control
         placeholder={label}
@@ -29,12 +26,9 @@ const TextInput = ({
         value={value}
         size="sm"
         type={type}
+        className={className}
       />
-      {error && error !== "" && (
-        <Alert variant="danger" className="pt-0 pb-0 pr-0 pl-1 m-1">
-          {error}
-        </Alert>
-      )}
+      {error && error !== "" && <div className="form-error">{error}</div>}
       <Form.Text>{text}</Form.Text>
     </Form.Group>
   );

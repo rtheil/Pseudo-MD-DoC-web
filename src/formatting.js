@@ -38,6 +38,27 @@ class Formatting {
     }
     return cleaned;
   }
+
+  static formatJoiValidation(schema, item) {
+    //VALIDATE
+    const results = schema.validate(item, {
+      abortEarly: true,
+    });
+
+    //IF ERRORS, LOOP
+    const errors = {};
+    if (results.error)
+      for (let item of results.error.details) {
+        /*eslint no-useless-escape: "off"*/
+        // let pattern = /\"\w+\" /gm;
+        // let msg = item.message.replace(pattern, "");
+        // msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+        // msg = msg.replace("Is not allowed to", "Can't");
+        errors[item.path[0]] = item.message;
+      }
+
+    return errors;
+  }
 }
 
 export default Formatting;

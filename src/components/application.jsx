@@ -462,30 +462,6 @@ class Application extends Component {
     }
   }
 
-  handleValidate = (schema, item) => {
-    //VALIDATE
-    const results = schema.validate(item, {
-      abortEarly: true,
-    });
-
-    //IF ERRORS, LOOP
-    const errors = {};
-    if (results.error)
-      for (let item of results.error.details) {
-        /*eslint no-useless-escape: "off"*/
-        let pattern = /\"\w+\" /gm;
-        let msg = item.message.replace(pattern, "");
-        msg = msg.charAt(0).toUpperCase() + msg.slice(1);
-        msg = msg.replace("Is not allowed to", "Can't");
-        errors[item.path[0]] = msg;
-        //item.message.replace(/\"\w+\" /gm, "");
-
-        console.log(item.path[0], item.message.replace(pattern, ""));
-      }
-
-    return errors;
-  };
-
   handleAddEmployment = (e) => {
     let newApplication = { ...this.state.newApplication };
 
@@ -499,7 +475,10 @@ class Application extends Component {
     };
 
     //VALIDATE FIRST
-    const errors = this.handleValidate(this.employmentSchema, employerItem);
+    const errors = Formatting.formatJoiValidation(
+      this.employmentSchema,
+      employerItem
+    );
     console.log("employer add errors", errors);
     //console.log(errors.error.details);
 
@@ -538,7 +517,10 @@ class Application extends Component {
     };
 
     //VALIDATE FIRST
-    const errors = this.handleValidate(this.educationSchema, educationItem);
+    const errors = Formatting.formatJoiValidation(
+      this.educationSchema,
+      educationItem
+    );
     console.log("education add errors", errors);
     //console.log(errors.error.details);
 
@@ -574,7 +556,10 @@ class Application extends Component {
     };
 
     //VALIDATE FIRST
-    const errors = this.handleValidate(this.referenceSchema, referenceItem);
+    const errors = Formatting.formatJoiValidation(
+      this.referenceSchema,
+      referenceItem
+    );
     console.log("Reference add errors", errors);
     //console.log(errors.error.details);
 
@@ -642,7 +627,7 @@ class Application extends Component {
     };
 
     // //CHECK PERSONAL INFO
-    const errors = this.handleValidate(this.appSchema, appItem);
+    const errors = Formatting.formatJoiValidation(this.appSchema, appItem);
     console.log("validate errors", errors);
     this.setState({ errors });
     if (Object.keys(errors).length > 0) return;
