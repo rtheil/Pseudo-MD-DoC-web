@@ -106,3 +106,15 @@ code {
   color: inherit;
   text-decoration: inherit;
 }
+
+.form-error {
+  color: red;
+  font-weight: bold;
+  font-size: 0.7rem;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.form-error-field {
+  border-color: red !important;
+}

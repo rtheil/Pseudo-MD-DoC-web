@@ -108,7 +108,7 @@ class NavBar extends Component {
                       </Link>
                     </li>
                     <li className="nav-item">
-                      <Link to="/login/create" className="my-account-link">
+                      <Link to="/login/register" className="my-account-link">
                         Register
                       </Link>
                     </li>
