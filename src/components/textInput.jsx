@@ -18,7 +18,7 @@ const TextInput = ({
 
   //RETURN
   return (
-    <Form.Group as={col} controlId={name} sm={size} controlId={name}>
+    <Form.Group as={col} controlId={name} sm={size}>
       <Form.Label size="sm">{label}</Form.Label>
       <Form.Control
         placeholder={label}

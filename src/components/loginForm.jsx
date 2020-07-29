@@ -28,7 +28,6 @@ class LoginForm extends Component {
         password: "r5Y@m6#Bj3XS7ttY",
       },
       loginButton: { disabled: false, text: "Submit", spinner: false },
-      validated: false,
       errors: {},
     };
     const { match } = this.props;
@@ -64,7 +63,6 @@ class LoginForm extends Component {
   });
 
   handleLoginSubmit = async (e) => {
-    let { validated } = this.state;
     e.preventDefault();
 
     //CHANGE BUTTON
