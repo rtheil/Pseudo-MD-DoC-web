@@ -48,13 +48,15 @@ class ForgotForm extends Component {
 
   async componentDidMount() {
     const token = this.props.match.params.token;
-    console.log(token);
-    const isGood = await verifyForgotToken(token);
-    if (!isGood) {
-      let { errors, forgotForm } = this.state;
-      forgotForm.formVisible = false;
-      errors.forgotError = "Invalid Password Reset Token";
-      this.setState({ errors, forgotForm });
+    if (token !== undefined) {
+      console.log(token);
+      const isGood = await verifyForgotToken(token);
+      if (!isGood) {
+        let { errors, forgotForm } = this.state;
+        forgotForm.formVisible = false;
+        errors.forgotError = "Invalid Password Reset Token";
+        this.setState({ errors, forgotForm });
+      }
     }
   }
 
