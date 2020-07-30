@@ -172,7 +172,7 @@ class ForgotForm extends Component {
       //this.setState({ forgotInfo });
       return (
         <React.Fragment>
-          {!forgotForm.formVisible && forgotForm.successMessage != "" && (
+          {!forgotForm.formVisible && forgotForm.successMessage !== "" && (
             <Alert variant="success" className="mt-3">
               {forgotForm.successMessage}
             </Alert>
@@ -224,7 +224,7 @@ class ForgotForm extends Component {
     } else
       return (
         <React.Fragment>
-          {!forgotForm.formVisible && forgotForm.successMessage != "" && (
+          {!forgotForm.formVisible && forgotForm.successMessage !== "" && (
             <Alert variant="success" className="mt-3">
               {forgotForm.successMessage}
             </Alert>
