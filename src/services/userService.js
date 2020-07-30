@@ -69,11 +69,6 @@ export async function forgotPassword(forgotInfo) {
 
   const forgotObject = {
     emailAddress: forgotInfo.emailAddress,
-    fromEmail: "rtheil@codirt.com",
-    fromName: "md-doc-web",
-    subject: "Your Forgotten Password",
-    forgotUrl: window.location.href,
-    emailContent: "Here's a link to reset your password: [forgotUrl]",
   };
   console.log("forgotObject", forgotObject);
   await Axios.post(config.get("api.url") + "/users/forgot", forgotObject)
@@ -94,6 +89,21 @@ export async function forgotPassword(forgotInfo) {
       console.log("ERROR", error.response);
       //ERROR
       returnValue = { error: error };
+    });
+  return returnValue;
+}
+
+export async function verifyForgotToken(token) {
+  let returnValue = false;
+  console.log("verifyForgotToken");
+  await Axios.post(config.get("api.url") + "/users/verifytoken", {
+    token: token,
+  })
+    .then((response) => {
+      if (response.status === 200) returnValue = true;
+    })
+    .catch((error) => {
+      //return false;
     });
   return returnValue;
 }

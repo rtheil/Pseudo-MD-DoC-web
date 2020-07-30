@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import Joi from "@hapi/joi";
 import { Form, Alert } from "react-bootstrap";
-import { forgotPassword, resetPassword } from "../services/userService";
+import {
+  forgotPassword,
+  resetPassword,
+  verifyForgotToken,
+} from "../services/userService";
 import TextInput from "./textInput";
 import SubmitButton from "./submitButton";
 import Formatting from "../formatting";
@@ -41,6 +45,18 @@ class ForgotForm extends Component {
     loginButton: { disabled: false, text: "Submit", spinner: false },
     errors: {},
   };
+
+  async componentDidMount() {
+    const token = this.props.match.params.token;
+    console.log(token);
+    const isGood = await verifyForgotToken(token);
+    if (!isGood) {
+      let { errors, forgotForm } = this.state;
+      forgotForm.formVisible = false;
+      errors.forgotError = "Invalid Password Reset Token";
+      this.setState({ errors, forgotForm });
+    }
+  }
 
   buttonLoading(loading) {
     let { loginButton } = this.state;
@@ -138,7 +154,9 @@ class ForgotForm extends Component {
       if (forgotStatus.error.response === undefined)
         errors.forgotError =
           "Could not connect to server. Please try again later.";
-      else errors.forgotError = forgotStatus.error.response.data.message;
+      else {
+        errors.forgotError = "Unknown error";
+      }
       this.setState({ errors });
     }
     this.buttonLoading(false);
@@ -147,13 +165,14 @@ class ForgotForm extends Component {
   render() {
     const { loginButton, forgotInfo, errors, forgotForm } = this.state;
     const token = this.props.match.params.token;
+
     if (token !== undefined) {
       console.log("token:", token);
       forgotInfo.token = token;
       //this.setState({ forgotInfo });
       return (
         <React.Fragment>
-          {!forgotForm.formVisible && (
+          {!forgotForm.formVisible && forgotForm.successMessage != "" && (
             <Alert variant="success" className="mt-3">
               {forgotForm.successMessage}
             </Alert>
@@ -205,7 +224,7 @@ class ForgotForm extends Component {
     } else
       return (
         <React.Fragment>
-          {!forgotForm.formVisible && (
+          {!forgotForm.formVisible && forgotForm.successMessage != "" && (
             <Alert variant="success" className="mt-3">
               {forgotForm.successMessage}
             </Alert>
