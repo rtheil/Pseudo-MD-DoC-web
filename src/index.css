@@ -118,3 +118,35 @@ code {
 .form-error-field {
   border-color: red !important;
 }
+
+.loading-box {
+  position: relative;
+  /* min-width: 50px; */
+  width: 200px;
+}
+
+.loading-text {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.loading-border {
+  border: 2px solid red;
+  clip-path: inset(3px 100% 0px 3px);
+  animation: maskBorder 1.4s infinite;
+  font-size: 20px;
+  width: 100%;
+}
+
+@keyframes maskBorder {
+  0% {
+    clip-path: inset(3px 100% 0px 3px);
+  }
+  50% {
+    clip-path: inset(3px 3px 0px 3px);
+  }
+  100% {
+    clip-path: inset(3px 3px 0px 100%);
+  }
+}

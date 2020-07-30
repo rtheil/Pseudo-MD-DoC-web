@@ -1,15 +1,14 @@
 import React from "react";
-import { Spinner } from "react-bootstrap";
 
 const LoadingMessage = ({ message }) => {
   if (message === undefined) message = "Loading...";
   //let message = "Loading...";
   return (
-    <div className="d-flex justify-content-center m-3">
-      <Spinner animation="border" role="status">
-        <span className="sr-only">{message}</span>
-      </Spinner>
-      &nbsp;<h5>{message}</h5>
+    <div className="m-4 d-flex justify-content-center">
+      <aside className="loading-box">
+        <div className="pl-2 loading-text">Loading...</div>
+        <div className="loading-border">&nbsp;</div>
+      </aside>
     </div>
   );
 };
