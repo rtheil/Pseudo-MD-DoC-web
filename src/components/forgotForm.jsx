@@ -4,7 +4,7 @@ import { Form, Alert } from "react-bootstrap";
 import {
   forgotPassword,
   resetPassword,
-  verifyForgotToken,
+  verifyResetToken,
 } from "../services/userService";
 import TextInput from "./textInput";
 import SubmitButton from "./submitButton";
@@ -50,7 +50,7 @@ class ForgotForm extends Component {
     const token = this.props.match.params.token;
     if (token !== undefined) {
       console.log(token);
-      const isGood = await verifyForgotToken(token);
+      const isGood = await verifyResetToken(token);
       if (!isGood) {
         let { errors, forgotForm } = this.state;
         forgotForm.formVisible = false;

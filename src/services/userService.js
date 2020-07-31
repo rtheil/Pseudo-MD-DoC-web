@@ -93,10 +93,25 @@ export async function forgotPassword(forgotInfo) {
   return returnValue;
 }
 
-export async function verifyForgotToken(token) {
+export async function verifyResetToken(token) {
   let returnValue = false;
   console.log("verifyForgotToken");
-  await Axios.post(config.get("api.url") + "/users/verifytoken", {
+  await Axios.post(config.get("api.url") + "/users/verifyresettoken", {
+    token: token,
+  })
+    .then((response) => {
+      if (response.status === 200) returnValue = true;
+    })
+    .catch((error) => {
+      //return false;
+    });
+  return returnValue;
+}
+
+export async function verifyRegisterToken(token) {
+  let returnValue = false;
+  console.log("verifyRegisterToken");
+  await Axios.post(config.get("api.url") + "/users/verifyregistertoken", {
     token: token,
   })
     .then((response) => {

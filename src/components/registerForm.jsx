@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import Joi from "@hapi/joi";
-import { Link } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
-import { register } from "../services/userService";
+import { register, verifyRegisterToken } from "../services/userService";
 import TextInput from "./textInput";
 import SubmitButton from "./submitButton";
 import Formatting from "../formatting";
@@ -23,6 +22,22 @@ class RegisterForm extends Component {
     loginButton: { disabled: false, text: "Submit", spinner: false },
     errors: {},
   };
+
+  async componentDidMount() {
+    console.log("didMount:", this.props.match);
+    const { token } = this.props.match.params;
+    if (token !== undefined) {
+      const verified = await verifyRegisterToken(token);
+      //const verified = true; //fake it
+      if (verified) {
+        let { createForm } = this.state;
+        createForm.formVisible = false;
+        createForm.successMessage =
+          "Your account has been successfully verified. You may now proceed to the login page.";
+        this.setState({ createForm });
+      }
+    }
+  }
 
   createSchema = Joi.object({
     name: Joi.string().min(5).max(30).required().label("Your Name"),
@@ -62,7 +77,8 @@ class RegisterForm extends Component {
       //this.props.history.push("/login");
       let { createForm } = this.state;
       createForm.formVisible = false;
-      createForm.message = "Account created successfully";
+      createForm.successMessage =
+        "Account created successfully. Please check your email to verify your account.";
       this.setState({ createForm });
     } else {
       //SHOW AN ERROR
@@ -96,9 +112,9 @@ class RegisterForm extends Component {
       <React.Fragment>
         {!createForm.formVisible && (
           <Alert variant="success" className="m-1 mt-3">
-            <strong>{createForm.message}</strong>
-            <br />
-            <Link to="/login">Click here to log in</Link>
+            <strong>{createForm.successMessage}</strong>
+            {/* <br />
+            <Link to="/login">Click here to log in</Link> */}
           </Alert>
         )}
         {createForm.formVisible && (

@@ -19,6 +19,7 @@ class LoginPage extends Component {
             <Switch>
               <Route path="/login/forgot/:token" component={ForgotForm} />
               <Route path="/login/forgot" component={ForgotForm} />
+              <Route path="/login/register/:token" component={RegisterForm} />
               <Route path="/login/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />
               <Route path="/logout" component={LoginForm} />
