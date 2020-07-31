@@ -171,7 +171,14 @@ class Application extends Component {
               onChange={this.handleChange}
             />
           </Form.Row>
-          <div className="p-1 mt-2 app-section-bar">Employment History</div>
+          <div className="p-1 mt-2 app-section-bar">
+            Employment History
+            {errors.employment && (
+              <span className="ml-3 pl-1 pr-1 rounded form-head-error">
+                {errors.employment}
+              </span>
+            )}
+          </div>
           <Form.Row>
             <ButtonInput
               name="addEmployment"
@@ -240,15 +247,22 @@ class Application extends Component {
                       </Button>
                     </div>
                     <div className="col">{item.employerName}</div>
-                    <div className="col">{item.startDate}</div>
-                    <div className="col">{item.endDate}</div>
-                    <div className="col">{item.phone}</div>
-                    <div className="col">{item.position}</div>
+                    <div className="col">{item.employerStartDate}</div>
+                    <div className="col">{item.employerEndDate}</div>
+                    <div className="col">{item.employerPhoneNumber}</div>
+                    <div className="col">{item.employerJobTitle}</div>
                   </div>
                 );
               })}
           </div>
-          <div className="p-1 mt-2 app-section-bar">Education</div>
+          <div className="p-1 mt-2 app-section-bar">
+            Education
+            {errors.education && (
+              <span className="ml-3 pl-1 pr-1 rounded form-head-error">
+                {errors.education}
+              </span>
+            )}
+          </div>
           <Form.Row>
             <ButtonInput
               name="addEducation"
@@ -304,15 +318,22 @@ class Application extends Component {
                         </Button>
                       </div>
                       <div className="col">{item.schoolName}</div>
-                      <div className="col">{item.startDate}</div>
-                      <div className="col">{item.endDate}</div>
-                      <div className="col">{item.degree}</div>
+                      <div className="col">{item.schoolStartDate}</div>
+                      <div className="col">{item.schoolEndDate}</div>
+                      <div className="col">{item.schoolDegree}</div>
                     </div>
                   );
                 })}
             </div>
           </Form.Row>
-          <div className="p-1 mt-2 app-section-bar">References</div>
+          <div className="p-1 mt-2 app-section-bar">
+            References
+            {errors.references && (
+              <span className="ml-3 pl-1 pr-1 rounded form-head-error">
+                {errors.references}
+              </span>
+            )}
+          </div>
           <Form.Row>
             <ButtonInput
               name="addReference"
@@ -361,9 +382,9 @@ class Application extends Component {
                           &nbsp;-&nbsp;
                         </Button>
                       </div>
-                      <div className="col">{item.name}</div>
-                      <div className="col">{item.phoneNumber}</div>
-                      <div className="col">{item.relation}</div>
+                      <div className="col">{item.referenceName}</div>
+                      <div className="col">{item.referencePhoneNumber}</div>
+                      <div className="col">{item.referenceRelation}</div>
                     </div>
                   );
                 })}
@@ -380,13 +401,13 @@ class Application extends Component {
 
   appSchema = Joi.object({
     userId: Joi.number().greater(0),
-    firstName: Joi.string().required().min(2),
-    middleInitial: Joi.string().required().max(1),
-    lastName: Joi.string().required().min(2),
-    address: Joi.string().required().min(5),
-    city: Joi.string().required().min(2),
-    state: Joi.string().required().min(2).max(2),
-    zipCode: Joi.string().required().min(5).max(5),
+    firstName: Joi.string().required().min(2).label("First Name"),
+    middleInitial: Joi.string().required().max(1).label("MI"),
+    lastName: Joi.string().required().min(2).label("Last Name"),
+    address: Joi.string().required().min(5).label("Address"),
+    city: Joi.string().required().min(2).label("City"),
+    state: Joi.string().required().min(2).max(2).label("State"),
+    zipCode: Joi.string().required().min(5).max(5).label("Zip Code"),
     homePhone: Joi.string()
       .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
       .message("Invalid Phone Number"),
@@ -399,34 +420,34 @@ class Application extends Component {
     isUsCitizen: Joi.boolean(),
     hasFelony: Joi.boolean(),
     willDrugTest: Joi.boolean(),
-    employment: Joi.array().min(1).required(),
-    education: Joi.array().min(1).required(),
-    references: Joi.array().min(1).required(),
+    employment: Joi.array().min(1).required().label("Employment History"),
+    education: Joi.array().min(1).required().label("Education"),
+    references: Joi.array().min(1).required().label("References"),
   });
 
   employmentSchema = Joi.object({
-    employerName: Joi.string().required().min(3),
-    startDate: Joi.date().required(),
-    endDate: Joi.date().required(),
-    phone: Joi.string()
+    employerName: Joi.string().required().min(3).label("Employer Name"),
+    employerStartDate: Joi.date().required().label("Start Date"),
+    employerEndDate: Joi.date().required().label("End Date"),
+    employerPhoneNumber: Joi.string()
       .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
       .message("Invalid Phone Number"),
-    position: Joi.string().required().min(5),
+    employerJobTitle: Joi.string().required().min(5).label("Job Title"),
   });
 
   educationSchema = Joi.object({
-    schoolName: Joi.string().required().min(3),
-    startDate: Joi.date().required(),
-    endDate: Joi.date().required(),
-    degree: Joi.string().required().min(3),
+    schoolName: Joi.string().required().min(3).label("School Name"),
+    schoolStartDate: Joi.date().required().label("Start Date"),
+    schoolEndDate: Joi.date().required().label("End Date"),
+    schoolDegree: Joi.string().required().min(3).label("Degree"),
   });
 
   referenceSchema = Joi.object({
-    name: Joi.string().required().min(3),
-    phoneNumber: Joi.string()
+    referenceName: Joi.string().required().min(3).label("Name"),
+    referencePhoneNumber: Joi.string()
       .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
       .message("Invalid Phone Number"),
-    relation: Joi.string().required().min(3),
+    referenceRelation: Joi.string().required().min(3).label("Relation"),
   });
 
   async loadApplication() {
@@ -468,10 +489,10 @@ class Application extends Component {
     //SET UP EMPLOYMENT OBJECT
     let employerItem = {
       employerName: newApplication.employerName,
-      startDate: newApplication.employerStartDate,
-      endDate: newApplication.employerEndDate,
-      phone: newApplication.employerPhoneNumber,
-      position: newApplication.employerJobTitle,
+      employerStartDate: newApplication.employerStartDate,
+      employerEndDate: newApplication.employerEndDate,
+      employerPhoneNumber: newApplication.employerPhoneNumber,
+      employerJobTitle: newApplication.employerJobTitle,
     };
 
     //VALIDATE FIRST
@@ -511,9 +532,9 @@ class Application extends Component {
     //LOCAL EDUCATION ITEM
     let educationItem = {
       schoolName: newApplication.schoolName,
-      startDate: newApplication.schoolStartDate,
-      endDate: newApplication.schoolEndDate,
-      degree: newApplication.schoolDegree,
+      schoolStartDate: newApplication.schoolStartDate,
+      schoolEndDate: newApplication.schoolEndDate,
+      schoolDegree: newApplication.schoolDegree,
     };
 
     //VALIDATE FIRST
@@ -527,6 +548,7 @@ class Application extends Component {
     //ADD TO LOCAL ARRAY
     if (Object.keys(errors).length === 0)
       newApplication.education.push(educationItem);
+
     //REMOVE FROM STATE (UNCOMMENT FOR PRODUCTION)
     // newApplication.schoolName = "";
     // newApplication.schoolStartDate = "";
@@ -550,9 +572,9 @@ class Application extends Component {
 
     //LOCAL REFERENCE ITEM
     let referenceItem = {
-      name: newApplication.referenceName,
-      phoneNumber: newApplication.referencePhoneNumber,
-      relation: newApplication.referenceRelation,
+      referenceName: newApplication.referenceName,
+      referencePhoneNumber: newApplication.referencePhoneNumber,
+      referenceRelation: newApplication.referenceRelation,
     };
 
     //VALIDATE FIRST
@@ -566,6 +588,7 @@ class Application extends Component {
     //ADD TO LOCAL ARRAY
     if (Object.keys(errors).length === 0)
       newApplication.references.push(referenceItem);
+
     //REMOVE FROM STATE (UNCOMMENT FOR PRODUCTION)
     // newApplication.referenceName = "";
     // newApplication.referencePhoneNumber = "";

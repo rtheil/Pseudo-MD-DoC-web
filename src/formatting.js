@@ -49,12 +49,10 @@ class Formatting {
     const errors = {};
     if (results.error)
       for (let item of results.error.details) {
+        let msg = item.message;
         /*eslint no-useless-escape: "off"*/
-        // let pattern = /\"\w+\" /gm;
-        // let msg = item.message.replace(pattern, "");
-        // msg = msg.charAt(0).toUpperCase() + msg.slice(1);
-        // msg = msg.replace("Is not allowed to", "Can't");
-        errors[item.path[0]] = item.message;
+        msg = msg.replace(/\"/gm, "");
+        errors[item.path[0]] = msg;
       }
 
     return errors;

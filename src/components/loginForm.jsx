@@ -24,7 +24,7 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       loginInfo: {
-        emailAddress: "rtheil@codirt.co",
+        emailAddress: "rtheil@codirt.com",
         password: "r5Y@m6#Bj3XS7ttY",
       },
       loginButton: { disabled: false, text: "Submit", spinner: false },

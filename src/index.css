@@ -107,6 +107,11 @@ code {
   text-decoration: inherit;
 }
 
+.form-head-error {
+  color: white;
+  background-color: red;
+}
+
 .form-error {
   color: red;
   font-weight: bold;
