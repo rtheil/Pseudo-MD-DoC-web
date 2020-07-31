@@ -13,10 +13,10 @@ const passwordError =
 class RegisterForm extends Component {
   state = {
     createInfo: {
-      name: "Test Name",
-      emailAddress: "test@test.com",
-      password: "r5Y@m6#Bj3XS7ttY",
-      confirmPassword: "r5Y@m6#Bj3XS7ttY",
+      name: "",
+      emailAddress: "",
+      password: "",
+      confirmPassword: "",
     },
     createForm: { formVisible: true, successMessage: "" },
     loginButton: { disabled: false, text: "Submit", spinner: false },
@@ -24,6 +24,14 @@ class RegisterForm extends Component {
   };
 
   async componentDidMount() {
+    //set helpvul development values to state
+    const { createInfo } = this.state;
+    createInfo.name = "Test Name";
+    createInfo.emailAddress = "test@test.com";
+    createInfo.password = "r5Y@m6#Bj3XS7ttY";
+    createInfo.confirmPassword = "r5Y@m6#Bj3XS7ttY";
+    //this.setState({ createInfo });
+
     console.log("didMount:", this.props.match);
     const { token } = this.props.match.params;
     if (token !== undefined) {
