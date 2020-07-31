@@ -134,7 +134,7 @@ class Home extends Component {
             </div>
             <div className="" style={{ fontSize: 16 }}>
               <img
-                src="https://picsum.photos/id/1044/150"
+                src="/images/rivers.jpg"
                 alt=""
                 className="float-left mr-3 mb-2"
               />
@@ -146,7 +146,7 @@ class Home extends Component {
             </div>
             <div className="" style={{ fontSize: 16 }}>
               <img
-                src="https://picsum.photos/id/1043/150"
+                src="/images/trees.jpg"
                 alt=""
                 className="float-left mr-3 mb-2"
               />
@@ -158,7 +158,7 @@ class Home extends Component {
             </div>
             <div className="" style={{ fontSize: 16 }}>
               <img
-                src="https://picsum.photos/id/1069/150"
+                src="/images/jellyfish.jpg"
                 alt=""
                 className="float-left mr-3 mb-2"
               />
