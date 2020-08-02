@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
-//import { Link } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
-import TextInput from "./textInput";
-import YesNoSelect from "./yesNoSelect";
 import Joi from "@hapi/joi";
-import ButtonInput from "./buttonInput";
 import ApplicationView from "./applicationView";
 import Formatting from "../formatting";
 import config from "react-global-configuration";
 import { connect } from "react-redux";
+import ApplicationForm from "./applicationForm";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -60,344 +56,35 @@ class Application extends Component {
     },
   };
 
-  NewApplication = () => {
-    const { newApplication, errors } = this.state;
-    console.log("error:", errors.error);
-    console.log("state", this.state);
-    return (
-      <div className="container-lg mb-5">
-        <Form onSubmit={this.handleSubmit}>
-          <div className="p-1 mt-2 app-section-bar">Personal Information</div>
-          <Form.Row>
-            <TextInput
-              name="firstName"
-              onChange={this.handleChange}
-              label="First Name"
-              value={newApplication.firstName}
-              error={errors.firstName}
-            />
-            <TextInput
-              name="middleInitial"
-              onChange={this.handleChange}
-              label="MI"
-              value={newApplication.middleInitial}
-              error={errors.middleInitial}
-              size="1"
-            />
-            <TextInput
-              name="lastName"
-              onChange={this.handleChange}
-              label="Last Name"
-              value={newApplication.lastName}
-              error={errors.lastName}
-            />
-          </Form.Row>
-          <Form.Row>
-            <TextInput
-              name="address"
-              onChange={this.handleChange}
-              label="Street Address"
-              value={newApplication.address}
-              error={errors.address}
-            />
-            <TextInput
-              name="city"
-              onChange={this.handleChange}
-              label="City"
-              size="2"
-              value={newApplication.city}
-              error={errors.city}
-            />
-            <TextInput
-              name="state"
-              onChange={this.handleChange}
-              label="State"
-              value={newApplication.state}
-              error={errors.state}
-              size="1"
-            />
-            <TextInput
-              name="zipCode"
-              onChange={this.handleChange}
-              label="Zip"
-              size="1"
-              value={newApplication.zipCode}
-              error={errors.zipCode}
-            />
-          </Form.Row>
-          <Form.Row>
-            <TextInput
-              name="homePhone"
-              onChange={this.handleChange}
-              label="Home Phone"
-              value={newApplication.homePhone}
-              error={errors.homePhone}
-              size="5"
-            />
-            <TextInput
-              name="cellPhone"
-              onChange={this.handleChange}
-              label="Cell Phone"
-              value={newApplication.cellPhone}
-              error={errors.cellPhone}
-              size="5"
-            />
-          </Form.Row>
-          <Form.Row>
-            <TextInput
-              name="socialSecurityNumber"
-              onChange={this.handleChange}
-              label="SSN"
-              value={newApplication.socialSecurityNumber}
-              error={errors.socialSecurityNumber}
-              size="2"
-            />
-            <YesNoSelect
-              name="isUsCitizen"
-              label="US Citizen?"
-              value={newApplication.isUsCitizen}
-              onChange={this.handleChange}
-            />
-            <YesNoSelect
-              name="hasFelony"
-              label="Felony Conviction"
-              value={newApplication.hasFelony}
-              onChange={this.handleChange}
-            />
-            <YesNoSelect
-              name="willDrugTest"
-              label="Drug Test?"
-              value={newApplication.willDrugTest}
-              onChange={this.handleChange}
-            />
-          </Form.Row>
-          <div className="p-1 mt-2 app-section-bar">
-            Employment History
-            {errors.employment && (
-              <span className="ml-3 pl-1 pr-1 rounded form-head-error">
-                {errors.employment}
-              </span>
-            )}
-          </div>
-          <Form.Row>
-            <ButtonInput
-              name="addEmployment"
-              text="&nbsp;+&nbsp;"
-              label="&nbsp;"
-              variant="success"
-              size="auto"
-              onClick={this.handleAddEmployment}
-            />
-            <TextInput
-              onChange={this.handleChange}
-              label="Employer Name"
-              name="employerName"
-              value={newApplication.employerName}
-              size="3"
-              error={errors.employerName}
-            />
-            <TextInput
-              onChange={this.handleChange}
-              label="Start Date"
-              name="employerStartDate"
-              type="date"
-              value={newApplication.employerStartDate}
-              size="2"
-              error={errors.employerStartDate}
-            />
-            <TextInput
-              onChange={this.handleChange}
-              label="End Date"
-              name="employerEndDate"
-              type="date"
-              value={newApplication.employerEndDate}
-              size="2"
-              error={errors.employerEndDate}
-            />
-            <TextInput
-              onChange={this.handleChange}
-              label="Phone Number"
-              name="employerPhoneNumber"
-              value={newApplication.employerPhoneNumber}
-              size="2"
-              error={errors.employerPhoneNumber}
-            />
-            <TextInput
-              onChange={this.handleChange}
-              label="Job Title"
-              name="employerJobTitle"
-              value={newApplication.employerJobTitle}
-              size="2"
-              error={errors.employerJobTitle}
-            />
-          </Form.Row>
-          <div className="container-lg">
-            {this.state.newApplication.employment !== undefined &&
-              this.state.newApplication.employment.map((item, i) => {
-                return (
-                  <div key={item.employerName + i} className="row mb-1">
-                    <div className="ml-1 pl-1">
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={this.handleRemoveEmployment}
-                        idx={i}
-                      >
-                        &nbsp;-&nbsp;
-                      </Button>
-                    </div>
-                    <div className="col">{item.employerName}</div>
-                    <div className="col">{item.employerStartDate}</div>
-                    <div className="col">{item.employerEndDate}</div>
-                    <div className="col">{item.employerPhoneNumber}</div>
-                    <div className="col">{item.employerJobTitle}</div>
-                  </div>
-                );
-              })}
-          </div>
-          <div className="p-1 mt-2 app-section-bar">
-            Education
-            {errors.education && (
-              <span className="ml-3 pl-1 pr-1 rounded form-head-error">
-                {errors.education}
-              </span>
-            )}
-          </div>
-          <Form.Row>
-            <ButtonInput
-              name="addEducation"
-              text="&nbsp;+&nbsp;"
-              label="&nbsp;"
-              variant="success"
-              size="auto"
-              onClick={this.handleAddEducation}
-            />
-            <TextInput
-              name="schoolName"
-              onChange={this.handleChange}
-              label="School Name"
-              value={newApplication.schoolName}
-              error={errors.schoolName}
-            />
-            <TextInput
-              name="schoolStartDate"
-              onChange={this.handleChange}
-              label="Start Date"
-              type="date"
-              value={newApplication.schoolStartDate}
-              error={errors.schoolStartDate}
-            />
-            <TextInput
-              name="schoolEndDate"
-              onChange={this.handleChange}
-              label="End Date"
-              type="date"
-              value={newApplication.schoolEndDate}
-              error={errors.schoolEndDate}
-            />
-            <TextInput
-              name="schoolDegree"
-              onChange={this.handleChange}
-              label="Degree"
-              value={newApplication.schoolDegree}
-              error={errors.schoolDegree}
-            />
-            <div className="container-lg">
-              {this.state.newApplication.education !== undefined &&
-                this.state.newApplication.education.map((item, i) => {
-                  return (
-                    <div key={item.schoolName + i} className="row mb-1">
-                      <div className="ml-1 pl-1">
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          onClick={this.handleRemoveEducation}
-                          idx={i}
-                        >
-                          &nbsp;-&nbsp;
-                        </Button>
-                      </div>
-                      <div className="col">{item.schoolName}</div>
-                      <div className="col">{item.schoolStartDate}</div>
-                      <div className="col">{item.schoolEndDate}</div>
-                      <div className="col">{item.schoolDegree}</div>
-                    </div>
-                  );
-                })}
-            </div>
-          </Form.Row>
-          <div className="p-1 mt-2 app-section-bar">
-            References
-            {errors.references && (
-              <span className="ml-3 pl-1 pr-1 rounded form-head-error">
-                {errors.references}
-              </span>
-            )}
-          </div>
-          <Form.Row>
-            <ButtonInput
-              name="addReference"
-              text="&nbsp;+&nbsp;"
-              label="&nbsp;"
-              variant="success"
-              size="auto"
-              onClick={this.handleAddReference}
-            />
-            <TextInput
-              name="referenceName"
-              onChange={this.handleChange}
-              label="Name"
-              value={newApplication.referenceName}
-              error={errors.referenceName}
-            />
-            <TextInput
-              name="referencePhoneNumber"
-              onChange={this.handleChange}
-              label="Phone Number"
-              value={newApplication.referencePhoneNumber}
-              error={errors.referencePhoneNumber}
-            />
-            <TextInput
-              name="referenceRelation"
-              onChange={this.handleChange}
-              label="Relation"
-              value={newApplication.referenceRelation}
-              error={errors.referenceRelation}
-            />
-            <div className="container-lg">
-              {this.state.newApplication.references !== undefined &&
-                this.state.newApplication.references.map((item, i) => {
-                  return (
-                    <div
-                      key={item.referenceName + "_" + i}
-                      className="row mb-1"
-                    >
-                      <div className="ml-1 pl-1">
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          onClick={this.handleRemoveReference}
-                          idx={i}
-                        >
-                          &nbsp;-&nbsp;
-                        </Button>
-                      </div>
-                      <div className="col">{item.referenceName}</div>
-                      <div className="col">{item.referencePhoneNumber}</div>
-                      <div className="col">{item.referenceRelation}</div>
-                    </div>
-                  );
-                })}
-            </div>
-          </Form.Row>
-          <div className="p-1 mt-2 mb-2 app-section-bar">Review and Submit</div>
-          <Button variant="success" type="submit">
-            Submit Application
-          </Button>
-        </Form>
-      </div>
-    );
-  };
+  componentDidMount() {
+    this.loadApplication();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.location !== prevProps.location) {
+      this.loadApplication();
+    }
+  }
+
+  async loadApplication() {
+    console.log(this.props.match.params.Id);
+    if (this.props.match.params.Id !== undefined) {
+      const url =
+        config.get("api.url") + "/Applications/" + this.props.match.params.Id;
+      await axios
+        .get(url, {
+          headers: { Authorization: "Bearer " + this.props.currentUser.token },
+        })
+        .then((response) => {
+          const application = response.data;
+          this.setState({ application });
+        })
+        .catch((error) => {
+          //ERROR
+          console.log("loadApplication error:", error.response);
+        });
+    }
+  }
 
   appSchema = Joi.object({
     userId: Joi.number().greater(0),
@@ -427,61 +114,28 @@ class Application extends Component {
 
   employmentSchema = Joi.object({
     employerName: Joi.string().required().min(3).label("Employer Name"),
-    employerStartDate: Joi.date().required().label("Start Date"),
-    employerEndDate: Joi.date().required().label("End Date"),
-    employerPhoneNumber: Joi.string()
+    startDate: Joi.date().required().label("Start Date"),
+    endDate: Joi.date().required().label("End Date"),
+    phone: Joi.string()
       .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
       .message("Invalid Phone Number"),
-    employerJobTitle: Joi.string().required().min(5).label("Job Title"),
+    position: Joi.string().required().min(5).label("Job Title"),
   });
 
   educationSchema = Joi.object({
     schoolName: Joi.string().required().min(3).label("School Name"),
-    schoolStartDate: Joi.date().required().label("Start Date"),
-    schoolEndDate: Joi.date().required().label("End Date"),
-    schoolDegree: Joi.string().required().min(3).label("Degree"),
+    startDate: Joi.date().required().label("Start Date"),
+    endDate: Joi.date().required().label("End Date"),
+    degree: Joi.string().required().min(3).label("Degree"),
   });
 
   referenceSchema = Joi.object({
-    referenceName: Joi.string().required().min(3).label("Name"),
-    referencePhoneNumber: Joi.string()
+    name: Joi.string().required().min(3).label("Name"),
+    phoneNumber: Joi.string()
       .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
       .message("Invalid Phone Number"),
-    referenceRelation: Joi.string().required().min(3).label("Relation"),
+    relation: Joi.string().required().min(3).label("Relation"),
   });
-
-  async loadApplication() {
-    console.log(this.props.match.params.Id);
-    if (this.props.match.params.Id !== undefined) {
-      const url =
-        config.get("api.url") + "/Applications/" + this.props.match.params.Id;
-      await axios
-        .get(url, {
-          headers: { Authorization: "Bearer " + this.props.currentUser.token },
-        })
-        .then((response) => {
-          const application = response.data;
-          this.setState({ application });
-        })
-        .catch((error) => {
-          //ERROR
-          console.log("loadApplication error:", error.response);
-          // if (error.response.status === 401)
-          //   this.props.history.push("/login");
-        });
-      //console.log(this.props);
-    }
-  }
-
-  componentDidMount() {
-    this.loadApplication();
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.location !== prevProps.location) {
-      this.loadApplication();
-    }
-  }
 
   handleAddEmployment = (e) => {
     let newApplication = { ...this.state.newApplication };
@@ -489,10 +143,10 @@ class Application extends Component {
     //SET UP EMPLOYMENT OBJECT
     let employerItem = {
       employerName: newApplication.employerName,
-      employerStartDate: newApplication.employerStartDate,
-      employerEndDate: newApplication.employerEndDate,
-      employerPhoneNumber: newApplication.employerPhoneNumber,
-      employerJobTitle: newApplication.employerJobTitle,
+      startDate: newApplication.employerStartDate,
+      endDate: newApplication.employerEndDate,
+      phone: newApplication.employerPhoneNumber,
+      position: newApplication.employerJobTitle,
     };
 
     //VALIDATE FIRST
@@ -532,9 +186,9 @@ class Application extends Component {
     //LOCAL EDUCATION ITEM
     let educationItem = {
       schoolName: newApplication.schoolName,
-      schoolStartDate: newApplication.schoolStartDate,
-      schoolEndDate: newApplication.schoolEndDate,
-      schoolDegree: newApplication.schoolDegree,
+      startDate: newApplication.schoolStartDate,
+      endDate: newApplication.schoolEndDate,
+      degree: newApplication.schoolDegree,
     };
 
     //VALIDATE FIRST
@@ -572,9 +226,9 @@ class Application extends Component {
 
     //LOCAL REFERENCE ITEM
     let referenceItem = {
-      referenceName: newApplication.referenceName,
-      referencePhoneNumber: newApplication.referencePhoneNumber,
-      referenceRelation: newApplication.referenceRelation,
+      name: newApplication.referenceName,
+      phoneNumber: newApplication.referencePhoneNumber,
+      relation: newApplication.referenceRelation,
     };
 
     //VALIDATE FIRST
@@ -699,7 +353,18 @@ class Application extends Component {
         {this.props.match.params.Id !== undefined ? (
           <ApplicationView application={this.state.application} />
         ) : (
-          <this.NewApplication />
+          <ApplicationForm
+            state={this.state}
+            handleSubmit={this.handleSubmit}
+            handleChange={this.handleChange}
+            handleAddEmployment={this.handleAddEmployment}
+            handleRemoveEmployment={this.handleRemoveEmployment}
+            handleAddEducation={this.handleAddEducation}
+            handleRemoveEducation={this.handleRemoveEducation}
+            handleAddReference={this.handleAddReference}
+            handleRemoveReference={this.handleRemoveReference}
+          />
+          // <this.NewApplication />
         )}
       </div>
     );
