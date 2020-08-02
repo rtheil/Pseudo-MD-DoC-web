@@ -155,3 +155,13 @@ code {
     clip-path: inset(3px 3px 0px 100%);
   }
 }
+
+.my-account-box {
+  width: 350px;
+}
+
+.my-account-description {
+  font-size: 14px;
+  border-bottom: thin solid #007bff;
+  margin-bottom: 10px;
+}

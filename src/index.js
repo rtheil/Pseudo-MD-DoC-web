@@ -23,7 +23,7 @@ config.set(
 );
 
 //UNCOMMENT FOR PRODUCTION
-config.setEnvironment("production");
+//config.setEnvironment("production");
 
 ReactDOM.render(
   <React.StrictMode>

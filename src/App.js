@@ -13,8 +13,8 @@ import Jobs from "./components/jobs";
 import AllFake from "./components/allFake";
 import Footer from "./components/footer";
 import LoginPage from "./components/loginPage";
-
 import { connect } from "react-redux";
+import AccountPage from "./components/accountPage";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -31,11 +31,7 @@ function mapDispatchToProps(dispatch) {
 class App extends Component {
   state = {};
 
-  componentDidMount = () => {
-    //const user = { name: "Ricky" };
-    //console.log(this.props);
-    //this.props.setUser(user);
-  };
+  componentDidMount = () => {};
 
   handleIncrement = () => {
     this.setState({ count: this.state.count + 1 });
@@ -59,6 +55,7 @@ class App extends Component {
                 <Route path="/fake" component={AllFake} />
                 <Route path="/login" component={LoginPage} />
                 <Route path="/logout" component={LoginPage} />
+                <Route path="/account" component={AccountPage} />
                 <Route path="/applications/new" component={Application} />
                 <Route path="/applications/:Id" component={Application} />
                 <Route path="/applications" component={Applications} />
