@@ -74,7 +74,7 @@ class RegisterForm extends Component {
     this.setState({ errors });
 
     //IF ERRORS, STOP
-    if (Object.keys(errors).length > 0) return;
+    if (errors.count > 0) return;
     this.setState({ loading: true });
     const registerInfo = { ...createInfo };
     delete registerInfo.confirmPassword;

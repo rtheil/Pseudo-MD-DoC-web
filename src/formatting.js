@@ -47,13 +47,18 @@ class Formatting {
 
     //IF ERRORS, LOOP
     const errors = {};
+    let count = 0;
     if (results.error)
       for (let item of results.error.details) {
         let msg = item.message;
         /*eslint no-useless-escape: "off"*/
         msg = msg.replace(/\"/gm, "");
         errors[item.path[0]] = msg;
+        count++;
       }
+    errors.count = count;
+    // if (errors.confirmPassword !== undefined)
+    //   errors.confirmPassword = "Passwords do not match";
 
     return errors;
   }

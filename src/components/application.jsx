@@ -159,8 +159,7 @@ class Application extends Component {
     //console.log(errors.error.details);
 
     //ADD TO LOCAL ARRAY
-    if (Object.keys(errors).length === 0)
-      newApplication.employment.push(employerItem);
+    if (errors.count === 0) newApplication.employment.push(employerItem);
 
     //REMOVE FROM STATE TO EMPTY FIELDS (UNCOMMENT FOR PRODUCTION)
     // newApplication.employerName = "";
@@ -201,8 +200,7 @@ class Application extends Component {
     //console.log(errors.error.details);
 
     //ADD TO LOCAL ARRAY
-    if (Object.keys(errors).length === 0)
-      newApplication.education.push(educationItem);
+    if (errors.count === 0) newApplication.education.push(educationItem);
 
     //REMOVE FROM STATE (UNCOMMENT FOR PRODUCTION)
     // newApplication.schoolName = "";
@@ -241,8 +239,7 @@ class Application extends Component {
     //console.log(errors.error.details);
 
     //ADD TO LOCAL ARRAY
-    if (Object.keys(errors).length === 0)
-      newApplication.references.push(referenceItem);
+    if (errors.count === 0) newApplication.references.push(referenceItem);
 
     //REMOVE FROM STATE (UNCOMMENT FOR PRODUCTION)
     // newApplication.referenceName = "";
@@ -308,7 +305,7 @@ class Application extends Component {
     const errors = Formatting.formatJoiValidation(this.appSchema, appItem);
     console.log("validate errors", errors);
     this.setState({ errors });
-    if (Object.keys(errors).length > 0) return;
+    if (errors.count > 0) return;
 
     // //CLEAN SOME ITEMS FOR API
     newApplication.homePhone = Formatting.formatPhoneNumber(

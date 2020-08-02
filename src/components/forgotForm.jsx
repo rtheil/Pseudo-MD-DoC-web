@@ -107,7 +107,7 @@ class ForgotForm extends Component {
         errors.confirmPassword = "Passwords do not match";
       console.log(errors);
       this.setState({ errors });
-      if (Object.keys(errors).length > 0) {
+      if (errors.count > 0) {
         this.setState({ loading: false });
         return;
       }
@@ -124,7 +124,7 @@ class ForgotForm extends Component {
       });
       console.log(errors);
       this.setState({ errors });
-      if (Object.keys(errors).length > 0) {
+      if (errors.count > 0) {
         this.setState({ loading: false });
         return;
       }
