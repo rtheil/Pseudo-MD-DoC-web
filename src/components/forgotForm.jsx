@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Joi from "@hapi/joi";
 import { Form, Alert } from "react-bootstrap";
 import {
   forgotPassword,
@@ -9,11 +8,8 @@ import {
 import TextInput from "./textInput";
 import SubmitButton from "./submitButton";
 import Formatting from "../formatting";
+import JoiSchemas from "../joiSchemas";
 
-//STAIC VALUES
-const passwordRegex = /^(?=.*[A-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()])\S{8,}$/;
-const passwordError =
-  "Password must be at least 8 characters long, and have at least one uppercate letter, one lowercase letter, one number, and one special character.";
 const forgotPasswordSuccessMessage = (
   <React.Fragment>
     <strong>Thank you</strong>
@@ -60,22 +56,6 @@ class ForgotForm extends Component {
     }
   }
 
-  forgotSchema = Joi.object({
-    emailAddress: Joi.string()
-      .email({ tlds: { allow: false } })
-      .required()
-      .label("Email Address"),
-  });
-
-  resetSchema = Joi.object({
-    password: Joi.string()
-      .min(8)
-      .regex(passwordRegex)
-      .message(passwordError)
-      .label("Password"),
-    confirmPassword: Joi.string().required().valid(Joi.ref("password")),
-  });
-
   handleForgotChange = (e) => {
     //let { forgotInfo } = this.state;
     let { forgotInfo } = this.state;
@@ -100,7 +80,7 @@ class ForgotForm extends Component {
         confirmPassword: forgotInfo.confirmPassword,
       };
       const errors = Formatting.formatJoiValidation(
-        this.resetSchema,
+        JoiSchemas.resetPasswordSchema(),
         newPassword
       );
       if (errors.confirmPassword !== undefined)
@@ -119,7 +99,7 @@ class ForgotForm extends Component {
       forgotForm.successMessage = forgotPasswordSuccessMessage;
 
       //Validate with JOI
-      const errors = Formatting.formatJoiValidation(this.forgotSchema, {
+      const errors = Formatting.formatJoiValidation(JoiSchemas.emailAddress, {
         emailAddress: forgotInfo.emailAddress,
       });
       console.log(errors);

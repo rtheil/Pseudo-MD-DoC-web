@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import Joi from "@hapi/joi";
 import { Form, Alert } from "react-bootstrap";
 import { register, verifyRegisterToken } from "../services/userService";
 import TextInput from "./textInput";
 import SubmitButton from "./submitButton";
 import Formatting from "../formatting";
-
-const passwordRegex = /^(?=.*[A-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()])\S{8,}$/;
-const passwordError =
-  "Password must be at least 8 characters long, and have at least one uppercase letter, one lowercase letter, one number, and one special character.";
+import JoiSchemas from "../joiSchemas";
 
 class RegisterForm extends Component {
   state = {
@@ -24,12 +20,12 @@ class RegisterForm extends Component {
   };
 
   async componentDidMount() {
-    //set helpvul development values to state
-    const { createInfo } = this.state;
-    createInfo.name = "Test Name";
-    createInfo.emailAddress = "test@test.com";
-    createInfo.password = "r5Y@m6#Bj3XS7ttY";
-    createInfo.confirmPassword = "r5Y@m6#Bj3XS7ttY";
+    //set helpful development values to state
+    // const { createInfo } = this.state;
+    // createInfo.name = "Test Name";
+    // createInfo.emailAddress = "test@test.com";
+    // createInfo.password = "r5Y@m6#Bj3XS7ttY";
+    // createInfo.confirmPassword = "r5Y@m6#Bj3XS7ttY";
     //this.setState({ createInfo });
 
     console.log("didMount:", this.props.match);
@@ -47,27 +43,15 @@ class RegisterForm extends Component {
     }
   }
 
-  createSchema = Joi.object({
-    name: Joi.string().min(5).max(30).required().label("Your Name"),
-    emailAddress: Joi.string()
-      .email({ tlds: { allow: false } })
-      .required()
-      .label("Email Address"),
-    password: Joi.string()
-      .min(8)
-      .regex(passwordRegex)
-      .message(passwordError)
-      .label("Password"),
-    confirmPassword: Joi.string().required().valid(Joi.ref("password")),
-  });
-
   handleCreateSubmit = async (e) => {
     this.setState({ errors: {} });
     let { createInfo, errors } = this.state;
     e.preventDefault();
     console.log("submit create account clicked", this.state.createInfo);
-    //const results = this.createSchema.validate(createInfo, { abortEarly: true });
-    errors = Formatting.formatJoiValidation(this.createSchema, createInfo);
+    errors = Formatting.formatJoiValidation(
+      JoiSchemas.registerUserSchema(),
+      createInfo
+    );
     if (errors.confirmPassword !== undefined)
       errors.confirmPassword = "Passwords do not match";
     console.log("Joi errors:", errors);

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Joi from "@hapi/joi";
 import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { login } from "../services/userService";
@@ -53,14 +52,6 @@ class LoginForm extends Component {
     const { history, currentUser } = this.props;
     if (currentUser.token !== undefined) history.push("/");
   }
-
-  loginSchema = Joi.object({
-    emailAddress: Joi.string()
-      .email({ tlds: { allow: false } })
-      .required(),
-    password: Joi.string().min(8),
-    saveInfo: Joi.boolean(),
-  });
 
   handleLoginSubmit = async (e) => {
     e.preventDefault();
