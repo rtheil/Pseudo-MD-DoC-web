@@ -15,6 +15,7 @@ class Application extends Component {
   state = {
     application: {},
     errors: {},
+    loading: false,
     newApplication: {
       userId: this.props.currentUser.id,
       //INFO
@@ -325,6 +326,7 @@ class Application extends Component {
 
     //SUCCESS. SUBMIT THE FORM TO API.
     console.log("VALIDATE SUCCESS", newApplication);
+    this.setState({ loading: true });
 
     await axios
       .post(config.get("api.url") + "/Applications", newApplication, {
@@ -340,8 +342,8 @@ class Application extends Component {
       })
       .catch((error) => {
         console.log("post error:", error.response.data.errors);
-        //this.props.history.push("/login");
       });
+    this.setState({ loading: false });
   };
 
   render() {

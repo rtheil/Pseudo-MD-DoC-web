@@ -42,8 +42,8 @@ class ForgotForm extends Component {
       formVisible: true,
       successMessage: "",
     },
-    loginButton: { disabled: false, text: "Submit", spinner: false },
     errors: {},
+    loading: false,
   };
 
   async componentDidMount() {
@@ -58,15 +58,6 @@ class ForgotForm extends Component {
         this.setState({ errors, forgotForm });
       }
     }
-  }
-
-  buttonLoading(loading) {
-    let { loginButton } = this.state;
-    loginButton.disabled = loading;
-    loginButton.spinner = loading;
-    if (loading) loginButton.text = " Loading...";
-    else loginButton.text = "Submit";
-    this.setState({ loginButton });
   }
 
   forgotSchema = Joi.object({
@@ -97,7 +88,7 @@ class ForgotForm extends Component {
     const { forgotInfo, forgotForm, errors } = this.state;
     e.preventDefault();
     console.log("submit forgot password clicked", forgotInfo);
-    this.buttonLoading(true);
+    this.setState({ loading: true });
     let forgotStatus;
     if (forgotInfo.token !== "") {
       //TOKEN EXISTS, ASK API TO UPDATE PASSWORD
@@ -117,7 +108,7 @@ class ForgotForm extends Component {
       console.log(errors);
       this.setState({ errors });
       if (Object.keys(errors).length > 0) {
-        this.buttonLoading(false);
+        this.setState({ loading: false });
         return;
       }
 
@@ -134,7 +125,7 @@ class ForgotForm extends Component {
       console.log(errors);
       this.setState({ errors });
       if (Object.keys(errors).length > 0) {
-        this.buttonLoading(false);
+        this.setState({ loading: false });
         return;
       }
 
@@ -161,11 +152,11 @@ class ForgotForm extends Component {
       }
       this.setState({ errors });
     }
-    this.buttonLoading(false);
+    this.setState({ loading: false });
   };
 
   render() {
-    const { loginButton, forgotInfo, errors, forgotForm } = this.state;
+    const { loading, forgotInfo, errors, forgotForm } = this.state;
     const token = this.props.match.params.token;
 
     if (token !== undefined) {
@@ -208,11 +199,7 @@ class ForgotForm extends Component {
                   onChange={this.handleForgotChange}
                   value={forgotInfo.token}
                 />
-                <SubmitButton
-                  text={loginButton.text}
-                  disabled={loginButton.disabled}
-                  spinner={loginButton.spinner}
-                />
+                <SubmitButton text="Submit" loading={loading} />
               </Form>
             </React.Fragment>
           )}
@@ -244,11 +231,7 @@ class ForgotForm extends Component {
                   col="div"
                   error={errors.emailAddress}
                 />
-                <SubmitButton
-                  text={loginButton.text}
-                  disabled={loginButton.disabled}
-                  spinner={loginButton.spinner}
-                />
+                <SubmitButton text="Submit" loading={loading} />
               </Form>
             </React.Fragment>
           )}

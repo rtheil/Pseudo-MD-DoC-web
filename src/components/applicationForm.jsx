@@ -4,6 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import TextInput from "./textInput";
 import YesNoSelect from "./yesNoSelect";
 import ButtonInput from "./buttonInput";
+import SubmitButton from "./submitButton";
 
 const ApplicationForm = ({
   state,
@@ -16,7 +17,7 @@ const ApplicationForm = ({
   handleAddReference,
   handleRemoveReference,
 }) => {
-  const { newApplication, errors } = state;
+  const { newApplication, errors, loading } = state;
   console.log("error:", errors.error);
   console.log("state", state);
   return (
@@ -343,9 +344,7 @@ const ApplicationForm = ({
           </div>
         </Form.Row>
         <div className="p-1 mt-2 mb-2 app-section-bar">Review and Submit</div>
-        <Button variant="success" type="submit">
-          Submit Application
-        </Button>
+        <SubmitButton text="Submit" loading={loading} />
       </Form>
     </div>
   );

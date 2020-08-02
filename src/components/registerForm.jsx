@@ -19,8 +19,8 @@ class RegisterForm extends Component {
       confirmPassword: "",
     },
     createForm: { formVisible: true, successMessage: "" },
-    loginButton: { disabled: false, text: "Submit", spinner: false },
     errors: {},
+    loading: false,
   };
 
   async componentDidMount() {
@@ -75,7 +75,7 @@ class RegisterForm extends Component {
 
     //IF ERRORS, STOP
     if (Object.keys(errors).length > 0) return;
-    this.buttonLoading(true);
+    this.setState({ loading: true });
     const registerInfo = { ...createInfo };
     delete registerInfo.confirmPassword;
     const newUser = await register(registerInfo);
@@ -96,7 +96,7 @@ class RegisterForm extends Component {
       else errors.registerError = newUser.error.response.data.message;
       this.setState({ errors });
     }
-    this.buttonLoading(false);
+    this.setState({ loading: false });
   };
 
   handleCreateChange = (e) => {
@@ -105,17 +105,8 @@ class RegisterForm extends Component {
     this.setState({ createInfo });
   };
 
-  buttonLoading(loading) {
-    let { loginButton } = this.state;
-    loginButton.disabled = loading;
-    loginButton.spinner = loading;
-    if (loading) loginButton.text = " Loading...";
-    else loginButton.text = "Submit";
-    this.setState({ loginButton });
-  }
-
   render() {
-    const { createInfo, errors, loginButton, createForm } = this.state;
+    const { createInfo, errors, loading, createForm } = this.state;
     return (
       <React.Fragment>
         {!createForm.formVisible && (
@@ -166,11 +157,7 @@ class RegisterForm extends Component {
                 col="div"
                 error={errors.confirmPassword}
               />
-              <SubmitButton
-                text={loginButton.text}
-                disabled={loginButton.disabled}
-                spinner={loginButton.spinner}
-              />
+              <SubmitButton text="Submit" loading={loading} />
               {errors.registerError && errors.registerError !== "" && (
                 <Alert variant="danger" className="m-1 mt-3">
                   <strong>Could not create an account</strong>

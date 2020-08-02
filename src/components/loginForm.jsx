@@ -27,8 +27,8 @@ class LoginForm extends Component {
         emailAddress: "rtheil@codirt.com",
         password: "r5Y@m6#Bj3XS7ttY",
       },
-      loginButton: { disabled: false, text: "Submit", spinner: false },
       errors: {},
+      loading: false,
     };
     const { match } = this.props;
     console.log("match:", match);
@@ -66,7 +66,7 @@ class LoginForm extends Component {
     e.preventDefault();
 
     //CHANGE BUTTON
-    this.buttonLoading(true);
+    this.setState({ loading: true });
 
     //FAKE DELAY
     setTimeout(async () => {
@@ -75,8 +75,7 @@ class LoginForm extends Component {
       //console.log("post-login currentUser:", currentUser);
       if (currentUser.token === undefined) {
         let errors = { loginError: "Incorrect Email or Password" };
-        this.setState({ errors });
-        this.buttonLoading(false);
+        this.setState({ errors, loading: false });
       }
       //UPDATE REDUX
       else this.props.setUser(currentUser);
@@ -88,22 +87,11 @@ class LoginForm extends Component {
     if (e.currentTarget.type === "checkbox")
       loginInfo[e.currentTarget.id] = e.currentTarget.checked;
     else loginInfo[e.currentTarget.id] = e.currentTarget.value;
-    //console.log(e.currentTarget);
-    //console.log("new state:", loginInfo);
     this.setState({ loginInfo });
   };
 
-  buttonLoading(loading) {
-    let { loginButton } = this.state;
-    loginButton.disabled = loading;
-    loginButton.spinner = loading;
-    if (loading) loginButton.text = " Loading...";
-    else loginButton.text = "Submit";
-    this.setState({ loginButton });
-  }
-
   render() {
-    const { loginInfo, errors, loginButton, validated } = this.state;
+    const { loginInfo, errors, loading, validated } = this.state;
     console.log("loginForm props.currentUser:", this.props.currentUser);
     return (
       <React.Fragment>
@@ -139,11 +127,7 @@ class LoginForm extends Component {
               onChange={this.handleLoginChange}
             />
           </Form.Group>
-          <SubmitButton
-            text={loginButton.text}
-            disabled={loginButton.disabled}
-            spinner={loginButton.spinner}
-          />
+          <SubmitButton text="Submit" loading={loading} />
           <Form.Text>
             <Link to="/login/register">Create an account</Link> -{" "}
             <Link to="/login/forgot">Forgot my password</Link>

@@ -2,12 +2,17 @@ import React, { Component } from "react";
 import { Button, Spinner } from "react-bootstrap";
 
 class SubmitButton extends Component {
-  state = {};
   render() {
-    const { disabled, spinner, text } = this.props;
+    let { text, loadingText, loading, variant } = this.props;
+    if (loadingText === undefined) loadingText = "Loading...";
+    if (variant === undefined) variant = "primary";
+
+    //add a space before loading text
+    loadingText = <React.Fragment>&nbsp;{loadingText}</React.Fragment>;
+
     return (
-      <Button variant="primary" type="submit" disabled={disabled}>
-        {spinner && (
+      <Button variant={variant} type="submit" disabled={loading}>
+        {loading && (
           <Spinner
             as="span"
             animation="border"
@@ -16,7 +21,7 @@ class SubmitButton extends Component {
             aria-hidden="true"
           />
         )}
-        {text}
+        {loading ? loadingText : text}
       </Button>
     );
   }
