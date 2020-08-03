@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import axios from "axios";
+//import axios from "axios";
 import Application from "./application";
 import { Link } from "react-router-dom";
-import config from "react-global-configuration";
+//import config from "react-global-configuration";
 import { connect } from "react-redux";
 import LoadingMessage from "./loadingMessage";
+import { getApplications } from "../services/applicationService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -17,21 +18,11 @@ class Applications extends Component {
   };
 
   async componentDidMount() {
-    console.log(this.props.currentUser);
-    await axios
-      .get(config.get("api.url") + "/Applications", {
-        headers: { Authorization: "Bearer " + this.props.currentUser.token },
-      })
-      .then((response) => {
-        const applications = response.data;
-        console.log("applications", response.data);
-        this.setState({ applications });
-      })
-      .catch((error) => {
-        console.log("cdm error:", error.message);
-        this.props.history.push("/login");
-      });
-    //console.log(this.state);
+    const { currentUser } = this.props;
+    if (currentUser.id === undefined) return this.props.history.push("/login");
+
+    const applications = await getApplications(currentUser.token);
+    if (applications.error === undefined) this.setState({ applications });
   }
 
   render() {
