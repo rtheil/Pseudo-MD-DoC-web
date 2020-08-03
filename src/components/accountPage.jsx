@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import TextInput from "./textInput";
 import SubmitButton from "./submitButton";
-import { Form } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import JoiSchemas from "../joiSchemas";
 import Formatting from "../formatting";
+import { getApplications } from "../services/applicationService";
+import { Link } from "react-router-dom";
+import { update } from "../services/userService";
 
 function mapStateToProps(state) {
   console.log("mapstatetoprops");
@@ -20,6 +23,11 @@ class AccountPage extends Component {
         emailAddress: this.props.currentUser.emailAddress,
         password: "",
         confirmPassword: "",
+        administrator: this.props.currentUser.administrator,
+      },
+      updateMessage: {
+        visible: false,
+        message: "Account info updated successfully",
       },
       errors: {},
       loading: false,
@@ -28,6 +36,17 @@ class AccountPage extends Component {
     //push to login page if not logged in
     if (this.props.currentUser.emailAddress === undefined)
       this.props.history.push("/login");
+  }
+
+  async componentDidMount() {
+    const { currentUser } = this.props;
+    //get my applications
+    const applications = await getApplications(
+      currentUser.token,
+      currentUser.id
+    );
+    if (applications.error === undefined) this.setState({ applications });
+    console.log(applications);
   }
 
   handleChange = (e) => {
@@ -46,7 +65,10 @@ class AccountPage extends Component {
     let schema, object;
     if (account.password === "" && account.confirmPassword === "") {
       schema = JoiSchemas.updateUserSchema();
-      object = { name: account.name, emailAddress: account.emailAddress };
+      object = {
+        name: account.name,
+        emailAddress: account.emailAddress,
+      };
     } else {
       schema = JoiSchemas.registerUserSchema();
       object = account;
@@ -61,14 +83,34 @@ class AccountPage extends Component {
     // change button
     this.setState({ loading: true });
 
-    //axios call
+    //map to update object
+    let updateObject = {
+      name: account.name,
+      emailAddress: account.emailAddress,
+      password: account.password,
+    };
+
+    //call user service to update
+    const updatedUser = await update(this.props.currentUser, updateObject);
+    console.log("updatedUser", updatedUser);
+    if (updatedUser.error === undefined) {
+      let { updateMessage } = this.state;
+      updateMessage.visible = true;
+      this.setState({ updateMessage });
+    }
 
     this.setState({ loading: false });
   };
 
   render() {
     console.log("PROPS:", this.props);
-    const { account, errors, loading } = this.state;
+    const {
+      account,
+      errors,
+      loading,
+      applications,
+      updateMessage,
+    } = this.state;
     return (
       <div className="container">
         <div className="d-flex justify-content-center">
@@ -118,6 +160,11 @@ class AccountPage extends Component {
                 error={errors.confirmPassword}
               />
               <SubmitButton text="Submit" loading={loading} />
+              {updateMessage.visible && (
+                <Alert variant="success" className="m-1 mt-3">
+                  {updateMessage.message}
+                </Alert>
+              )}
             </Form>
           </div>
           <div className="my-account-box border border-primary rounded p-2">
@@ -125,6 +172,15 @@ class AccountPage extends Component {
             <div className="my-account-description">
               Job applications and their status
             </div>
+            {applications &&
+              applications.map((app) => (
+                <div key={app.id}>
+                  <Link to={"/applications/" + app.id}>
+                    Application #{app.id}{" "}
+                    {Formatting.formatDate(app.dateReceived)}
+                  </Link>
+                </div>
+              ))}
           </div>
           {/* <div className="border border-primary rounded">Account Details</div> */}
         </div>
