@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import TextInput from "./formElements/textInput";
 import SubmitButton from "./formElements/submitButton";
-import { Form, Alert } from "react-bootstrap";
+import { Form, Alert, Row, Container, Col, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import JoiSchemas from "../joiSchemas";
 import Formatting from "../formatting";
 import { getApplications } from "../services/applicationService";
 import { Link } from "react-router-dom";
 import { update } from "../services/userService";
+import LoadingMessage from "./loadingMessage";
 
 function mapStateToProps(state) {
   console.log("mapstatetoprops");
@@ -30,7 +31,7 @@ class AccountPage extends Component {
         message: "Account info updated successfully",
       },
       errors: {},
-      loading: false,
+      loading: true,
     };
 
     //push to login page if not logged in
@@ -45,7 +46,8 @@ class AccountPage extends Component {
       currentUser.token,
       currentUser.id
     );
-    if (applications.error === undefined) this.setState({ applications });
+    if (applications.error !== undefined) return;
+    this.setState({ applications, loading: false });
     console.log(applications);
   }
 
@@ -113,8 +115,8 @@ class AccountPage extends Component {
     } = this.state;
     return (
       <div className="container">
-        <div className="d-flex justify-content-center">
-          <h4>My Account</h4>
+        <div className="d-flex justify-content-center border-bottom border-dark mb-4">
+          <h4 className="">My Account</h4>
         </div>
         <div className="d-flex justify-content-around">
           <div className="my-account-box border border-primary rounded p-2">
@@ -167,22 +169,44 @@ class AccountPage extends Component {
               )}
             </Form>
           </div>
-          <div className="my-account-box border border-primary rounded p-2">
+          <div className="my-account-applications border border-primary rounded p-2">
             <h5 className="mb-0">My Job Applications</h5>
             <div className="my-account-description">
               Job applications and their status
             </div>
-            {applications &&
-              applications.map((app) => (
-                <div key={app.id}>
-                  <Link to={"/applications/" + app.id}>
-                    Application #{app.id}{" "}
-                    {Formatting.formatDate(app.dateReceived)}
-                  </Link>
-                </div>
-              ))}
+            <Container>
+              <Row className="font-weight-bold mb-2">
+                <Col xs="2">App #</Col>
+                <Col>Date </Col>
+                <Col>Status</Col>
+                <Col>Actions</Col>
+              </Row>
+              {!applications && <LoadingMessage />}
+              {applications &&
+                applications.map((app) => (
+                  <Row
+                    className="border-bottom border-dark pb-1 mb-2"
+                    key={app.id}
+                  >
+                    <Col xs="2">{app.id}</Col>
+                    <Col>{Formatting.formatDate(app.dateReceived)}</Col>
+                    <Col className="bg-warning">N/A</Col>
+                    <Col className="d-flex">
+                      <Link
+                        to={"/applications/" + app.id}
+                        className="btn btn-primary btn-sm"
+                      >
+                        View
+                      </Link>
+                      &nbsp;
+                      <Button variant="danger" size="sm">
+                        Cancel
+                      </Button>
+                    </Col>
+                  </Row>
+                ))}
+            </Container>
           </div>
-          {/* <div className="border border-primary rounded">Account Details</div> */}
         </div>
       </div>
     );

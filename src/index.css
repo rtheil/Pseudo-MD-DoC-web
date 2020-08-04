@@ -157,7 +157,11 @@ code {
 }
 
 .my-account-box {
-  width: 350px;
+  width: 300px;
+}
+
+.my-account-applications {
+  width: 500px;
 }
 
 .my-account-description {
