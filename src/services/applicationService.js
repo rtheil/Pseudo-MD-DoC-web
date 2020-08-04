@@ -1,20 +1,17 @@
-import Axios from "axios";
 import config from "react-global-configuration";
+import http from "./httpService";
 
 export async function getApplications(token, userId) {
-  let returnValue;
   let url = config.get("api.url") + "/Applications";
   if (userId !== undefined) url += "/user/" + userId;
-  console.log("getApplications url", url);
-  await Axios.get(url, {
+  console.log("applicationService getApplications url", url);
+  let returnValue = await http.get(url, {
     headers: { Authorization: "Bearer " + token },
-  })
-    .then((response) => {
-      const applications = response.data;
-      returnValue = applications;
-    })
-    .catch((error) => {
-      returnValue = { error: error.message };
-    });
-  return returnValue;
+  });
+  console.log("appservice response", returnValue);
+  return returnValue.data;
+}
+
+export async function deleteApplication(token, userId) {
+  //let returnValue;
 }

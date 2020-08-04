@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Form } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import { login } from "../../services/userService";
 import TextInput from "../formElements/textInput";
 import SubmitButton from "../formElements/submitButton";
@@ -62,14 +62,15 @@ class LoginForm extends Component {
     //FAKE DELAY
     setTimeout(async () => {
       //CALL USER SERVICE
-      const currentUser = await login(this.state.loginInfo);
-      //console.log("post-login currentUser:", currentUser);
-      if (currentUser.token === undefined) {
-        let errors = { loginError: "Incorrect Email or Password" };
+      const response = await login(this.state.loginInfo);
+      console.log("post-login currentUser:", response);
+      if (response.data && response.data.token)
+        this.props.setUser(response.data);
+      else {
+        console.log("login errors", response.error);
+        let errors = { loginError: response.error };
         this.setState({ errors, loading: false });
       }
-      //UPDATE REDUX
-      else this.props.setUser(currentUser);
     }, 0);
   };
 
@@ -100,7 +101,6 @@ class LoginForm extends Component {
             onChange={this.handleLoginChange}
             value={loginInfo.emailAddress}
             col="div"
-            error={errors.loginError}
             required={true}
           />
           <TextInput
@@ -118,6 +118,9 @@ class LoginForm extends Component {
               onChange={this.handleLoginChange}
             />
           </Form.Group>
+          {errors.loginError && (
+            <Alert variant="danger">{errors.loginError}</Alert>
+          )}
           <SubmitButton text="Submit" loading={loading} />
           <Form.Text>
             <Link to="/login/register">Create an account</Link> -{" "}
