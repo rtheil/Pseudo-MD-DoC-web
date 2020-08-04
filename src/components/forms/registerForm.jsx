@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Form, Alert } from "react-bootstrap";
-import { register, verifyRegisterToken } from "../services/userService";
-import TextInput from "./textInput";
-import SubmitButton from "./submitButton";
-import Formatting from "../formatting";
-import JoiSchemas from "../joiSchemas";
+import { register, verifyRegisterToken } from "../../services/userService";
+import TextInput from "../formElements/textInput";
+import SubmitButton from "../formElements/submitButton";
+import Formatting from "../../formatting";
+import JoiSchemas from "../../joiSchemas";
 
 class RegisterForm extends Component {
   state = {

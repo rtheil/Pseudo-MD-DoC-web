@@ -8,7 +8,7 @@ const loremIpsum2 =
 const loremIpsum3 =
   "Mauris ultrices eros in cursus. Lacus vel facilisis volutpat est velit. Facilisis magna etiam tempor orci eu lobortis elementum. Nam aliquam sem et tortor. Varius sit amet mattis vulputate enim. Neque aliquam vestibulum morbi blandit cursus risus at ultrices mi. Eu lobortis elementum nibh tellus molestie nunc non. Risus pretium quam vulputate dignissim. Libero enim sed faucibus turpis. Pharetra convallis posuere morbi leo urna molestie at. Aliquam malesuada bibendum arcu vitae elementum. Lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi.";
 
-class Home extends Component {
+class HomePage extends Component {
   render() {
     return (
       <div className="container-lg">
@@ -170,4 +170,4 @@ class Home extends Component {
     );
   }
 }
-export default Home;
+export default HomePage;

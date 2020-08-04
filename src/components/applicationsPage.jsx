@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 //import axios from "axios";
-import Application from "./application";
+import ApplicationPage from "./applicationPage";
 import { Link } from "react-router-dom";
 //import config from "react-global-configuration";
 import { connect } from "react-redux";
@@ -11,7 +11,7 @@ function mapStateToProps(state) {
   return { currentUser: state.currentUser };
 }
 
-class Applications extends Component {
+class ApplicationsPage extends Component {
   state = {
     applications: [],
     applicationid: null,
@@ -27,7 +27,7 @@ class Applications extends Component {
 
   render() {
     if (this.state.applicationid !== null)
-      return <Application appId={this.state.applicationid} />;
+      return <ApplicationPage appId={this.state.applicationid} />;
     else if (this.state.applications.length === 0)
       return <LoadingMessage message="Loading Applications..." />;
 
@@ -76,4 +76,4 @@ class Applications extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Applications);
+export default connect(mapStateToProps)(ApplicationsPage);

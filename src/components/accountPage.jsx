@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import TextInput from "./textInput";
-import SubmitButton from "./submitButton";
+import TextInput from "./formElements/textInput";
+import SubmitButton from "./formElements/submitButton";
 import { Form, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import JoiSchemas from "../joiSchemas";

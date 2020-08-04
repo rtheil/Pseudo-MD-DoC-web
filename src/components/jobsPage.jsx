@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-class Jobs extends Component {
+class JobsPage extends Component {
   state = {};
   render() {
     return (
@@ -289,4 +289,4 @@ class Jobs extends Component {
   }
 }
 
-export default Jobs;
+export default JobsPage;

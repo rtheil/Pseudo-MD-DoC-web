@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Home from "./components/home";
-import Applications from "./components/applications";
-import Application from "./components/application";
+import HomePage from "./components/homePage";
+import ApplicationsPage from "./components/applicationsPage";
+import ApplicationPage from "./components/applicationPage";
 import {
   BrowserRouter as Router,
   Route,
@@ -9,7 +9,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import NavBar from "./components/navBar";
-import Jobs from "./components/jobs";
+import JobsPage from "./components/jobsPage";
 import AllFake from "./components/allFake";
 import Footer from "./components/footer";
 import LoginPage from "./components/loginPage";
@@ -56,12 +56,12 @@ class App extends Component {
                 <Route path="/login" component={LoginPage} />
                 <Route path="/logout" component={LoginPage} />
                 <Route path="/account" component={AccountPage} />
-                <Route path="/applications/new" component={Application} />
-                <Route path="/applications/:Id" component={Application} />
-                <Route path="/applications" component={Applications} />
-                <Route path="/jobs" component={Jobs} />
+                <Route path="/applications/new" component={ApplicationPage} />
+                <Route path="/applications/:Id" component={ApplicationPage} />
+                <Route path="/applications" component={ApplicationsPage} />
+                <Route path="/jobs" component={JobsPage} />
                 <Route path="/404" />
-                <Route path="/" component={Home} />
+                <Route path="/" component={HomePage} />
                 <Redirect to="/404" />
               </Switch>
               <Footer />

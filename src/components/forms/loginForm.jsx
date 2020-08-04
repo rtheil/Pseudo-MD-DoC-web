@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
-import { login } from "../services/userService";
-import TextInput from "./textInput";
-import SubmitButton from "./submitButton";
+import { login } from "../../services/userService";
+import TextInput from "../formElements/textInput";
+import SubmitButton from "../formElements/submitButton";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };

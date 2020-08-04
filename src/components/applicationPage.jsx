@@ -5,13 +5,13 @@ import ApplicationView from "./applicationView";
 import Formatting from "../formatting";
 import config from "react-global-configuration";
 import { connect } from "react-redux";
-import ApplicationForm from "./applicationForm";
+import ApplicationForm from "./forms/applicationForm";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
 }
 
-class Application extends Component {
+class ApplicationPage extends Component {
   state = {
     application: {},
     errors: {},
@@ -370,4 +370,4 @@ class Application extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Application);
+export default connect(mapStateToProps)(ApplicationPage);

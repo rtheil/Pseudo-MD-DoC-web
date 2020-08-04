@@ -5,8 +5,8 @@ import {
   resetPassword,
   verifyResetToken,
 } from "../services/userService";
-import TextInput from "./textInput";
-import SubmitButton from "./submitButton";
+import TextInput from "./formElements/textInput";
+import SubmitButton from "./formElements/submitButton";
 import Formatting from "../formatting";
 import JoiSchemas from "../joiSchemas";
 

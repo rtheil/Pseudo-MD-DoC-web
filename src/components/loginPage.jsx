@@ -2,8 +2,8 @@ import React, { Component } from "react";
 //import LoginBox from "./loginBox";
 import { Switch, Route } from "react-router-dom";
 import ForgotForm from "./forgotForm";
-import LoginForm from "./loginForm";
-import RegisterForm from "./registerForm";
+import LoginForm from "./forms/loginForm";
+import RegisterForm from "./forms/registerForm";
 //import { useHistory } from "react-router-dom";
 
 class LoginPage extends Component {

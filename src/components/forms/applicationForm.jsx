@@ -1,10 +1,10 @@
 import React from "react";
 //import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
-import TextInput from "./textInput";
-import YesNoSelect from "./yesNoSelect";
-import ButtonInput from "./buttonInput";
-import SubmitButton from "./submitButton";
+import TextInput from "../formElements/textInput";
+import YesNoSelect from "../formElements/yesNoSelect";
+import ButtonInput from "../formElements/buttonInput";
+import SubmitButton from "../formElements/submitButton";
 
 const ApplicationForm = ({
   state,
