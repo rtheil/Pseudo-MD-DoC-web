@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import LoadingMessage from "./loadingMessage";
 import { getApplications } from "../services/applicationService";
+import Formatting from "../formatting";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -54,7 +55,7 @@ class ApplicationsPage extends Component {
                 <td>
                   {app.firstName} {app.lastName}
                 </td>
-                <td>{app.dateReceived}</td>
+                <td>{Formatting.formatDate(app.dateReceived)}</td>
                 <td>
                   {app.city}, {app.state}
                 </td>
