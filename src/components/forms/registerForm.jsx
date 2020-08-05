@@ -21,12 +21,12 @@ class RegisterForm extends Component {
 
   async componentDidMount() {
     //set helpful development values to state
-    // const { createInfo } = this.state;
-    // createInfo.name = "Test Name";
-    // createInfo.emailAddress = "test@test.com";
-    // createInfo.password = "r5Y@m6#Bj3XS7ttY";
-    // createInfo.confirmPassword = "r5Y@m6#Bj3XS7ttY";
-    //this.setState({ createInfo });
+    const { createInfo } = this.state;
+    createInfo.name = "Test Name";
+    createInfo.emailAddress = "test@test.com";
+    createInfo.password = "r5Y@m6#Bj3XS7ttY";
+    createInfo.confirmPassword = "r5Y@m6#Bj3XS7ttY";
+    this.setState({ createInfo });
 
     console.log("didMount:", this.props.match);
     const { token } = this.props.match.params;
@@ -45,7 +45,7 @@ class RegisterForm extends Component {
 
   handleCreateSubmit = async (e) => {
     this.setState({ errors: {} });
-    let { createInfo, errors } = this.state;
+    let { createInfo, createForm, errors } = this.state;
     e.preventDefault();
     console.log("submit create account clicked", this.state.createInfo);
     errors = Formatting.formatJoiValidation(
@@ -55,32 +55,26 @@ class RegisterForm extends Component {
     if (errors.confirmPassword !== undefined)
       errors.confirmPassword = "Passwords do not match";
     console.log("Joi errors:", errors);
-    this.setState({ errors });
+    //this.setState({ errors });
 
-    //IF ERRORS, STOP
-    if (errors.count > 0) return;
-    this.setState({ loading: true });
-    const registerInfo = { ...createInfo };
-    delete registerInfo.confirmPassword;
-    const newUser = await register(registerInfo);
-    console.log("Create user error:", newUser.error);
-    if (newUser.error === undefined) {
-      console.log("push to login page");
-      //this.props.history.push("/login");
-      let { createForm } = this.state;
-      createForm.formVisible = false;
-      createForm.successMessage =
-        "Account created successfully. Please check your email to verify your account.";
-      this.setState({ createForm });
-    } else {
-      //SHOW AN ERROR
-      if (newUser.error.response === undefined)
-        errors.registerError =
-          "Could not connect to server. Please try again later.";
-      else errors.registerError = newUser.error.response.data.message;
-      this.setState({ errors });
+    if (errors.count === 0) {
+      this.setState({ loading: true });
+      const registerInfo = { ...createInfo };
+      delete registerInfo.confirmPassword;
+      const newUser = await register(registerInfo);
+
+      //check response
+      if (newUser.status === 201) {
+        //SUCCESS
+        createForm.formVisible = false;
+        createForm.successMessage =
+          "Account created successfully. Please check your email to verify your account.";
+      } else {
+        errors.registerError = newUser.error;
+      }
     }
-    this.setState({ loading: false });
+    //set state
+    this.setState({ loading: false, createForm, errors });
   };
 
   handleCreateChange = (e) => {

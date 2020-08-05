@@ -4,11 +4,11 @@ import {
   forgotPassword,
   resetPassword,
   verifyResetToken,
-} from "../services/userService";
-import TextInput from "./formElements/textInput";
-import SubmitButton from "./formElements/submitButton";
-import Formatting from "../formatting";
-import JoiSchemas from "../joiSchemas";
+} from "../../services/userService";
+import TextInput from "../formElements/textInput";
+import SubmitButton from "../formElements/submitButton";
+import Formatting from "../../formatting";
+import JoiSchemas from "../../joiSchemas";
 
 const forgotPasswordSuccessMessage = (
   <React.Fragment>
@@ -57,10 +57,9 @@ class ForgotForm extends Component {
   }
 
   handleForgotChange = (e) => {
-    //let { forgotInfo } = this.state;
     let { forgotInfo } = this.state;
     forgotInfo[e.currentTarget.id] = e.currentTarget.value;
-    console.log("handleForgotChange", forgotInfo);
+    //console.log("handleForgotChange", forgotInfo);
     this.setState({ forgotInfo });
   };
 
@@ -93,7 +92,10 @@ class ForgotForm extends Component {
       }
 
       //Submit to API
-      forgotStatus = await resetPassword(forgotInfo);
+      forgotStatus = await resetPassword({
+        token: forgotInfo.token,
+        password: forgotInfo.password,
+      });
     } else {
       //No token, ask API to send password email
       forgotForm.successMessage = forgotPasswordSuccessMessage;
@@ -110,29 +112,20 @@ class ForgotForm extends Component {
       }
 
       //Submit to API
-      forgotStatus = await forgotPassword(forgotInfo);
+      forgotStatus = await forgotPassword({
+        emailAddress: forgotInfo.emailAddress,
+      });
     }
 
     //PROCESS RESPONSE
-    console.log("post-response:", forgotStatus);
-    console.log(forgotStatus.error);
-    if (forgotStatus.error === undefined) {
-      console.log("NO ERROR");
+    if (forgotStatus.status === 200) {
       forgotForm.formVisible = false;
-      this.setState({ forgotForm });
+      //this.setState({ forgotForm });
     } else {
-      //SHOW AN ERROR
-      console.log("ERROR:", forgotStatus.error);
-      console.log(forgotStatus.error.response);
-      if (forgotStatus.error.response === undefined)
-        errors.forgotError =
-          "Could not connect to server. Please try again later.";
-      else {
-        errors.forgotError = "Unknown error";
-      }
-      this.setState({ errors });
+      errors.forgotError = forgotStatus.error;
     }
-    this.setState({ loading: false });
+
+    this.setState({ loading: false, errors, forgotForm });
   };
 
   render() {

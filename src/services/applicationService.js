@@ -9,7 +9,7 @@ export async function getApplications(token, userId) {
     headers: { Authorization: "Bearer " + token },
   });
   console.log("appservice response", returnValue);
-  return returnValue.data;
+  return returnValue;
 }
 
 export async function deleteApplication(token, userId) {

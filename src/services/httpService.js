@@ -20,8 +20,11 @@ axios.interceptors.response.use(
     }
     console.log("unexpected error:", error.response);
     if (error.response)
-      return Promise.reject({ error: error.response.data.message });
-    else return { error: "No response from server" };
+      return {
+        error: error.response.data.message,
+        status: error.response.status,
+      };
+    else return { error: "No response from server", status: 500 };
   }
 );
 

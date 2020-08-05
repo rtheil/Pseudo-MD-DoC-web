@@ -41,18 +41,21 @@ class AccountPage extends Component {
 
   async componentDidMount() {
     const { currentUser } = this.props;
+    let { errors, applications } = this.state;
     //get my applications
-    const applications = await getApplications(
-      currentUser.token,
-      currentUser.id
-    );
-    if (applications.error !== undefined) return;
-    this.setState({ applications, loading: false });
-    console.log(applications);
+    const getApps = await getApplications(currentUser.token, currentUser.id);
+    if (getApps.status === 200) {
+      //success
+      applications = getApps.data;
+      this.setState({ applications, loading: false });
+    } else {
+      //error
+      errors.getError = getApps.error;
+      this.setState({ errors, loading: false });
+    }
   }
 
   handleChange = (e) => {
-    console.log();
     const account = { ...this.state.account };
     account[e.currentTarget.id] = e.currentTarget.value;
     this.setState({ account });
@@ -60,7 +63,7 @@ class AccountPage extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    let { account, errors } = this.state;
+    let { account, errors, updateMessage } = this.state;
     console.log("state before submit", account);
 
     //are we updating the password?
@@ -94,14 +97,16 @@ class AccountPage extends Component {
 
     //call user service to update
     const updatedUser = await update(this.props.currentUser, updateObject);
-    console.log("updatedUser", updatedUser);
-    if (updatedUser.error === undefined) {
-      let { updateMessage } = this.state;
+    console.log("updatedUser");
+    if (updatedUser.status === 200) {
+      //SUCCESS
       updateMessage.visible = true;
-      this.setState({ updateMessage });
+    } else {
+      //ERROR
+      errors.updateError = updatedUser.error;
     }
-
-    this.setState({ loading: false });
+    console.log("updateMessage:", updateMessage);
+    this.setState({ loading: false, updateMessage, errors });
   };
 
   render() {
@@ -165,6 +170,11 @@ class AccountPage extends Component {
               {updateMessage.visible && (
                 <Alert variant="success" className="m-1 mt-3">
                   {updateMessage.message}
+                </Alert>
+              )}
+              {errors.updateError && (
+                <Alert variant="danger" className="m-1 mt-3">
+                  {errors.updateError}
                 </Alert>
               )}
             </Form>
