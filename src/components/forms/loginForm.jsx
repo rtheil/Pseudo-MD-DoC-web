@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import config from "react-global-configuration";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
@@ -23,8 +24,8 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       loginInfo: {
-        emailAddress: "rtheil@codirt.com",
-        password: "r5Y@m6#Bj3XS7ttY",
+        emailAddress: "",
+        password: "",
       },
       errors: {},
       loading: false,
@@ -38,6 +39,14 @@ class LoginForm extends Component {
     this.handleLogin();
   }
 
+  componentDidMount() {
+    if (config.get("helperValues")) {
+      let { loginInfo } = this.state;
+      loginInfo.emailAddress = "rtheil@codirt.com";
+      loginInfo.password = "r5Y@m6#Bj3XS7ttY";
+      this.setState({ loginInfo });
+    }
+  }
   componentDidUpdate() {
     this.handleLogin();
   }
