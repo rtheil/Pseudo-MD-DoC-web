@@ -203,10 +203,10 @@ const ApplicationForm = ({
                     </Button>
                   </div>
                   <div className="col">{item.employerName}</div>
-                  <div className="col">{item.employerStartDate}</div>
-                  <div className="col">{item.employerEndDate}</div>
-                  <div className="col">{item.employerPhoneNumber}</div>
-                  <div className="col">{item.employerJobTitle}</div>
+                  <div className="col">{item.startDate}</div>
+                  <div className="col">{item.endDate}</div>
+                  <div className="col">{item.phone}</div>
+                  <div className="col">{item.position}</div>
                 </div>
               );
             })}
@@ -274,9 +274,9 @@ const ApplicationForm = ({
                       </Button>
                     </div>
                     <div className="col">{item.schoolName}</div>
-                    <div className="col">{item.schoolStartDate}</div>
-                    <div className="col">{item.schoolEndDate}</div>
-                    <div className="col">{item.schoolDegree}</div>
+                    <div className="col">{item.startDate}</div>
+                    <div className="col">{item.endDate}</div>
+                    <div className="col">{item.degree}</div>
                   </div>
                 );
               })}
@@ -335,9 +335,9 @@ const ApplicationForm = ({
                         &nbsp;-&nbsp;
                       </Button>
                     </div>
-                    <div className="col">{item.referenceName}</div>
-                    <div className="col">{item.referencePhoneNumber}</div>
-                    <div className="col">{item.referenceRelation}</div>
+                    <div className="col">{item.name}</div>
+                    <div className="col">{item.phoneNumber}</div>
+                    <div className="col">{item.relation}</div>
                   </div>
                 );
               })}
