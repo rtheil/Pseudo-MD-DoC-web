@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import config from "react-global-configuration";
 import { Form, Alert } from "react-bootstrap";
 import { register, verifyRegisterToken } from "../../services/userService";
 import TextInput from "../formElements/textInput";
@@ -21,12 +22,15 @@ class RegisterForm extends Component {
 
   async componentDidMount() {
     //set helpful development values to state
-    const { createInfo } = this.state;
-    createInfo.name = "Test Name";
-    createInfo.emailAddress = "test@test.com";
-    createInfo.password = "r5Y@m6#Bj3XS7ttY";
-    createInfo.confirmPassword = "r5Y@m6#Bj3XS7ttY";
-    this.setState({ createInfo });
+    console.log("config env", config.get("helperValues"));
+    if (config.get("helperValues")) {
+      const { createInfo } = this.state;
+      createInfo.name = "Test Name";
+      createInfo.emailAddress = "test@test.com";
+      createInfo.password = "r5Y@m6#Bj3XS7ttY";
+      createInfo.confirmPassword = "r5Y@m6#Bj3XS7ttY";
+      this.setState({ createInfo });
+    }
 
     console.log("didMount:", this.props.match);
     const { token } = this.props.match.params;

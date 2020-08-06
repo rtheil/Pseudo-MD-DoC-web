@@ -14,11 +14,17 @@ const store = createStore(reducer);
 //console.log("index.js store:", store.getState());
 
 //DEV CONFIG
-config.set({ api: { url: "https://localhost:5001/api" } }, { freeze: false });
+config.set(
+  { api: { url: "https://localhost:5001/api" }, helperValues: true },
+  { freeze: false }
+);
 
 //PROD CONFIG
 config.set(
-  { api: { url: "https://md-doc-api.azurewebsites.net/api" } },
+  {
+    api: { url: "https://md-doc-api.azurewebsites.net/api" },
+    helperValues: false,
+  },
   { environment: "production" }
 );
 
