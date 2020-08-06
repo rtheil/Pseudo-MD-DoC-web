@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Joi from "@hapi/joi";
 import ApplicationView from "./applicationView";
 import Formatting from "../formatting";
 import config from "react-global-configuration";
