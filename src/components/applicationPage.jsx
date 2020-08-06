@@ -22,7 +22,6 @@ class ApplicationPage extends Component {
       firstName: "Steve",
       middleInitial: "R",
       lastName: "Smith",
-      eMailAddress: "test@test.com",
       address: "123 Cherry Street",
       city: "Langley Falls",
       state: "VA",
