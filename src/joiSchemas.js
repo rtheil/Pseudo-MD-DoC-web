@@ -5,8 +5,64 @@ class JoiSchemas {
   static passwordRegex = /^(?=.*[A-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()])\S{8,}$/;
   static passwordError =
     "Password must be at least 8 characters long, and have at least one uppercase letter, one lowercase letter, one number, and one special character.";
+  static phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+  static socialSecurityNumberRegex = /^\d{3}-\d{2}-\d{4}$/;
 
-  //RULESETS
+  ///////////////////////////////////////////////////////////
+  //standalone rules
+  //////////////////////////////////////////////////////////
+  static applicationSchema = Joi.object({
+    userId: Joi.number().greater(0),
+    firstName: Joi.string().required().min(2).label("First Name"),
+    middleInitial: Joi.string().required().max(1).label("MI"),
+    lastName: Joi.string().required().min(2).label("Last Name"),
+    address: Joi.string().required().min(5).label("Address"),
+    city: Joi.string().required().min(2).label("City"),
+    state: Joi.string().required().min(2).max(2).label("State"),
+    zipCode: Joi.string().required().min(5).max(5).label("Zip Code"),
+    homePhone: Joi.string()
+      .regex(this.phoneRegex)
+      .message("Invalid Phone Number"),
+    cellPhone: Joi.string()
+      .regex(this.phoneRegex)
+      .message("Invalid Phone Number"),
+    socialSecurityNumber: Joi.string()
+      .regex(this.socialSecurityNumberRegex)
+      .message("Invalid SSN"),
+    isUsCitizen: Joi.boolean(),
+    hasFelony: Joi.boolean(),
+    willDrugTest: Joi.boolean(),
+    employment: Joi.array().min(1).required().label("Employment History"),
+    education: Joi.array().min(1).required().label("Education"),
+    references: Joi.array().min(1).required().label("References"),
+  });
+
+  static employmentSchema = Joi.object({
+    employerName: Joi.string().required().min(3).label("Employer Name"),
+    startDate: Joi.date().required().label("Start Date"),
+    endDate: Joi.date().required().label("End Date"),
+    phone: Joi.string().regex(this.phoneRegex).message("Invalid Phone Number"),
+    position: Joi.string().required().min(5).label("Job Title"),
+  });
+
+  static educationSchema = Joi.object({
+    schoolName: Joi.string().required().min(3).label("School Name"),
+    startDate: Joi.date().required().label("Start Date"),
+    endDate: Joi.date().required().label("End Date"),
+    degree: Joi.string().required().min(3).label("Degree"),
+  });
+
+  static referenceSchema = Joi.object({
+    name: Joi.string().required().min(3).label("Name"),
+    phoneNumber: Joi.string()
+      .regex(this.phoneRegex)
+      .message("Invalid Phone Number"),
+    relation: Joi.string().required().min(3).label("Relation"),
+  });
+
+  ///////////////////////////////////////////////////////////
+  //DYNAMIC RULESETS
+  //////////////////////////////////////////////////////////
 
   static registerUserSchema() {
     let schema = Joi.object()

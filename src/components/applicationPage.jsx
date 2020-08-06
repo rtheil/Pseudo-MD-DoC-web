@@ -6,6 +6,7 @@ import Formatting from "../formatting";
 import config from "react-global-configuration";
 import { connect } from "react-redux";
 import ApplicationForm from "./forms/applicationForm";
+import JoiSchemas from "../joiSchemas";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -86,57 +87,6 @@ class ApplicationPage extends Component {
     }
   }
 
-  appSchema = Joi.object({
-    userId: Joi.number().greater(0),
-    firstName: Joi.string().required().min(2).label("First Name"),
-    middleInitial: Joi.string().required().max(1).label("MI"),
-    lastName: Joi.string().required().min(2).label("Last Name"),
-    address: Joi.string().required().min(5).label("Address"),
-    city: Joi.string().required().min(2).label("City"),
-    state: Joi.string().required().min(2).max(2).label("State"),
-    zipCode: Joi.string().required().min(5).max(5).label("Zip Code"),
-    homePhone: Joi.string()
-      .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
-      .message("Invalid Phone Number"),
-    cellPhone: Joi.string()
-      .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
-      .message("Invalid Phone Number"),
-    socialSecurityNumber: Joi.string()
-      .regex(/^\d{3}-\d{2}-\d{4}$/)
-      .message("Invalid SSN"),
-    isUsCitizen: Joi.boolean(),
-    hasFelony: Joi.boolean(),
-    willDrugTest: Joi.boolean(),
-    employment: Joi.array().min(1).required().label("Employment History"),
-    education: Joi.array().min(1).required().label("Education"),
-    references: Joi.array().min(1).required().label("References"),
-  });
-
-  employmentSchema = Joi.object({
-    employerName: Joi.string().required().min(3).label("Employer Name"),
-    startDate: Joi.date().required().label("Start Date"),
-    endDate: Joi.date().required().label("End Date"),
-    phone: Joi.string()
-      .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
-      .message("Invalid Phone Number"),
-    position: Joi.string().required().min(5).label("Job Title"),
-  });
-
-  educationSchema = Joi.object({
-    schoolName: Joi.string().required().min(3).label("School Name"),
-    startDate: Joi.date().required().label("Start Date"),
-    endDate: Joi.date().required().label("End Date"),
-    degree: Joi.string().required().min(3).label("Degree"),
-  });
-
-  referenceSchema = Joi.object({
-    name: Joi.string().required().min(3).label("Name"),
-    phoneNumber: Joi.string()
-      .regex(/^\(\d{3}\) \d{3}-\d{4}$/)
-      .message("Invalid Phone Number"),
-    relation: Joi.string().required().min(3).label("Relation"),
-  });
-
   handleAddEmployment = (e) => {
     let newApplication = { ...this.state.newApplication };
 
@@ -151,7 +101,7 @@ class ApplicationPage extends Component {
 
     //VALIDATE FIRST
     const errors = Formatting.formatJoiValidation(
-      this.employmentSchema,
+      JoiSchemas.employmentSchema,
       employerItem
     );
     console.log("employer add errors", errors);
@@ -192,7 +142,7 @@ class ApplicationPage extends Component {
 
     //VALIDATE FIRST
     const errors = Formatting.formatJoiValidation(
-      this.educationSchema,
+      JoiSchemas.educationSchema,
       educationItem
     );
     console.log("education add errors", errors);
@@ -231,7 +181,7 @@ class ApplicationPage extends Component {
 
     //VALIDATE FIRST
     const errors = Formatting.formatJoiValidation(
-      this.referenceSchema,
+      JoiSchemas.referenceSchema,
       referenceItem
     );
     console.log("Reference add errors", errors);
@@ -301,7 +251,10 @@ class ApplicationPage extends Component {
     };
 
     // //CHECK PERSONAL INFO
-    const errors = Formatting.formatJoiValidation(this.appSchema, appItem);
+    const errors = Formatting.formatJoiValidation(
+      JoiSchemas.applicationSchema,
+      appItem
+    );
     console.log("validate errors", errors);
     this.setState({ errors });
     if (errors.count > 0) return;
