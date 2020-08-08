@@ -179,42 +179,59 @@ class AccountPage extends Component {
               )}
             </Form>
           </div>
-          <div className="my-account-applications border border-primary rounded p-2">
+          <div className="border border-primary rounded p-2">
             <h5 className="mb-0">My Job Applications</h5>
             <div className="my-account-description">
               Job applications and their status
             </div>
-            <Container>
+            <Container fluid>
               <Row className="font-weight-bold mb-2">
-                <Col xs="2">App #</Col>
-                <Col>Date </Col>
-                <Col>Status</Col>
-                <Col>Actions</Col>
+                <Col lg={1}>App #</Col>
+                <Col lg={true}>Date </Col>
+                <Col lg={5}>Status</Col>
+                <Col lg={true}>Actions</Col>
               </Row>
               {!applications && <LoadingMessage />}
               {applications &&
-                applications.map((app) => (
-                  <Row
-                    className="border-bottom border-dark pb-1 mb-2"
-                    key={app.id}
-                  >
-                    <Col xs="2">{app.id}</Col>
-                    <Col>{Formatting.formatDate(app.dateReceived)}</Col>
-                    <Col className="bg-warning">N/A</Col>
-                    <Col className="d-flex">
-                      <Link
-                        to={"/applications/" + app.id}
-                        className="btn btn-primary btn-sm"
+                applications.map((app) => {
+                  const appStatus = Formatting.formatApplicationStatus(
+                    app.applicationStatus
+                  );
+                  return (
+                    <Row
+                      className="border-bottom border-dark pb-1 mb-2"
+                      key={app.id}
+                    >
+                      <Col lg={1}>{app.id}</Col>
+                      <Col lg={true}>
+                        {Formatting.formatDate(app.dateReceived)}
+                      </Col>
+                      <Col
+                        lg={5}
+                        className={
+                          "bg-" +
+                          appStatus.color +
+                          " text-" +
+                          appStatus.textColor
+                        }
                       >
-                        View
-                      </Link>
-                      &nbsp;
-                      <Button variant="danger" size="sm">
-                        Cancel
-                      </Button>
-                    </Col>
-                  </Row>
-                ))}
+                        {app.applicationStatus.status}
+                      </Col>
+                      <Col lg={true} className="d-flex">
+                        <Link
+                          to={"/applications/" + app.id}
+                          className="btn btn-primary btn-sm"
+                        >
+                          View
+                        </Link>
+                        &nbsp;
+                        <Button variant="danger" size="sm">
+                          Cancel
+                        </Button>
+                      </Col>
+                    </Row>
+                  );
+                })}
             </Container>
           </div>
         </div>

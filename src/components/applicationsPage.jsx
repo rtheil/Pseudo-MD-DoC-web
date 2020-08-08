@@ -16,6 +16,7 @@ class ApplicationsPage extends Component {
   state = {
     applications: [],
     applicationid: null,
+    errors: {},
   };
 
   async componentDidMount() {
@@ -68,7 +69,7 @@ class ApplicationsPage extends Component {
                 <td>
                   {app.city}, {app.state}
                 </td>
-                <td>{app.applicationStatus}</td>
+                <td>{app.applicationStatus.status}</td>
                 <td>
                   <Link
                     to={"/applications/" + app.id}
