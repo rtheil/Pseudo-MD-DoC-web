@@ -59,7 +59,7 @@ class LoginForm extends Component {
 
   handleLogin() {
     const { history, currentUser } = this.props;
-    if (currentUser.token !== undefined) history.push("/");
+    if (currentUser.token !== undefined) history.push("/account");
   }
 
   handleLoginSubmit = async (e) => {
