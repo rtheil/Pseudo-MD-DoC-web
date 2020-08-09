@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import TextInput from "./formElements/textInput";
-import SubmitButton from "./formElements/submitButton";
-import { Form, Alert, Row, Container, Col, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import JoiSchemas from "../joiSchemas";
 import Formatting from "../formatting";
 import { getApplications } from "../services/applicationService";
-import { Link } from "react-router-dom";
 import { update } from "../services/userService";
-import LoadingMessage from "./loadingMessage";
+import AccountDetailsForm from "./forms/accountDetailsForm";
+import MyApplications from "./myApplications";
+import { Container, Row, Col } from "react-bootstrap";
 
 function mapStateToProps(state) {
   console.log("mapstatetoprops");
@@ -119,123 +117,32 @@ class AccountPage extends Component {
       updateMessage,
     } = this.state;
     return (
-      <div className="container">
-        <div className="d-flex justify-content-center border-bottom border-dark mb-4">
-          <h4 className="">My Account</h4>
-        </div>
-        <div className="d-flex justify-content-around">
-          <div className="my-account-box border border-primary rounded p-2">
-            <h5 className="mb-0">Account Details</h5>
-            <div className="my-account-description">
-              Update your email address or password here
-            </div>
-            <Form noValidate onSubmit={this.handleSubmit}>
-              <TextInput
-                type="text"
-                name="name"
-                label="Your Name"
+      <React.Fragment>
+        <Container fluid>
+          <Row>
+            <Col className="text-center border-bottom border-dark mb-4">
+              <h4>My Account</h4>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={5} className="border-right border-dark">
+              <AccountDetailsForm
+                account={account}
+                errors={errors}
+                loading={loading}
+                updateMessage={updateMessage}
                 onChange={this.handleChange}
-                value={account.name}
-                col="div"
-                error={errors.name}
+                onSubmit={this.handleSubmit}
               />
-              <TextInput
-                name="emailAddress"
-                onChange={this.handleChange}
-                label="Email Address"
-                value={account.emailAddress}
-                error={errors.emailAddress}
-                col="div"
-              />
-              <TextInput
-                type="password"
-                name="password"
-                label="Password"
-                text="Minimum 8 characters"
-                onChange={this.handleChange}
-                value={account.password}
-                col="div"
-                error={errors.password}
-              />
-              <TextInput
-                type="password"
-                name="confirmPassword"
-                label="Confirm Password"
-                onChange={this.handleChange}
-                value={account.confirmPassword}
-                col="div"
-                error={errors.confirmPassword}
-              />
-              <SubmitButton text="Submit" loading={loading} />
-              {updateMessage.visible && (
-                <Alert variant="success" className="m-1 mt-3">
-                  {updateMessage.message}
-                </Alert>
-              )}
-              {errors.updateError && (
-                <Alert variant="danger" className="m-1 mt-3">
-                  {errors.updateError}
-                </Alert>
-              )}
-            </Form>
-          </div>
-          <div className="border border-primary rounded p-2">
-            <h5 className="mb-0">My Job Applications</h5>
-            <div className="my-account-description">
-              Job applications and their status
-            </div>
-            <Container fluid>
-              <Row className="font-weight-bold mb-2">
-                <Col lg={1}>App #</Col>
-                <Col lg={true}>Date </Col>
-                <Col lg={5}>Status</Col>
-                <Col lg={true}>Actions</Col>
-              </Row>
-              {!applications && <LoadingMessage />}
-              {applications &&
-                applications.map((app) => {
-                  const appStatus = Formatting.formatApplicationStatus(
-                    app.applicationStatus
-                  );
-                  return (
-                    <Row
-                      className="border-bottom border-dark pb-1 mb-2"
-                      key={app.id}
-                    >
-                      <Col lg={1}>{app.id}</Col>
-                      <Col lg={true}>
-                        {Formatting.formatDate(app.dateReceived)}
-                      </Col>
-                      <Col
-                        lg={5}
-                        className={
-                          "bg-" +
-                          appStatus.color +
-                          " text-" +
-                          appStatus.textColor
-                        }
-                      >
-                        {app.applicationStatus.status}
-                      </Col>
-                      <Col lg={true} className="d-flex">
-                        <Link
-                          to={"/applications/" + app.id}
-                          className="btn btn-primary btn-sm"
-                        >
-                          View
-                        </Link>
-                        &nbsp;
-                        <Button variant="danger" size="sm">
-                          Cancel
-                        </Button>
-                      </Col>
-                    </Row>
-                  );
-                })}
-            </Container>
-          </div>
-        </div>
-      </div>
+            </Col>
+            {/* <Col />
+            <Col /> */}
+            <Col lg={7}>
+              <MyApplications applications={applications} />
+            </Col>
+          </Row>
+        </Container>
+      </React.Fragment>
     );
   }
 }
