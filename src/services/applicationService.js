@@ -12,6 +12,12 @@ export async function getApplications(token, userId) {
   return returnValue;
 }
 
-export async function deleteApplication(token, userId) {
-  //let returnValue;
+export async function deleteApplication(token, id) {
+  console.log("deleteApplication input id:", id);
+  let returnValue = http.delete(config.get("api.url") + "/Applications/" + id, {
+    headers: { Authorization: "Bearer " + token },
+  });
+
+  console.log("deleteApplication return:", returnValue);
+  return returnValue;
 }
