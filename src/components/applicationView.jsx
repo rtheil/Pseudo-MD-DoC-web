@@ -52,7 +52,7 @@ const ApplicationView = ({ application }) => {
         </thead>
         <tbody>
           <tr>
-            <td>{application.eMailAddress}</td>
+            <td>{application.user.emailAddress}</td>
             <td>{Formatting.formatSsn(application.socialSecurityNumber)}</td>
             <td>{application.isUsCitizen ? "Yes" : "No"}</td>
             <td>{application.hasFelony ? "Yes" : "No"}</td>
