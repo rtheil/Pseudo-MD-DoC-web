@@ -6,6 +6,7 @@ import TextInput from "../formElements/textInput";
 import SubmitButton from "../formElements/submitButton";
 import Formatting from "../../formatting";
 import JoiSchemas from "../../joiSchemas";
+import LoadingMessage from "../loadingMessage";
 
 class RegisterForm extends Component {
   state = {
@@ -35,6 +36,7 @@ class RegisterForm extends Component {
     console.log("didMount:", this.props.match);
     const { token } = this.props.match.params;
     if (token !== undefined) {
+      this.setState({ loading: true });
       const verified = await verifyRegisterToken(token);
       //const verified = true; //fake it
       if (verified) {
@@ -42,7 +44,12 @@ class RegisterForm extends Component {
         createForm.formVisible = false;
         createForm.successMessage =
           "Your account has been successfully verified. You may now proceed to the login page.";
-        this.setState({ createForm });
+        this.setState({ createForm, loading: false });
+      } else {
+        const errors = {
+          registerError: "Could not verify account. Invalid Token.",
+        };
+        this.setState({ errors, loading: false });
       }
     }
   }
@@ -89,8 +96,10 @@ class RegisterForm extends Component {
 
   render() {
     const { createInfo, errors, loading, createForm } = this.state;
+    const { token } = this.props.match.params;
     return (
       <React.Fragment>
+        {loading && token !== undefined && <LoadingMessage />}
         {!createForm.formVisible && (
           <Alert variant="success" className="m-1 mt-3">
             <strong>{createForm.successMessage}</strong>
@@ -98,7 +107,7 @@ class RegisterForm extends Component {
             <Link to="/login">Click here to log in</Link> */}
           </Alert>
         )}
-        {createForm.formVisible && (
+        {createForm.formVisible && token !== undefined && (
           <React.Fragment>
             <strong>Create Account</strong>
             <Form onSubmit={this.handleCreateSubmit} className="mt-2">
@@ -142,7 +151,7 @@ class RegisterForm extends Component {
               <SubmitButton text="Submit" loading={loading} />
               {errors.registerError && errors.registerError !== "" && (
                 <Alert variant="danger" className="m-1 mt-3">
-                  <strong>Could not create an account</strong>
+                  <strong>Error</strong>
                   <br />
                   {errors.registerError}
                 </Alert>
