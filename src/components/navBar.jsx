@@ -55,18 +55,13 @@ class NavBar extends Component {
                   <React.Fragment>
                     <li className="nav-item">
                       <Link to="/applications" className="my-account-link">
-                        Job Applications
+                        All Applications
                       </Link>
                     </li>
-                    {/* <li className="nav-item">
-                      <Link to="/applications/new" className="my-account-link">
-                        New Application
-                      </Link>
-                    </li> */}
                   </React.Fragment>
                 )
               }
-              {
+              {/* {
                 //NON-ADMINISTRATORS
                 this.props.currentUser.administrator === false && (
                   <React.Fragment>
@@ -77,7 +72,7 @@ class NavBar extends Component {
                     </li>
                   </React.Fragment>
                 )
-              }
+              } */}
               {
                 //ALL LOGGED IN USERS
                 this.props.currentUser.token !== undefined && (

@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import LoadingMessage from "./loadingMessage";
 import { getApplications } from "../services/applicationService";
 import Formatting from "../formatting";
+import { Container, Row, Col } from "react-bootstrap";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -23,6 +24,7 @@ class ApplicationsPage extends Component {
     const { currentUser } = this.props;
     let { errors, applications } = this.state;
     if (currentUser.id === undefined) return this.props.history.push("/login");
+    if (!currentUser.administrator) return this.props.history.push("/account");
 
     const getApps = await getApplications(currentUser.token);
     if (getApps.status === 200) {
@@ -44,11 +46,21 @@ class ApplicationsPage extends Component {
 
     //ALL APPLICATIONS
     return (
-      <div className="container">
-        <h2>Employment Applications</h2>
-        <Link to="/applications/new" className="btn btn-success btn-sm mb-2">
-          + New Application
-        </Link>
+      <Container>
+        <Row className="pt-1">
+          <Col>
+            <h3>All Employment Applications</h3>
+          </Col>
+          <Col className="pt-1 text-right">
+            <Link
+              to="/applications/new"
+              className="btn btn-success btn-sm mb-2"
+            >
+              + New Application
+            </Link>
+          </Col>
+        </Row>
+
         <table className="table">
           <thead className="thead thead-dark">
             <tr>
@@ -82,7 +94,7 @@ class ApplicationsPage extends Component {
             ))}
           </tbody>
         </table>
-      </div>
+      </Container>
     );
   }
 }

@@ -1,18 +1,42 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Formatting from "../formatting";
 import LoadingMessage from "./loadingMessage";
+import { connect } from "react-redux";
+import { Alert, Container, Row, Col } from "react-bootstrap";
 
-const ApplicationView = ({ application }) => {
+function mapStateToProps(state) {
+  return { currentUser: state.currentUser };
+}
+
+const ApplicationView = ({ application, currentUser }) => {
   console.log("app top:", application);
-  //const formatting = new Formatting();
+  console.log("currentUser:", currentUser);
   if (application.id === undefined)
     return <LoadingMessage message="Loading Application..." />;
   return (
-    <div className="container">
-      {" "}
+    <Container>
       <h2>Job Application</h2>
-      <Link to="/applications">Back to Applications list</Link>
+      {currentUser.administrator && (
+        <React.Fragment>
+          <Alert variant="primary">
+            <strong>Admin Menu</strong>
+            <Container>
+              <Row>
+                <Col>
+                  <Alert variant="success">
+                    <strong>Application Status</strong>
+                    <br />
+                    {application.applicationStatus.status}
+                  </Alert>
+                </Col>
+                <Col>Two</Col>
+                <Col>Three</Col>
+              </Row>
+            </Container>
+          </Alert>
+        </React.Fragment>
+      )}
+      {/* <Link to="/applications">Back to Applications list</Link> */}
       <table className="table table-sm">
         <thead className="thead-dark">
           <tr>
@@ -178,8 +202,8 @@ const ApplicationView = ({ application }) => {
           )}
         </tbody>
       </table>
-    </div>
+    </Container>
   );
 };
 
-export default ApplicationView;
+export default connect(mapStateToProps)(ApplicationView);
