@@ -18,6 +18,8 @@ class ApplicationPage extends Component {
     loading: false,
     newApplication: {
       userId: this.props.currentUser.id,
+      ApplicationStatusId: 1,
+
       //INFO
       firstName: "Steve",
       middleInitial: "R",
