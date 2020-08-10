@@ -6,6 +6,10 @@ import config from "react-global-configuration";
 import { connect } from "react-redux";
 import ApplicationForm from "./forms/applicationForm";
 import JoiSchemas from "../joiSchemas";
+import {
+  getApplicationById,
+  addApplication,
+} from "../services/applicationService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -71,20 +75,20 @@ class ApplicationPage extends Component {
   async loadApplication() {
     console.log(this.props.match.params.Id);
     if (this.props.match.params.Id !== undefined) {
-      const url =
-        config.get("api.url") + "/Applications/" + this.props.match.params.Id;
-      await axios
-        .get(url, {
-          headers: { Authorization: "Bearer " + this.props.currentUser.token },
-        })
-        .then((response) => {
-          const application = response.data;
-          this.setState({ application });
-        })
-        .catch((error) => {
-          //ERROR
-          console.log("loadApplication error:", error.response);
-        });
+      console.log("LOADING");
+      let getApp = await getApplicationById(
+        this.props.currentUser.token,
+        this.props.match.params.Id
+      );
+      console.log(getApp);
+      if (getApp.status === 200) {
+        console.log("SUCCESS");
+        const application = getApp.data;
+        this.setState({ application });
+      } else {
+        const errors = { getApp: getApp.error };
+        this.setState({ errors });
+      }
     }
   }
 
@@ -278,21 +282,16 @@ class ApplicationPage extends Component {
     console.log("VALIDATE SUCCESS", newApplication);
     this.setState({ loading: true });
 
-    await axios
-      .post(config.get("api.url") + "/Applications", newApplication, {
-        headers: { Authorization: "Bearer " + this.props.currentUser.token },
-      })
-      .then((response) => {
-        console.log("server response:", response);
-        if (response.status === 201) {
-          console.log("STATUS 201: ", response);
-          console.log("applicationId:", response.data.id);
-          this.props.history.push("/applications/" + response.data.id);
-        }
-      })
-      .catch((error) => {
-        console.log("post error:", error.response.data.errors);
-      });
+    const addApp = await addApplication(
+      this.props.currentUser.token,
+      newApplication
+    );
+    if (addApp.status === 201) {
+      this.props.history.push("/applications/" + addApp.data.id);
+    } else {
+      const errors = { addApp: addApp.error };
+      this.setState({ errors });
+    }
     this.setState({ loading: false });
   };
 
