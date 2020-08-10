@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
 import ApplicationView from "./applicationView";
 import Formatting from "../formatting";
-import config from "react-global-configuration";
 import { connect } from "react-redux";
 import ApplicationForm from "./forms/applicationForm";
 import JoiSchemas from "../joiSchemas";

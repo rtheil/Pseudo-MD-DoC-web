@@ -10,8 +10,14 @@ function mapStateToProps(state) {
 }
 
 class AccountPage extends Component {
+  componentDidMount() {
+    //push to login page if not logged in
+    if (this.props.currentUser.emailAddress === undefined)
+      return this.props.history.push("/login");
+  }
   render() {
     console.log("PROPS:", this.props);
+    const { currentUser, history } = this.props;
     return (
       <React.Fragment>
         <Container fluid>
@@ -22,13 +28,10 @@ class AccountPage extends Component {
           </Row>
           <Row>
             <Col lg={5} className="border-right border-dark">
-              <AccountDetailsForm
-                currentUser={this.props.currentUser}
-                history={this.props.history}
-              />
+              <AccountDetailsForm currentUser={currentUser} history={history} />
             </Col>
             <Col lg={7}>
-              <MyApplications currentUser={this.props.currentUser} />
+              <MyApplications currentUser={currentUser} />
             </Col>
           </Row>
         </Container>

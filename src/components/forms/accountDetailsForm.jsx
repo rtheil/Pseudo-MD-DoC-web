@@ -24,10 +24,6 @@ class AccountDetailsForm extends Component {
       errors: {},
       loading: false,
     };
-
-    //push to login page if not logged in
-    if (this.props.currentUser.emailAddress === undefined)
-      this.props.history.push("/login");
   }
   handleChange = (e) => {
     const account = { ...this.state.account };
