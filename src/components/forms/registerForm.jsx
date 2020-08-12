@@ -97,6 +97,7 @@ class RegisterForm extends Component {
   render() {
     const { createInfo, errors, loading, createForm } = this.state;
     const { token } = this.props.match.params;
+    console.log("check:", token);
     return (
       <React.Fragment>
         {loading && token !== undefined && <LoadingMessage />}
@@ -107,7 +108,7 @@ class RegisterForm extends Component {
             <Link to="/login">Click here to log in</Link> */}
           </Alert>
         )}
-        {createForm.formVisible && token !== undefined && (
+        {createForm.formVisible && token === undefined && (
           <React.Fragment>
             <strong>Create Account</strong>
             <Form onSubmit={this.handleCreateSubmit} className="mt-2">
