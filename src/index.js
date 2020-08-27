@@ -12,6 +12,7 @@ import reducer from "./reducers/reducer";
 
 const store = createStore(reducer);
 //console.log("index.js store:", store.getState());
+//console.log("NODE_ENV", process.env.NODE_ENV);
 
 //DEV CONFIG
 config.set(
@@ -28,8 +29,8 @@ config.set(
   { environment: "production" }
 );
 
-//UNCOMMENT FOR PRODUCTION
-config.setEnvironment("production");
+if (process.env.NODE_ENV === "production")
+  config.setEnvironment(process.env.NODE_ENV);
 
 ReactDOM.render(
   <React.StrictMode>
