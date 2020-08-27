@@ -17,17 +17,17 @@ class MyApplications extends Component {
 
   async componentDidMount() {
     const { currentUser } = this.props;
-    let { errors, applications } = this.state;
+    //let { errors, applications } = this.state;
     //get my applications
     const getApps = await getApplications(currentUser.token, currentUser.id);
     if (getApps.status === 200) {
       //success
-      applications = getApps.data;
-      this.setState({ applications, loading: false });
+      //applications = getApps.data;
+      this.setState({ applications: getApps.data, loading: false });
     } else {
       //error
-      errors.getError = getApps.error;
-      this.setState({ errors, loading: false });
+      //errors.getError = getApps.error;
+      this.setState({ errors: getApps.error, loading: false });
     }
   }
 

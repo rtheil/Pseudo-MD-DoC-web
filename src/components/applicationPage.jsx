@@ -64,7 +64,7 @@ class ApplicationPage extends Component {
     this.loadApplication();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
       this.loadApplication();
     }

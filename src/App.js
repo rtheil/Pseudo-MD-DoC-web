@@ -30,19 +30,6 @@ function mapDispatchToProps(dispatch) {
 
 class App extends Component {
   state = {};
-
-  componentDidMount = () => {};
-
-  handleIncrement = () => {
-    this.setState({ count: this.state.count + 1 });
-    console.log(this.state);
-  };
-
-  loadApplications = () => {
-    this.setState({ mode: "applications" });
-    console.log("SET STATE TO APPLICATION");
-  };
-
   render() {
     //console.log("App.js props:", this.props.currentUser);
     return (

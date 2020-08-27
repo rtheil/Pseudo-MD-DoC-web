@@ -85,9 +85,8 @@ class ForgotForm extends Component {
       if (errors.confirmPassword !== undefined)
         errors.confirmPassword = "Passwords do not match";
       console.log(errors);
-      this.setState({ errors });
       if (errors.count > 0) {
-        this.setState({ loading: false });
+        this.setState({ errors, loading: false });
         return;
       }
 
@@ -105,9 +104,8 @@ class ForgotForm extends Component {
         emailAddress: forgotInfo.emailAddress,
       });
       console.log(errors);
-      this.setState({ errors });
       if (errors.count > 0) {
-        this.setState({ loading: false });
+        this.setState({ errors, loading: false });
         return;
       }
 
@@ -120,7 +118,7 @@ class ForgotForm extends Component {
     //PROCESS RESPONSE
     if (forgotStatus.status === 200) {
       forgotForm.formVisible = false;
-      //this.setState({ forgotForm });
+      errors.forgotError = "";
     } else {
       errors.forgotError = forgotStatus.error;
     }
@@ -135,7 +133,6 @@ class ForgotForm extends Component {
     if (token !== undefined) {
       console.log("token:", token);
       forgotInfo.token = token;
-      //this.setState({ forgotInfo });
       return (
         <React.Fragment>
           {!forgotForm.formVisible && forgotForm.successMessage !== "" && (

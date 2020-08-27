@@ -22,19 +22,16 @@ class ApplicationsPage extends Component {
 
   async componentDidMount() {
     const { currentUser } = this.props;
-    let { errors, applications } = this.state;
     if (currentUser.id === undefined) return this.props.history.push("/login");
     if (!currentUser.administrator) return this.props.history.push("/account");
 
     const getApps = await getApplications(currentUser.token);
     if (getApps.status === 200) {
       //success
-      applications = getApps.data;
-      this.setState({ applications, loading: false });
+      this.setState({ applications: getApps.data, loading: false });
     } else {
       //error
-      errors.getError = getApps.error;
-      this.setState({ errors, loading: false });
+      this.setState({ errors: getApps.error, loading: false });
     }
   }
 
