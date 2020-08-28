@@ -294,13 +294,14 @@ class ApplicationPage extends Component {
   };
 
   render() {
-    //console.log(this.props.match.params);
+    console.log("app:", this.state.application);
+    const { application } = this.state;
     if (this.props.currentUser.token === undefined)
       this.props.history.push("/login");
     return (
       <div>
         {this.props.match.params.Id !== undefined ? (
-          <ApplicationView application={this.state.application} />
+          <>{application.id && <ApplicationView application={application} />}</>
         ) : (
           <ApplicationForm
             state={this.state}

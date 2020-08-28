@@ -49,3 +49,16 @@ export async function deleteApplication(token, id) {
   console.log("deleteApplication return:", returnValue);
   return returnValue;
 }
+
+export async function updateApplicationStatus(token, applicationStatus) {
+  console.log("updateApplicationStatus input:", applicationStatus);
+  let returnValue = await http.put(
+    config.get("api.url") + "/Applications/status",
+    applicationStatus,
+    {
+      headers: { Authorization: "Bearer " + token },
+    }
+  );
+  console.log("updateApplicationStatus input:", applicationStatus);
+  return returnValue;
+}
