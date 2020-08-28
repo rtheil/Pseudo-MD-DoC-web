@@ -11,19 +11,19 @@ import Formatting from "../../formatting";
 import JoiSchemas from "../../joiSchemas";
 
 const forgotPasswordSuccessMessage = (
-  <React.Fragment>
+  <>
     <strong>Thank you</strong>
     <br />
     <br /> If the email address you entered is registered to an account, you
     will receive an email with instructions on how to reset your password.
-  </React.Fragment>
+  </>
 );
 const resetPasswordSuccessMessage = (
-  <React.Fragment>
+  <>
     <strong>Thank you</strong>
     <br />
     <br /> Your password has been reset successfully. Please proceed log in.
-  </React.Fragment>
+  </>
 );
 
 class ForgotForm extends Component {
@@ -134,14 +134,14 @@ class ForgotForm extends Component {
       console.log("token:", token);
       forgotInfo.token = token;
       return (
-        <React.Fragment>
+        <>
           {!forgotForm.formVisible && forgotForm.successMessage !== "" && (
             <Alert variant="success" className="mt-3">
               {forgotForm.successMessage}
             </Alert>
           )}
           {forgotForm.formVisible && (
-            <React.Fragment>
+            <>
               <strong>Reset Password</strong>
               <Form onSubmit={this.handleForgotSubmit} className="mt-2">
                 <TextInput
@@ -171,25 +171,25 @@ class ForgotForm extends Component {
                 />
                 <SubmitButton text="Submit" loading={loading} />
               </Form>
-            </React.Fragment>
+            </>
           )}
           {errors.forgotError && errors.forgotError !== "" && (
             <Alert variant="danger" className="mt-3">
               {errors.forgotError}
             </Alert>
           )}
-        </React.Fragment>
+        </>
       );
     } else
       return (
-        <React.Fragment>
+        <>
           {!forgotForm.formVisible && forgotForm.successMessage !== "" && (
             <Alert variant="success" className="mt-3">
               {forgotForm.successMessage}
             </Alert>
           )}
           {forgotForm.formVisible && (
-            <React.Fragment>
+            <>
               <strong>Forgot Password</strong>
               <Form onSubmit={this.handleForgotSubmit} className="mt-2">
                 <TextInput
@@ -203,14 +203,14 @@ class ForgotForm extends Component {
                 />
                 <SubmitButton text="Submit" loading={loading} />
               </Form>
-            </React.Fragment>
+            </>
           )}
           {errors.forgotError && errors.forgotError !== "" && (
             <Alert variant="danger" className="mt-3">
               {errors.forgotError}
             </Alert>
           )}
-        </React.Fragment>
+        </>
       );
   }
 }

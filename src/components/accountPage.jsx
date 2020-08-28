@@ -19,7 +19,7 @@ class AccountPage extends Component {
     console.log("PROPS:", this.props);
     const { currentUser, history } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Container fluid>
           <Row>
             <Col className="text-center border-bottom border-dark mb-4">
@@ -35,7 +35,7 @@ class AccountPage extends Component {
             </Col>
           </Row>
         </Container>
-      </React.Fragment>
+      </>
     );
   }
 }

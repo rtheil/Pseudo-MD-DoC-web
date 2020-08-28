@@ -52,31 +52,31 @@ class NavBar extends Component {
               {
                 //ADMINISTRATORS
                 this.props.currentUser.administrator && (
-                  <React.Fragment>
+                  <>
                     <li className="nav-item">
                       <Link to="/applications" className="my-account-link">
                         All Applications
                       </Link>
                     </li>
-                  </React.Fragment>
+                  </>
                 )
               }
               {/* {
                 //NON-ADMINISTRATORS
                 this.props.currentUser.administrator === false && (
-                  <React.Fragment>
+                  <>
                     <li className="nav-item">
                       <Link className="my-account-link" to="/applications">
                         My Applications
                       </Link>
                     </li>
-                  </React.Fragment>
+                  </>
                 )
               } */}
               {
                 //ALL LOGGED IN USERS
                 this.props.currentUser.token !== undefined && (
-                  <React.Fragment>
+                  <>
                     <li className="nav-item">
                       <Link className="my-account-link" to="/account">
                         Account Details
@@ -87,13 +87,13 @@ class NavBar extends Component {
                         Logout
                       </Link>
                     </li>
-                  </React.Fragment>
+                  </>
                 )
               }
               {
                 //LOGGED OUT USER
                 this.props.currentUser.token === undefined && (
-                  <React.Fragment>
+                  <>
                     <span className="" style={{ fontSize: 12 }}>
                       You are not logged in
                     </span>
@@ -107,7 +107,7 @@ class NavBar extends Component {
                         Register
                       </Link>
                     </li>
-                  </React.Fragment>
+                  </>
                 )
               }
             </ul>

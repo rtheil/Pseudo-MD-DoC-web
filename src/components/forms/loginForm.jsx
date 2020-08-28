@@ -95,7 +95,7 @@ class LoginForm extends Component {
     const { loginInfo, errors, loading, validated } = this.state;
     console.log("loginForm props.currentUser:", this.props.currentUser);
     return (
-      <React.Fragment>
+      <>
         <strong>Log in to your account</strong>
         <Form
           noValidate
@@ -136,7 +136,7 @@ class LoginForm extends Component {
             <Link to="/login/forgot">Forgot my password</Link>
           </Form.Text>
         </Form>
-      </React.Fragment>
+      </>
     );
   }
 }

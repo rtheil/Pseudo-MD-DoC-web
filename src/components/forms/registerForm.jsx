@@ -99,7 +99,7 @@ class RegisterForm extends Component {
     const { token } = this.props.match.params;
     console.log("check:", token);
     return (
-      <React.Fragment>
+      <>
         {loading && token !== undefined && <LoadingMessage />}
         {!createForm.formVisible && (
           <Alert variant="success" className="m-1 mt-3">
@@ -109,7 +109,7 @@ class RegisterForm extends Component {
           </Alert>
         )}
         {createForm.formVisible && token === undefined && (
-          <React.Fragment>
+          <>
             <strong>Create Account</strong>
             <Form onSubmit={this.handleCreateSubmit} className="mt-2">
               <TextInput
@@ -158,9 +158,9 @@ class RegisterForm extends Component {
                 </Alert>
               )}
             </Form>
-          </React.Fragment>
+          </>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }
