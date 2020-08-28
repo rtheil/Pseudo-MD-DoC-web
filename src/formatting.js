@@ -76,8 +76,8 @@ class Formatting {
       returnValue.color = "warning";
       returnValue.textColor = "dark";
     }
-    if (id === 4) returnValue.color = "danger";
-    if (id === 5 || id === 6) returnValue.color = "success";
+    if (id === 4 || id === 6) returnValue.color = "danger";
+    if (id === 5) returnValue.color = "success";
 
     return returnValue;
   }
