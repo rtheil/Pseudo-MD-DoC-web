@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import TextInput from "../formElements/textInput";
 import SubmitButton from "../formElements/submitButton";
 import { Form, Alert } from "react-bootstrap";
@@ -6,36 +6,32 @@ import JoiSchemas from "../../joiSchemas";
 import Formatting from "../../formatting";
 import { update } from "../../services/userService";
 
-class AccountDetailsForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      account: {
-        name: this.props.currentUser.name,
-        emailAddress: this.props.currentUser.emailAddress,
-        password: "",
-        confirmPassword: "",
-        administrator: this.props.currentUser.administrator,
-      },
-      updateMessage: {
-        visible: false,
-        message: "Account info updated successfully",
-      },
-      errors: {},
-      loading: false,
-    };
-  }
-  handleChange = (e) => {
-    const account = { ...this.state.account };
+export default function AccountDetailsForm({ currentUser }) {
+  const [account, setAccount] = useState({
+    name: currentUser.name,
+    emailAddress: currentUser.emailAddress,
+    password: "",
+    confirmPassword: "",
+    administrator: currentUser.administrator,
+  });
+
+  const [updateMessage, setUpdateMessage] = useState({
+    visible: false,
+    message: "Account info updated successfully",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    //console.log("change", e.target);
+    const { name, value } = e.target;
     account[e.currentTarget.id] = e.currentTarget.value;
-    this.setState({ account });
+    setAccount({ ...account, [name]: value });
   };
 
-  handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const account = { ...this.state.account };
-    const updateMessage = { ...this.state.updateMessage };
-
     console.log("state before submit", account);
 
     //are we updating the password?
@@ -54,11 +50,11 @@ class AccountDetailsForm extends Component {
     //verify first
     const errors = Formatting.formatJoiValidation(schema, object);
     console.log(errors);
-    if (errors.count > 0) return;
+    if (errors.count > 0) return setErrors(errors);
     console.log("VALIDATED");
 
-    // change button
-    this.setState({ loading: true });
+    //change button to loading
+    setLoading(true);
 
     //map to update object
     let updateObject = {
@@ -68,79 +64,76 @@ class AccountDetailsForm extends Component {
     };
 
     //call user service to update
-    const updatedUser = await update(this.props.currentUser, updateObject);
+    const updatedUser = await update(currentUser, updateObject);
     console.log("updatedUser");
     if (updatedUser.status === 200) {
       //SUCCESS
       updateMessage.visible = true;
+      setUpdateMessage(updateMessage);
     } else {
       //ERROR
       errors.updateError = updatedUser.error;
+      setErrors(errors);
     }
     console.log("updateMessage:", updateMessage);
-    this.setState({ loading: false, updateMessage, errors });
+    setLoading(false);
   };
 
-  render() {
-    const { account, errors, loading, updateMessage } = this.state;
-    return (
-      <div className="my-account-box border border-primary rounded p-2">
-        <h5 className="mb-0">Account Details</h5>
-        <div className="my-account-description">
-          Update your email address or password here
-        </div>
-        <Form noValidate onSubmit={this.handleSubmit}>
-          <TextInput
-            type="text"
-            name="name"
-            label="Your Name"
-            onChange={this.handleChange}
-            value={account.name}
-            col="div"
-            error={errors.name}
-          />
-          <TextInput
-            name="emailAddress"
-            onChange={this.handleChange}
-            label="Email Address"
-            value={account.emailAddress}
-            error={errors.emailAddress}
-            col="div"
-          />
-          <TextInput
-            type="password"
-            name="password"
-            label="Password"
-            text="Minimum 8 characters"
-            onChange={this.handleChange}
-            value={account.password}
-            col="div"
-            error={errors.password}
-          />
-          <TextInput
-            type="password"
-            name="confirmPassword"
-            label="Confirm Password"
-            onChange={this.handleChange}
-            value={account.confirmPassword}
-            col="div"
-            error={errors.confirmPassword}
-          />
-          <SubmitButton text="Submit" loading={loading} />
-          {updateMessage.visible && (
-            <Alert variant="success" className="m-1 mt-3">
-              {updateMessage.message}
-            </Alert>
-          )}
-          {errors.updateError && (
-            <Alert variant="danger" className="m-1 mt-3">
-              {errors.updateError}
-            </Alert>
-          )}
-        </Form>
+  return (
+    <div className="my-account-box border border-primary rounded p-2">
+      <h5 className="mb-0">Account Details</h5>
+      <div className="my-account-description">
+        Update your email address or password here
       </div>
-    );
-  }
+      <Form noValidate onSubmit={handleSubmit}>
+        <TextInput
+          type="text"
+          name="name"
+          label="Your Name"
+          onChange={handleChange}
+          value={account.name}
+          col="div"
+          error={errors.name}
+        />
+        <TextInput
+          name="emailAddress"
+          onChange={handleChange}
+          label="Email Address"
+          value={account.emailAddress}
+          error={errors.emailAddress}
+          col="div"
+        />
+        <TextInput
+          type="password"
+          name="password"
+          label="Password"
+          text="Minimum 8 characters"
+          onChange={handleChange}
+          value={account.password}
+          col="div"
+          error={errors.password}
+        />
+        <TextInput
+          type="password"
+          name="confirmPassword"
+          label="Confirm Password"
+          onChange={handleChange}
+          value={account.confirmPassword}
+          col="div"
+          error={errors.confirmPassword}
+        />
+        <SubmitButton text="Submit" loading={loading} />
+        {updateMessage.visible && (
+          <Alert variant="success" className="m-1 mt-3">
+            {updateMessage.message}
+          </Alert>
+        )}
+        {errors.updateError && (
+          <Alert variant="danger" className="m-1 mt-3">
+            {errors.updateError}
+          </Alert>
+        )}
+      </Form>
+    </div>
+  );
 }
-
-export default AccountDetailsForm;
