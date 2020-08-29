@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Col } from "react-bootstrap";
 
-const YesNoSelect = ({ name, label, value, size, onChange }) => {
+export default function YesNoSelect({ name, label, value, size, onChange }) {
   return (
     <Form.Group as={Col}>
       <Form.Label>{label}</Form.Label>
@@ -20,6 +20,4 @@ const YesNoSelect = ({ name, label, value, size, onChange }) => {
       </Form.Control>
     </Form.Group>
   );
-};
-
-export default YesNoSelect;
+}

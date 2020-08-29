@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Col, Alert as div } from "react-bootstrap";
 
-const TextInput = ({
+export default function TextInput({
   name,
   label,
   type = "text",
@@ -11,7 +11,7 @@ const TextInput = ({
   error,
   col = Col,
   text,
-}) => {
+}) {
   //console.log(name, error);
   let className = "";
   if (error) className = "form-error-field";
@@ -32,6 +32,4 @@ const TextInput = ({
       <Form.Text>{text}</Form.Text>
     </Form.Group>
   );
-};
-
-export default TextInput;
+}

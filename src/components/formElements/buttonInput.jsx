@@ -1,8 +1,14 @@
 import React from "react";
 import { Form, Button, Col } from "react-bootstrap";
 
-const ButtonInput = ({ name, label, text, variant, size, onClick }) => {
-  if (!variant) variant = "primary";
+export default function ButtonInput({
+  name,
+  label,
+  text,
+  variant = "primary",
+  size,
+  onClick,
+}) {
   return (
     <Form.Group as={Col} controlId={name} sm={size}>
       <Form.Label size="sm">{label}</Form.Label>
@@ -12,6 +18,4 @@ const ButtonInput = ({ name, label, text, variant, size, onClick }) => {
       </Button>
     </Form.Group>
   );
-};
-
-export default ButtonInput;
+}

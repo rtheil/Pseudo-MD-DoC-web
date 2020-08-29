@@ -71,9 +71,9 @@ const AllFake = () => {
             <li>
               API NuGet Packages
               <ul>
-                <li>Entity Framework Core</li>
+                <li>Entity Framework Core w/code-first migrations</li>
                 <li>Javascript Web Tokens</li>
-                <li>??</li>
+                <li>AutoMapper</li>
               </ul>
             </li>
             <li>

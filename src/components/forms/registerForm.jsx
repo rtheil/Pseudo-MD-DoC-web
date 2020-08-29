@@ -57,12 +57,12 @@ class RegisterForm extends Component {
 
   handleCreateSubmit = async (e) => {
     this.setState({ errors: {} });
-    const errors = { ...this.state.errors };
+    //const errors = { ...this.state.errors };
     const createForm = { ...this.state.createForm };
     const createInfo = { ...this.state.createInfo };
 
     e.preventDefault();
-    errors = Formatting.formatJoiValidation(
+    const errors = Formatting.formatJoiValidation(
       JoiSchemas.registerUserSchema(),
       createInfo
     );

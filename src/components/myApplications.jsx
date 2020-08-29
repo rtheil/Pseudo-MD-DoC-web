@@ -16,7 +16,7 @@ class MyApplications extends Component {
   }
 
   async componentDidMount() {
-    const { currentUser } = this.props;
+    const currentUser = { ...this.props.currentUser };
     //get my applications
     const getApps = await getApplications(currentUser.token, currentUser.id);
     if (getApps.status === 200) {
