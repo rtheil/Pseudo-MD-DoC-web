@@ -18,7 +18,7 @@ const AllFake = () => {
         <div className="text-left">
           <h5>Engineered with the following tools</h5>
           <ul>
-            <li>.Net Core 3 API written in C#</li>
+            <li>.Net Core 3.1 API written in C#</li>
             <li>
               <a href="https://docs.microsoft.com/en-us/ef/core/">
                 Microsoft Entity Framework Core
