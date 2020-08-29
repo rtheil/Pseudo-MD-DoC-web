@@ -48,7 +48,8 @@ class ForgotForm extends Component {
       console.log(token);
       const isGood = await verifyResetToken(token);
       if (!isGood) {
-        let { errors, forgotForm } = this.state;
+        const forgotForm = { ...this.state.forgotForm };
+        const errors = { ...this.state.forgotForm };
         forgotForm.formVisible = false;
         errors.forgotError = "Invalid Password Reset Token";
         this.setState({ errors, forgotForm });
@@ -57,14 +58,16 @@ class ForgotForm extends Component {
   }
 
   handleForgotChange = (e) => {
-    let { forgotInfo } = this.state;
+    const forgotInfo = { ...this.state.forgotInfo };
     forgotInfo[e.currentTarget.id] = e.currentTarget.value;
     //console.log("handleForgotChange", forgotInfo);
     this.setState({ forgotInfo });
   };
 
   handleForgotSubmit = async (e) => {
-    const { forgotInfo, forgotForm, errors } = this.state;
+    const forgotInfo = { ...this.state.forgotInfo };
+    const forgotForm = { ...this.state.forgotForm };
+    const errors = { ...this.state.errors };
     e.preventDefault();
     console.log("submit forgot password clicked", forgotInfo);
     this.setState({ loading: true });

@@ -17,7 +17,6 @@ class MyApplications extends Component {
 
   async componentDidMount() {
     const { currentUser } = this.props;
-    //let { errors, applications } = this.state;
     //get my applications
     const getApps = await getApplications(currentUser.token, currentUser.id);
     if (getApps.status === 200) {
@@ -33,7 +32,8 @@ class MyApplications extends Component {
 
   handleDelete = async (e) => {
     console.log("handleDelete e:", e.currentTarget);
-    let { applications, errors } = this.state;
+    let applications = { ...this.state.applications };
+    const errors = { ...this.state.applications };
     const applicationId = e.currentTarget.id;
     const deletedApplication = await deleteApplication(
       this.props.currentUser.token,

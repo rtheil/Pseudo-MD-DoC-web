@@ -33,7 +33,9 @@ class AccountDetailsForm extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    let { account, errors, updateMessage } = this.state;
+    const account = { ...this.state.account };
+    const updateMessage = { ...this.state.updateMessage };
+
     console.log("state before submit", account);
 
     //are we updating the password?
@@ -50,7 +52,7 @@ class AccountDetailsForm extends Component {
     }
 
     //verify first
-    errors = Formatting.formatJoiValidation(schema, object);
+    const errors = Formatting.formatJoiValidation(schema, object);
     console.log(errors);
     if (errors.count > 0) return;
     console.log("VALIDATED");

@@ -41,9 +41,10 @@ class LoginForm extends Component {
 
   componentDidMount() {
     if (config.get("helperValues")) {
-      let { loginInfo } = this.state;
-      loginInfo.emailAddress = "rtheil@codirt.com";
-      loginInfo.password = "r5Y@m6#Bj3XS7ttY";
+      const loginInfo = {
+        emailAddress: "rtheil@codirt.com",
+        password: "r5Y@m6#Bj3XS7ttY",
+      };
       this.setState({ loginInfo });
     }
   }

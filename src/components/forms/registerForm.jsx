@@ -25,11 +25,12 @@ class RegisterForm extends Component {
     //set helpful development values to state
     console.log("config env", config.get("helperValues"));
     if (config.get("helperValues")) {
-      const { createInfo } = this.state;
-      createInfo.name = "Test Name";
-      createInfo.emailAddress = "test@test.com";
-      createInfo.password = "r5Y@m6#Bj3XS7ttY";
-      createInfo.confirmPassword = "r5Y@m6#Bj3XS7ttY";
+      const createInfo = {
+        name: "Test Name",
+        emailAddress: "test@test.com",
+        password: "r5Y@m6#Bj3XS7ttY",
+        confirmPassword: "r5Y@m6#Bj3XS7ttY",
+      };
       this.setState({ createInfo });
     }
 
@@ -40,7 +41,7 @@ class RegisterForm extends Component {
       const verified = await verifyRegisterToken(token);
       //const verified = true; //fake it
       if (verified) {
-        let { createForm } = this.state;
+        const createForm = { ...this.state.createForm };
         createForm.formVisible = false;
         createForm.successMessage =
           "Your account has been successfully verified. You may now proceed to the login page.";
@@ -56,9 +57,11 @@ class RegisterForm extends Component {
 
   handleCreateSubmit = async (e) => {
     this.setState({ errors: {} });
-    let { createInfo, createForm, errors } = this.state;
+    const errors = { ...this.state.errors };
+    const createForm = { ...this.state.createForm };
+    const createInfo = { ...this.state.createInfo };
+
     e.preventDefault();
-    console.log("submit create account clicked", this.state.createInfo);
     errors = Formatting.formatJoiValidation(
       JoiSchemas.registerUserSchema(),
       createInfo

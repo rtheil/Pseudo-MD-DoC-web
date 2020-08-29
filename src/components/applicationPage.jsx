@@ -294,7 +294,7 @@ class ApplicationPage extends Component {
   };
 
   render() {
-    console.log("app:", this.state.application);
+    //console.log("app:", this.state.application);
     const { application } = this.state;
     if (this.props.currentUser.token === undefined)
       this.props.history.push("/login");
