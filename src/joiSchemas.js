@@ -22,13 +22,16 @@ class JoiSchemas {
     zipCode: Joi.string().required().min(5).max(5).label("Zip Code"),
     homePhone: Joi.string()
       .regex(this.phoneRegex)
-      .message("Invalid Phone Number"),
+      .message("Invalid Phone Number")
+      .label("Home Phone"),
     cellPhone: Joi.string()
       .regex(this.phoneRegex)
-      .message("Invalid Phone Number"),
+      .message("Invalid Phone Number")
+      .label("Cell Phone"),
     socialSecurityNumber: Joi.string()
       .regex(this.socialSecurityNumberRegex)
-      .message("Invalid SSN"),
+      .message("Invalid SSN")
+      .label("SSN"),
     isUsCitizen: Joi.boolean(),
     hasFelony: Joi.boolean(),
     willDrugTest: Joi.boolean(),
@@ -41,7 +44,10 @@ class JoiSchemas {
     employerName: Joi.string().required().min(3).label("Employer Name"),
     startDate: Joi.date().required().label("Start Date"),
     endDate: Joi.date().required().label("End Date"),
-    phone: Joi.string().regex(this.phoneRegex).message("Invalid Phone Number"),
+    phone: Joi.string()
+      .regex(this.phoneRegex)
+      .message("Invalid Phone Number")
+      .label("Phone Number"),
     position: Joi.string().required().min(5).label("Job Title"),
   });
 
