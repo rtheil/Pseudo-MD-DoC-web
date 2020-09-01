@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import config from "react-global-configuration";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,127 +19,104 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class LoginForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loginInfo: {
-        emailAddress: "",
-        password: "",
-      },
-      errors: {},
-      loading: false,
-    };
-    const { match } = this.props;
-    console.log("match:", match);
-    //LOG USER OUT
-    if (match.path === "/logout") {
-      this.handleLogout();
-    }
-    this.handleLogin();
-  }
+function LoginForm({ history, currentUser, match, setUser }) {
+  const [loginInfo, setLoginInfo] = useState({
+    emailAddress: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  componentDidMount() {
-    if (config.get("helperValues")) {
-      const loginInfo = {
+  useEffect(() => {
+    if (config.get("helperValues"))
+      setLoginInfo({
         emailAddress: "rtheil@codirt.com",
         password: "r5Y@m6#Bj3XS7ttY",
-      };
-      this.setState({ loginInfo });
+      });
+  }, []);
+
+  useEffect(() => {
+    if (match.path === "/logout") {
+      handleLogout();
     }
-  }
-  componentDidUpdate() {
-    this.handleLogin();
+    handleLogin();
+  });
+
+  function handleLogin() {
+    if (currentUser.token !== undefined) history.push("/account");
   }
 
-  handleLogout() {
-    const { history, setUser } = this.props;
+  function handleLogout() {
     setUser({});
     history.push("/");
   }
 
-  handleLogin() {
-    const { history, currentUser } = this.props;
-    if (currentUser.token !== undefined) history.push("/account");
-  }
+  const handleLoginChange = (e) => {
+    //if (e.currentTarget.type === "checkbox")
+    //loginInfo[e.currentTarget.id] = e.currentTarget.checked;
 
-  handleLoginSubmit = async (e) => {
+    const { id, value } = e.target;
+    setLoginInfo({ ...loginInfo, [id]: value });
+  };
+
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
     //CHANGE BUTTON
-    this.setState({ loading: true });
+    setLoading(true);
 
     //FAKE DELAY
     setTimeout(async () => {
       //CALL USER SERVICE
-      const response = await login(this.state.loginInfo);
+      const response = await login(loginInfo);
       console.log("post-login currentUser:", response);
-      if (response.data && response.data.token)
-        this.props.setUser(response.data);
+      if (response.data && response.data.token) setUser(response.data);
       else {
         console.log("login errors", response.error);
-        let errors = { loginError: response.error };
-        this.setState({ errors, loading: false });
+        setErrors({ loginError: response.error });
       }
     }, 0);
   };
 
-  handleLoginChange = (e) => {
-    const loginInfo = { ...this.state.loginInfo };
-    if (e.currentTarget.type === "checkbox")
-      loginInfo[e.currentTarget.id] = e.currentTarget.checked;
-    else loginInfo[e.currentTarget.id] = e.currentTarget.value;
-    this.setState({ loginInfo });
-  };
-
-  render() {
-    const { loginInfo, errors, loading, validated } = this.state;
-    console.log("loginForm props.currentUser:", this.props.currentUser);
-    return (
-      <>
-        <strong>Log in to your account</strong>
-        <Form
-          noValidate
-          validated={validated}
-          onSubmit={this.handleLoginSubmit}
-          className="mt-2"
-        >
-          <TextInput
-            type="email"
-            name="emailAddress"
-            label="Email Address"
-            onChange={this.handleLoginChange}
-            value={loginInfo.emailAddress}
-            col="div"
-            required={true}
+  return (
+    <>
+      <strong>Log in to your account</strong>
+      <Form onSubmit={handleLoginSubmit} className="mt-2">
+        <TextInput
+          type="email"
+          name="emailAddress"
+          label="Email Address"
+          onChange={handleLoginChange}
+          value={loginInfo.emailAddress}
+          col="div"
+          required={true}
+        />
+        <TextInput
+          type="password"
+          name="password"
+          label="Password"
+          onChange={handleLoginChange}
+          value={loginInfo.password}
+          col="div"
+        />
+        <Form.Group controlId="saveInfo">
+          <Form.Check
+            type="checkbox"
+            label="Save my login info"
+            onChange={handleLoginChange}
           />
-          <TextInput
-            type="password"
-            name="password"
-            label="Password"
-            onChange={this.handleLoginChange}
-            value={loginInfo.password}
-            col="div"
-          />
-          <Form.Group controlId="saveInfo">
-            <Form.Check
-              type="checkbox"
-              label="Save my login info"
-              onChange={this.handleLoginChange}
-            />
-          </Form.Group>
-          {errors.loginError && (
-            <Alert variant="danger">{errors.loginError}</Alert>
-          )}
-          <SubmitButton text="Submit" loading={loading} />
-          <Form.Text>
-            <Link to="/login/register">Create an account</Link> -{" "}
-            <Link to="/login/forgot">Forgot my password</Link>
-          </Form.Text>
-        </Form>
-      </>
-    );
-  }
+        </Form.Group>
+        {errors.loginError && (
+          <Alert variant="danger">{errors.loginError}</Alert>
+        )}
+        <SubmitButton text="Submit" loading={loading} />
+        <Form.Text>
+          <Link to="/login/register">Create an account</Link> -{" "}
+          <Link to="/login/forgot">Forgot my password</Link>
+        </Form.Text>
+      </Form>
+    </>
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

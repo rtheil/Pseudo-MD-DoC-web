@@ -25,9 +25,9 @@ export default function AccountDetailsForm({ currentUser }) {
 
   const handleChange = (e) => {
     //console.log("change", e.target);
-    const { name, value } = e.target;
-    account[e.currentTarget.id] = e.currentTarget.value;
-    setAccount({ ...account, [name]: value });
+    const { id, value } = e.target;
+    //account[e.currentTarget.id] = e.currentTarget.value;
+    setAccount({ ...account, [id]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -48,9 +48,9 @@ export default function AccountDetailsForm({ currentUser }) {
     }
 
     //verify first
-    const errors = Formatting.formatJoiValidation(schema, object);
-    console.log(errors);
-    if (errors.count > 0) return setErrors(errors);
+    const joiErrors = Formatting.formatJoiValidation(schema, object);
+    console.log(joiErrors);
+    if (joiErrors.count > 0) return setErrors(joiErrors);
     console.log("VALIDATED");
 
     //change button to loading
@@ -68,8 +68,9 @@ export default function AccountDetailsForm({ currentUser }) {
     console.log("updatedUser");
     if (updatedUser.status === 200) {
       //SUCCESS
-      updateMessage.visible = true;
-      setUpdateMessage(updateMessage);
+      setUpdateMessage((prevUpdateMessage) => {
+        return { ...prevUpdateMessage, visible: true };
+      });
     } else {
       //ERROR
       errors.updateError = updatedUser.error;
