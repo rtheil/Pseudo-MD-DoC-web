@@ -304,21 +304,21 @@ const ApplicationForm = ({
             onChange={handleChange}
             label="Name"
             value={newApplication.referenceName}
-            error={errors.referenceName}
+            error={errors.name}
           />
           <TextInput
             name="referencePhoneNumber"
             onChange={handleChange}
             label="Phone Number"
             value={newApplication.referencePhoneNumber}
-            error={errors.referencePhoneNumber}
+            error={errors.phoneNumber}
           />
           <TextInput
             name="referenceRelation"
             onChange={handleChange}
             label="Relation"
             value={newApplication.referenceRelation}
-            error={errors.referenceRelation}
+            error={errors.relation}
           />
           <div className="container-lg">
             {state.newApplication.references !== undefined &&

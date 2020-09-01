@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import config from "react-global-configuration";
 import ApplicationView from "./applicationView";
 import Formatting from "../formatting";
 import { connect } from "react-redux";
@@ -23,40 +24,40 @@ class ApplicationPage extends Component {
       ApplicationStatusId: 1,
 
       //INFO
-      firstName: "Steve",
-      middleInitial: "R",
-      lastName: "Smith",
-      address: "123 Cherry Street",
-      city: "Langley Falls",
-      state: "VA",
-      zipCode: "00001",
-      homePhone: "(123) 456-7890",
-      cellPhone: "(123) 456-7890",
-      socialSecurityNumber: "123-45-6789",
-      isUsCitizen: true,
-      hasFelony: false,
-      willDrugTest: true,
+      firstName: "",
+      middleInitial: "",
+      lastName: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      homePhone: "",
+      cellPhone: "",
+      socialSecurityNumber: "",
+      isUsCitizen: "",
+      hasFelony: "",
+      willDrugTest: "",
 
       //EMPLOYMENT
       employment: [],
-      employerName: "My Employer",
-      employerStartDate: "2020-01-01",
-      employerEndDate: "2020-10-31",
-      employerPhoneNumber: "(123) 456-7890",
-      employerJobTitle: "Job Expert",
+      employerName: "",
+      employerStartDate: "",
+      employerEndDate: "",
+      employerPhoneNumber: "",
+      employerJobTitle: "",
 
       //EDUCATION
       education: [],
-      schoolName: "University",
-      schoolStartDate: "1997-01-01",
-      schoolEndDate: "2001-05-01",
-      schoolDegree: "Bachelor Degree",
+      schoolName: "",
+      schoolStartDate: "",
+      schoolEndDate: "",
+      schoolDegree: "",
 
       //REFERENCES
       references: [],
-      referenceName: "My Brother",
-      referencePhoneNumber: "(123) 456-7890",
-      referenceRelation: "Friend",
+      referenceName: "",
+      referencePhoneNumber: "",
+      referenceRelation: "",
     },
   };
 
@@ -71,7 +72,7 @@ class ApplicationPage extends Component {
   }
 
   async loadApplication() {
-    console.log(this.props.match.params.Id);
+    //console.log(this.props.match.params.Id);
     if (this.props.match.params.Id !== undefined) {
       console.log("LOADING");
       let getApp = await getApplicationById(
@@ -86,6 +87,51 @@ class ApplicationPage extends Component {
       } else {
         const errors = { getApp: getApp.error };
         this.setState({ errors });
+      }
+    } else {
+      if (config.get("helperValues")) {
+        //console.log("LOAD TESTING VALUES");
+        const newApplication = {
+          userId: this.props.currentUser.id,
+          ApplicationStatusId: 1,
+
+          //INFO
+          firstName: "Steve",
+          middleInitial: "R",
+          lastName: "Smith",
+          address: "123 Cherry Street",
+          city: "Langley Falls",
+          state: "VA",
+          zipCode: "00001",
+          homePhone: "(123) 456-7890",
+          cellPhone: "(123) 456-7890",
+          socialSecurityNumber: "123-45-6789",
+          isUsCitizen: true,
+          hasFelony: false,
+          willDrugTest: true,
+
+          //EMPLOYMENT
+          employment: [],
+          employerName: "My Employer",
+          employerStartDate: "2020-01-01",
+          employerEndDate: "2020-10-31",
+          employerPhoneNumber: "(123) 456-7890",
+          employerJobTitle: "Job Expert",
+
+          //EDUCATION
+          education: [],
+          schoolName: "University",
+          schoolStartDate: "1997-01-01",
+          schoolEndDate: "2001-05-01",
+          schoolDegree: "Bachelor Degree",
+
+          //REFERENCES
+          references: [],
+          referenceName: "My Brother",
+          referencePhoneNumber: "(123) 456-7890",
+          referenceRelation: "Friend",
+        };
+        this.setState({ newApplication });
       }
     }
   }

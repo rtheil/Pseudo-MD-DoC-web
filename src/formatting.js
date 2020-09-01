@@ -2,6 +2,7 @@ class Formatting {
   //FORMAT A PHONE NUMBER FOR INPUT FIELD
   static formatPhoneNumber(phoneNumber, clean) {
     let cleaned = ("" + phoneNumber).replace(/\D/g, "");
+    if (cleaned.length > 10) cleaned = cleaned.substring(0, 10);
     if (clean) return cleaned;
     let pattern = /^(\d{1,3})(\d{0,3})(\d{0,4})$/gm;
     let matches = pattern.exec(cleaned);
@@ -53,6 +54,7 @@ class Formatting {
         let msg = item.message;
         /*eslint no-useless-escape: "off"*/
         msg = msg.replace(/\"/gm, "");
+        msg = msg.replace("is not allowed to", "can't");
         errors[item.path[0]] = msg;
         count++;
       }

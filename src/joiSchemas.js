@@ -56,7 +56,8 @@ class JoiSchemas {
     name: Joi.string().required().min(3).label("Name"),
     phoneNumber: Joi.string()
       .regex(this.phoneRegex)
-      .message("Invalid Phone Number"),
+      .message("Invalid Phone Number")
+      .label("Phone Number"),
     relation: Joi.string().required().min(3).label("Relation"),
   });
 
