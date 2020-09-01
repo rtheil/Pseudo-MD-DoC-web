@@ -13,7 +13,7 @@ export default function HomePage() {
   return (
     <Container className="container-lg">
       <Row>
-        <Col sm={3} className="border-right pl-1">
+        <Col sm={5} lg={3} className="border-right pl-1">
           <div className="font-weight-bold">Top Links</div>
           <ul>
             <li>
