@@ -29,7 +29,7 @@ class ApplicationView extends Component {
   };
 
   handleStatusChange = async (e) => {
-    //let application = { ...this.state.application };
+    this.setState({ loading: true });
     const type = e.currentTarget.name;
 
     let applicationStatus = {
@@ -46,10 +46,11 @@ class ApplicationView extends Component {
       applicationStatus
     );
     if (result.status === 200) {
-      this.setState({ application: result.data, loading: false });
+      this.setState({ application: result.data });
     } else {
       //ADD ERROR HANDLING
     }
+    this.setState({ loading: false });
   };
 
   render() {
@@ -63,7 +64,7 @@ class ApplicationView extends Component {
     // console.log("app top:", application);
     const status = application.applicationStatus.status;
     const statusId = application.applicationStatus.id;
-    const { testScore } = this.state;
+    const { testScore, loading } = this.state;
 
     return (
       <Container>
@@ -87,6 +88,7 @@ class ApplicationView extends Component {
                             text="Background Check Submitted"
                             name="backgroundCheckSubmitted"
                             onClick={this.handleStatusChange}
+                            loading={loading}
                           />
                         </>
                       )}
@@ -97,31 +99,35 @@ class ApplicationView extends Component {
                             text="Background Check Passed"
                             name="backgroundCheckPassed"
                             onClick={this.handleStatusChange}
+                            loading={loading}
                           />{" "}
                           <SubmitButton
                             variant="danger"
                             text="Background Check Failed"
                             name="backgroundCheckFailed"
                             onClick={this.handleStatusChange}
+                            loading={loading}
                           />
                         </>
                       )}
                       {statusId === 3 && (
                         <>
-                          {/* <Form style={{ maxWidth: 170 }}> */}
-                          <TextInput
-                            name="testScore"
-                            label="Test Score"
-                            value={testScore}
-                            onChange={this.handleTestScoreChange}
-                          />{" "}
-                          <SubmitButton
-                            variant="success"
-                            text="Submit Test Score"
-                            name="submitTestScore"
-                            onClick={this.handleStatusChange}
-                          />{" "}
-                          {/* </Form> */}
+                          <div style={{ maxWidth: 155 }}>
+                            <TextInput
+                              name="testScore"
+                              label="Test Score"
+                              value={testScore}
+                              onChange={this.handleTestScoreChange}
+                              loading={loading}
+                            />{" "}
+                            <SubmitButton
+                              variant="success"
+                              text="Submit Test Score"
+                              name="submitTestScore"
+                              onClick={this.handleStatusChange}
+                              loading={loading}
+                            />{" "}
+                          </div>
                         </>
                       )}
                       {statusId === 4 && (
