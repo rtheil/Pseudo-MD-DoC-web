@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { Navbar, Nav } from "react-bootstrap";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -8,7 +9,7 @@ function mapStateToProps(state) {
 
 function NavBar(props) {
   console.log("navbar props:", props);
-  const currentUser = { ...props.currentUser };
+  const { currentUser } = props;
   return (
     <div>
       <nav className="nav-dark">
@@ -100,40 +101,50 @@ function NavBar(props) {
           </ul>
         </div>
       </div>
-      <nav style={{ backgroundColor: "#920807", paddingTop: 4 }}>
-        <ul className="nav nav-fill">
-          <li className="nav-item">
-            <Link to="/" className="nav-link nav-small-link active">
-              HOME
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/fake" className="nav-link nav-small-link">
-              ABOUT
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/fake" className="nav-link nav-small-link">
-              PRETRIAL DETENTION
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/fake" className="nav-link nav-small-link">
-              CORRECTIONS
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/fake" className="nav-link nav-small-link">
-              PAROLE & PROBATION
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/fake" className="nav-link nav-small-link">
-              REHABILITATION
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      <Navbar
+        expand="md"
+        className="font-weight-bold pt-0 pb-0 navbar-dark"
+        style={{ backgroundColor: "#920807" }}
+      >
+        <Navbar.Toggle aria-controls="basic-navbar-nav1 navbar-dark">
+          <span className="navbar-toggler-icon"></span>
+          <span className="text-white"> Main Menu</span>
+        </Navbar.Toggle>
+        <Navbar.Collapse id="basic-navbar-nav1">
+          <Nav fill className="nav container mr-auto">
+            <Nav.Item>
+              <Link to="/" className="nav-small-link">
+                HOME
+              </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to="/fake" className="nav-small-link">
+                ABOUT
+              </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to="/fake" className="nav-small-link">
+                PRETRIAL DETENTION
+              </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to="/fake" className="nav-small-link">
+                CORRECTIONS
+              </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to="/fake" className="nav-small-link">
+                PAROLE & PROBATION
+              </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to="/fake" className="nav-small-link">
+                REHABILITATION
+              </Link>
+            </Nav.Item>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     </div>
   );
 }
