@@ -33,6 +33,8 @@ function LoginForm({ history, currentUser, match, setUser }) {
         emailAddress: "rtheil@codirt.com",
         password: "r5Y@m6#Bj3XS7ttY",
       });
+    // const autoLogin = true;
+    // if (autoLogin) handleLoginSubmit(null);
   }, []);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ function LoginForm({ history, currentUser, match, setUser }) {
   });
 
   function handleLogin() {
-    if (currentUser.token !== undefined) history.push("/account");
+    if (currentUser.token !== undefined) history.push("/applications");
   }
 
   function handleLogout() {
@@ -60,7 +62,7 @@ function LoginForm({ history, currentUser, match, setUser }) {
   };
 
   const handleLoginSubmit = async (e) => {
-    e.preventDefault();
+    if (e !== null) e.preventDefault();
 
     //CHANGE BUTTON
     setLoading(true);

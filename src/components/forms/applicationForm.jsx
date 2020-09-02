@@ -2,7 +2,7 @@ import React from "react";
 //import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import TextInput from "../formElements/textInput";
-import YesNoSelect from "../formElements/yesNoSelect";
+import SelectInput from "../formElements/SelectInput";
 import ButtonInput from "../formElements/buttonInput";
 import SubmitButton from "../formElements/submitButton";
 
@@ -108,19 +108,19 @@ const ApplicationForm = ({
             error={errors.socialSecurityNumber}
             size="2"
           />
-          <YesNoSelect
+          <SelectInput
             name="isUsCitizen"
             label="US Citizen?"
             value={newApplication.isUsCitizen}
             onChange={handleChange}
           />
-          <YesNoSelect
+          <SelectInput
             name="hasFelony"
             label="Felony Conviction"
             value={newApplication.hasFelony}
             onChange={handleChange}
           />
-          <YesNoSelect
+          <SelectInput
             name="willDrugTest"
             label="Drug Test?"
             value={newApplication.willDrugTest}

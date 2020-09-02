@@ -5,9 +5,14 @@ import { Link } from "react-router-dom";
 //import config from "react-global-configuration";
 import { connect } from "react-redux";
 import LoadingMessage from "./loadingMessage";
-import { getApplications } from "../services/applicationService";
+import {
+  getApplications,
+  getApplicationStatuses,
+} from "../services/applicationService";
 import Formatting from "../formatting";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Alert } from "react-bootstrap";
+import TextInput from "./formElements/textInput";
+import SelectInput from "./formElements/SelectInput";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -16,8 +21,12 @@ function mapStateToProps(state) {
 class ApplicationsPage extends Component {
   state = {
     applications: [],
+    filteredApplications: [],
+    applicationStatuses: [],
+    applicationFilters: { statusFilter: null, nameFilter: "" },
     applicationid: null,
     errors: {},
+    loading: true,
   };
 
   async componentDidMount() {
@@ -28,19 +37,71 @@ class ApplicationsPage extends Component {
     const getApps = await getApplications(currentUser.token);
     if (getApps.status === 200) {
       //success
-      this.setState({ applications: getApps.data, loading: false });
+      this.setState({
+        applications: getApps.data,
+        filteredApplications: getApps.data,
+      });
     } else {
       //error
-      this.setState({ errors: getApps.error, loading: false });
+      this.setState({ errors: getApps.error });
     }
+
+    const getAppStatuses = await getApplicationStatuses(currentUser.token);
+    if (getAppStatuses.status === 200) {
+      let newAppStatuses = [{ value: null, text: "All" }];
+      getAppStatuses.data.forEach((status) => {
+        newAppStatuses.push({ value: status.id, text: status.status });
+      });
+      this.setState({ applicationStatuses: newAppStatuses });
+    } else {
+      //error
+    }
+
+    this.setState({ loading: false });
   }
+
+  handleFilterChange = (e) => {
+    //console.log("FILTER", e.target);
+    console.log("Filter value", e.target.value);
+    const applicationFilters = { ...this.state.applicationFilters };
+    let filteredApplications = [...this.state.applications];
+    console.log("filteredApplications2", filteredApplications);
+    applicationFilters[e.target.id] = e.target.value;
+
+    //status filter
+    if (applicationFilters.statusFilter !== null) {
+      filteredApplications = filteredApplications.filter(
+        (app) =>
+          app.applicationStatus.id === parseInt(applicationFilters.statusFilter)
+      );
+    }
+
+    //name filter
+    if (applicationFilters.nameFilter !== "") {
+      filteredApplications = filteredApplications.filter(
+        (app) =>
+          app.firstName
+            .toLowerCase()
+            .includes(applicationFilters.nameFilter.toLowerCase()) ||
+          app.lastName
+            .toLowerCase()
+            .includes(applicationFilters.nameFilter.toLowerCase())
+      );
+    }
+
+    //date filter
+    //if (applicationFilters.startDateFilter)
+
+    this.setState({ filteredApplications, applicationFilters });
+    //this.setState({ applicationFilters });
+  };
 
   render() {
     if (this.state.applicationid !== null)
       return <ApplicationPage appId={this.state.applicationid} />;
     else if (this.state.applications.length === 0)
       return <LoadingMessage message="Loading Applications..." />;
-
+    const { filteredApplications } = this.state;
     //ALL APPLICATIONS
     return (
       <Container>
@@ -57,6 +118,28 @@ class ApplicationsPage extends Component {
             </Link>
           </Col>
         </Row>
+        <Alert variant="secondary" className="">
+          <strong>Filters</strong>
+          <Row>
+            <Col>
+              <TextInput
+                name="nameFilter"
+                label="Name Filter"
+                onChange={this.handleFilterChange}
+              />
+            </Col>
+            <Col>
+              <SelectInput
+                name="statusFilter"
+                label="Application Status"
+                options={this.state.applicationStatuses}
+                onChange={this.handleFilterChange}
+              />
+            </Col>
+            <Col>Three</Col>
+            <Col>Four</Col>
+          </Row>
+        </Alert>
 
         <table className="table">
           <thead className="thead thead-dark">
@@ -69,7 +152,7 @@ class ApplicationsPage extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.applications.map((app) => (
+            {filteredApplications.map((app) => (
               <tr key={app.id}>
                 <td>
                   {app.firstName} {app.lastName}

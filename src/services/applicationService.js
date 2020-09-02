@@ -59,6 +59,18 @@ export async function updateApplicationStatus(token, applicationStatus) {
       headers: { Authorization: "Bearer " + token },
     }
   );
-  console.log("updateApplicationStatus input:", applicationStatus);
+  console.log("updateApplicationStatus return:", returnValue);
+  return returnValue;
+}
+
+export async function getApplicationStatuses(token) {
+  console.log("getApplicationStatuses input", token);
+  let returnValue = await http.get(
+    config.get("api.url") + "/Applications/status",
+    {
+      headers: { Authorization: "Bearer " + token },
+    }
+  );
+  console.log("getApplicationStatuses return:", returnValue);
   return returnValue;
 }
