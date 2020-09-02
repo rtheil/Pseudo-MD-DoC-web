@@ -23,7 +23,12 @@ class ApplicationsPage extends Component {
     applications: [],
     filteredApplications: [],
     applicationStatuses: [],
-    applicationFilters: { statusFilter: null, nameFilter: "" },
+    applicationFilters: {
+      statusFilter: 0,
+      nameFilter: "",
+      startDateFilter: "",
+      endDateFilter: "",
+    },
     applicationid: null,
     errors: {},
     loading: true,
@@ -48,7 +53,7 @@ class ApplicationsPage extends Component {
 
     const getAppStatuses = await getApplicationStatuses(currentUser.token);
     if (getAppStatuses.status === 200) {
-      let newAppStatuses = [{ value: null, text: "All" }];
+      let newAppStatuses = [{ value: 0, text: "All" }];
       getAppStatuses.data.forEach((status) => {
         newAppStatuses.push({ value: status.id, text: status.status });
       });
@@ -65,11 +70,10 @@ class ApplicationsPage extends Component {
     console.log("Filter value", e.target.value);
     const applicationFilters = { ...this.state.applicationFilters };
     let filteredApplications = [...this.state.applications];
-    console.log("filteredApplications2", filteredApplications);
     applicationFilters[e.target.id] = e.target.value;
 
     //status filter
-    if (applicationFilters.statusFilter !== null) {
+    if (parseInt(applicationFilters.statusFilter) !== 0) {
       filteredApplications = filteredApplications.filter(
         (app) =>
           app.applicationStatus.id === parseInt(applicationFilters.statusFilter)
@@ -90,7 +94,22 @@ class ApplicationsPage extends Component {
     }
 
     //date filter
-    //if (applicationFilters.startDateFilter)
+    if (applicationFilters.startDateFilter !== "") {
+      const startDateFilter = Date.parse(applicationFilters.startDateFilter);
+      //console.log("start date filter", startDateFilter);
+      filteredApplications = filteredApplications.filter(
+        (app) => Date.parse(app.dateReceived) >= startDateFilter
+      );
+    }
+    if (applicationFilters.endDateFilter !== "") {
+      let endDateFilter =
+        Date.parse(applicationFilters.endDateFilter) + 172800000; //wtf?
+
+      console.log("end date filter", endDateFilter);
+      filteredApplications = filteredApplications.filter(
+        (app) => Date.parse(app.dateReceived) <= endDateFilter
+      );
+    }
 
     this.setState({ filteredApplications, applicationFilters });
     //this.setState({ applicationFilters });
@@ -136,8 +155,22 @@ class ApplicationsPage extends Component {
                 onChange={this.handleFilterChange}
               />
             </Col>
-            <Col>Three</Col>
-            <Col>Four</Col>
+            <Col>
+              <TextInput
+                name="startDateFilter"
+                label="Newer Than"
+                type="date"
+                onChange={this.handleFilterChange}
+              />
+            </Col>
+            <Col>
+              <TextInput
+                name="endDateFilter"
+                label="Older Than"
+                type="date"
+                onChange={this.handleFilterChange}
+              />
+            </Col>
           </Row>
         </Alert>
 
