@@ -119,7 +119,7 @@ class ApplicationsPage extends Component {
     if (this.state.applicationid !== null)
       return <ApplicationPage appId={this.state.applicationid} />;
     else if (this.state.applications.length === 0)
-      return <LoadingMessage message="Loading Applications..." />;
+      return <LoadingMessage message="Loading..." />;
     const { filteredApplications } = this.state;
     //ALL APPLICATIONS
     return (

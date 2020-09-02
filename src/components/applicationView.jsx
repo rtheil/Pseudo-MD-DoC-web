@@ -57,7 +57,7 @@ class ApplicationView extends Component {
     const { currentUser } = this.props;
     const application = { ...this.state.application };
     if (application.id === undefined)
-      return <LoadingMessage message="Loading Application..." />;
+      return <LoadingMessage message="Loading..." />;
 
     //set some vars
     // console.log("currentUser:", currentUser);
