@@ -28,9 +28,9 @@ class Formatting {
   static formatSsn(ssn, clean) {
     const cleaned = ("" + ssn).replace(/\D/g, "");
     if (clean) return cleaned;
-    console.log("clean SSN:", cleaned);
+    //console.log("clean SSN:", cleaned);
     const matches = cleaned.match(/^(\d{1,3})(\d{0,2})(\d{0,4})$/);
-    console.log(matches);
+    //console.log(matches);
     if (matches) {
       let out = matches[1];
       if (matches[2].length >= 1) out += "-" + matches[2];
