@@ -11,12 +11,14 @@ import { createStore } from "redux";
 import reducer from "./reducers/reducer";
 
 const store = createStore(reducer);
-//console.log("index.js store:", store.getState());
-//console.log("NODE_ENV", process.env.NODE_ENV);
 
 //DEV CONFIG
 config.set(
-  { api: { url: "https://localhost:5001/api" }, helperValues: true },
+  {
+    api: { url: "https://localhost:5001/api" },
+    helperValues: true,
+    consoleLogging: true,
+  },
   { freeze: false }
 );
 
@@ -25,6 +27,7 @@ config.set(
   {
     api: { url: "https://md-doc-api.azurewebsites.net/api" },
     helperValues: false,
+    consoleLogging: false,
   },
   { environment: "production" }
 );

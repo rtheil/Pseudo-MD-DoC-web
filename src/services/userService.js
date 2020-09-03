@@ -1,60 +1,61 @@
 import Axios from "axios";
 import config from "react-global-configuration";
 import http from "./httpService";
+import logger from "./logService";
 
 export async function login(loginInfo) {
-  console.log("userService.login input:", loginInfo);
+  logger.log("userService.login input:", loginInfo);
   let returnValue = await http.post(
     config.get("api.url") + "/users/authenticate",
     loginInfo
   );
-  console.log("userService.login return:", returnValue);
+  logger.log("userService.login return:", returnValue);
   return returnValue;
 }
 
 export async function register(createInfo) {
-  console.log("userService.register input:", createInfo);
+  logger.log("userService.register input:", createInfo);
   let returnValue = await http.post(
     config.get("api.url") + "/users/register",
     createInfo
   );
-  console.log("userService.register return:", returnValue);
+  logger.log("userService.register return:", returnValue);
   return returnValue;
 }
 
 export async function update(currentUser, updateInfo) {
-  console.log("userService.update input:", updateInfo);
+  logger.log("userService.update input:", updateInfo);
   let returnValue = await http.put(
     config.get("api.url") + "/users/" + currentUser.id,
     updateInfo,
     { headers: { Authorization: "Bearer " + currentUser.token } }
   );
-  console.log("userService.update return:", returnValue);
+  logger.log("userService.update return:", returnValue);
   return returnValue;
 }
 
 export async function forgotPassword(forgotInfo) {
-  console.log("userService.forgotPassword input:", forgotInfo);
+  logger.log("userService.forgotPassword input:", forgotInfo);
   let returnValue = await http.post(
     config.get("api.url") + "/users/forgot",
     forgotInfo
   );
-  console.log("userService.forgotPassword return:", returnValue);
+  logger.log("userService.forgotPassword return:", returnValue);
   return returnValue;
 }
 
 export async function resetPassword(forgotInfo) {
-  console.log("userService resetPassword input:", forgotInfo);
+  logger.log("userService resetPassword input:", forgotInfo);
   let returnValue = await http.post(
     config.get("api.url") + "/users/reset",
     forgotInfo
   );
-  console.log("userService resetPassword return:", returnValue);
+  logger.log("userService resetPassword return:", returnValue);
   return returnValue;
 }
 
 export async function verifyResetToken(token) {
-  console.log("userService.verifyResetToken input:", token);
+  logger.log("userService.verifyResetToken input:", token);
   let returnValue = false;
   let task = await http.post(
     config.get("api.url") + "/users/verifyresettoken",
@@ -63,13 +64,13 @@ export async function verifyResetToken(token) {
     }
   );
   if (task.status === 200) returnValue = true;
-  console.log("userService.verifyResetToken return:", returnValue);
+  logger.log("userService.verifyResetToken return:", returnValue);
   return returnValue;
 }
 
 export async function verifyRegisterToken(token) {
   let returnValue = false;
-  console.log("verifyRegisterToken");
+  logger.log("verifyRegisterToken");
   await Axios.post(config.get("api.url") + "/users/verifyregistertoken", {
     token: token,
   })

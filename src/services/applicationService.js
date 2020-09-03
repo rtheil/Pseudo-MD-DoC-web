@@ -1,31 +1,32 @@
 import config from "react-global-configuration";
 import http from "./httpService";
+import logger from "./logService";
 
 export async function getApplications(token, userId) {
   let url = config.get("api.url") + "/Applications";
   if (userId !== undefined) url += "/user/" + userId;
-  console.log("applicationService.getApplications url", url);
+  logger.log("applicationService.getApplications url", url);
   let returnValue = await http.get(url, {
     headers: { Authorization: "Bearer " + token },
   });
-  console.log("applicationService.getApplications return", returnValue);
+  logger.log("applicationService.getApplications return", returnValue);
   return returnValue;
 }
 
 export async function getApplicationById(token, applicationId) {
-  console.log("applicationService.getApplications input", applicationId);
+  logger.log("applicationService.getApplications input", applicationId);
   let returnValue = await http.get(
     config.get("api.url") + "/Applications/" + applicationId,
     {
       headers: { Authorization: "Bearer " + token },
     }
   );
-  console.log("applicationService.getApplications return", returnValue);
+  logger.log("applicationService.getApplications return", returnValue);
   return returnValue;
 }
 
 export async function addApplication(token, application) {
-  console.log("applicationService.getApplications input", application);
+  logger.log("applicationService.getApplications input", application);
   let returnValue = await http.post(
     config.get("api.url") + "/Applications",
     application,
@@ -38,7 +39,7 @@ export async function addApplication(token, application) {
 }
 
 export async function deleteApplication(token, id) {
-  console.log("deleteApplication input id:", id);
+  logger.log("deleteApplication input id:", id);
   let returnValue = await http.delete(
     config.get("api.url") + "/Applications/" + id,
     {
@@ -46,12 +47,12 @@ export async function deleteApplication(token, id) {
     }
   );
 
-  console.log("deleteApplication return:", returnValue);
+  logger.log("deleteApplication return:", returnValue);
   return returnValue;
 }
 
 export async function updateApplicationStatus(token, applicationStatus) {
-  console.log("updateApplicationStatus input:", applicationStatus);
+  logger.log("updateApplicationStatus input:", applicationStatus);
   let returnValue = await http.put(
     config.get("api.url") + "/Applications/status",
     applicationStatus,
@@ -59,18 +60,18 @@ export async function updateApplicationStatus(token, applicationStatus) {
       headers: { Authorization: "Bearer " + token },
     }
   );
-  console.log("updateApplicationStatus return:", returnValue);
+  logger.log("updateApplicationStatus return:", returnValue);
   return returnValue;
 }
 
 export async function getApplicationStatuses(token) {
-  console.log("getApplicationStatuses input", token);
+  logger.log("getApplicationStatuses input", token);
   let returnValue = await http.get(
     config.get("api.url") + "/Applications/status",
     {
       headers: { Authorization: "Bearer " + token },
     }
   );
-  console.log("getApplicationStatuses return:", returnValue);
+  logger.log("getApplicationStatuses return:", returnValue);
   return returnValue;
 }

@@ -1,10 +1,11 @@
 import axios from "axios";
+import logger from "./logService";
 
 axios.interceptors.response.use(
   // null,
   (response) => {
     //success
-    console.log("httpService success:", response);
+    logger.log("httpService success:", response);
     return Promise.resolve(response);
   },
   (error) => {
@@ -12,13 +13,13 @@ axios.interceptors.response.use(
       error.response &&
       error.response.status >= 400 &&
       error.response.status < 500;
-    //console.log("expected error:", error.response.data.message);
+    //logger.log("expected error:", error.response.data.message);
     if (expectedError) {
-      console.log("interceptor error:", error);
+      logger.log("interceptor error:", error);
       //return Promise.reject({ error: error.response.data.message });
       //return { error: error.response.data.message };
     }
-    console.log("unexpected error:", error.response);
+    logger.log("unexpected error:", error.response);
     if (error.response)
       return {
         error: error.response.data.message,
