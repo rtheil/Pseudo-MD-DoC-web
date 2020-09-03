@@ -10,6 +10,7 @@ import SubmitButton from "../formElements/submitButton";
 import Formatting from "../../formatting";
 import JoiSchemas from "../../joiSchemas";
 import LoadingMessage from "../loadingMessage";
+import logger from "../../services/logService";
 
 export default function ForgotForm({ match }) {
   const [forgotInfo, setForgotInfo] = useState({
@@ -50,7 +51,7 @@ export default function ForgotForm({ match }) {
         setForgotForm((prev) => {
           return { ...prev, formVisible: false };
         });
-        console.log(token);
+        logger.log(token);
         const isGood = await verifyResetToken(token);
         if (!isGood) {
           setErrors({ forgotError: "Invalid Password Reset Token" });
@@ -91,7 +92,7 @@ export default function ForgotForm({ match }) {
       );
       if (joiErrors.confirmPassword !== undefined)
         joiErrors.confirmPassword = "Passwords do not match";
-      console.log(joiErrors);
+      logger.log(joiErrors);
       if (joiErrors.count > 0) return setErrors(joiErrors);
 
       setLoading(true);
@@ -112,7 +113,7 @@ export default function ForgotForm({ match }) {
           emailAddress: forgotInfo.emailAddress,
         }
       );
-      console.log(joiErrors);
+      logger.log(joiErrors);
       if (joiErrors.count > 0) return setErrors(joiErrors);
 
       setLoading(true);
@@ -132,7 +133,7 @@ export default function ForgotForm({ match }) {
   };
 
   if (token !== undefined) {
-    console.log("token:", token);
+    logger.log("token:", token);
     forgotInfo.token = token;
     return (
       <>
@@ -183,7 +184,7 @@ export default function ForgotForm({ match }) {
       </>
     );
   } else {
-    console.log(forgotInfo);
+    logger.log(forgotInfo);
     return (
       <>
         {!forgotForm.formVisible && forgotForm.successMessage !== "" && (

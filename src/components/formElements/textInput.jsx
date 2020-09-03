@@ -12,7 +12,6 @@ export default function TextInput({
   col = Col,
   text,
 }) {
-  //console.log(name, error);
   let className = "";
   if (error) className = "form-error-field";
 

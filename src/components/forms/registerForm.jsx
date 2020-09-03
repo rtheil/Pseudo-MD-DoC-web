@@ -7,6 +7,7 @@ import SubmitButton from "../formElements/submitButton";
 import Formatting from "../../formatting";
 import JoiSchemas from "../../joiSchemas";
 import LoadingMessage from "../loadingMessage";
+import logger from "../../services/logService";
 
 export default function RegisterForm({ match }) {
   const [createInfo, setCreateInfo] = useState({
@@ -48,7 +49,7 @@ export default function RegisterForm({ match }) {
               "Your account has been successfully verified. You may now proceed to the login page.",
           });
         } else {
-          console.log("verified:", verified);
+          logger.log("verified:", verified);
           setErrors({
             registerError: "Could not verify account. Invalid Token.",
           });
@@ -76,7 +77,7 @@ export default function RegisterForm({ match }) {
     );
     if (joiErrors.confirmPassword !== undefined)
       joiErrors.confirmPassword = "Passwords do not match";
-    console.log("Joi errors:", joiErrors);
+    logger.log("Joi errors:", joiErrors);
 
     if (joiErrors.count > 0) {
       setErrors(joiErrors);
@@ -104,7 +105,7 @@ export default function RegisterForm({ match }) {
     setLoading(false);
   };
 
-  console.log("render errors", errors);
+  logger.log("render errors", errors);
   return (
     <>
       {loading && token !== undefined && <LoadingMessage />}

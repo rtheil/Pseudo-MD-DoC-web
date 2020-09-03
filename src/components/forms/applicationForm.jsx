@@ -1,10 +1,10 @@
 import React from "react";
-//import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import TextInput from "../formElements/textInput";
 import SelectInput from "../formElements/SelectInput";
 import ButtonInput from "../formElements/buttonInput";
 import SubmitButton from "../formElements/submitButton";
+import logger from "../../services/logService";
 
 const ApplicationForm = ({
   state,
@@ -18,8 +18,8 @@ const ApplicationForm = ({
   handleRemoveReference,
 }) => {
   const { newApplication, errors, loading } = state;
-  console.log("error:", errors.error);
-  console.log("state", state);
+  logger.log("error:", errors.error);
+  logger.log("state", state);
   return (
     <div className="container-lg mb-5">
       <Form onSubmit={handleSubmit}>

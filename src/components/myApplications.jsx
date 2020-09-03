@@ -8,11 +8,12 @@ import {
   getApplications,
 } from "../services/applicationService";
 import ConfirmDialog from "./formElements/confirmDialog";
+import logger from "../services/logService";
 
 class MyApplications extends Component {
   constructor(props) {
     super(props);
-    console.log("constructor props:", props);
+    logger.log("constructor props:", props);
     this.state = { applications: [], errors: {}, appDelete: {} };
   }
 
@@ -29,7 +30,7 @@ class MyApplications extends Component {
   }
 
   handleDelete = async (e) => {
-    console.log("handleDelete e:", e.currentTarget);
+    logger.log("handleDelete e:", e.currentTarget);
     let applications = [...this.state.applications];
     const errors = { ...this.state.applications };
     const applicationId = e.currentTarget.id;
@@ -42,7 +43,7 @@ class MyApplications extends Component {
       applications = applications.filter((item) => {
         return parseInt(item.id) !== parseInt(applicationId);
       });
-      console.log(applications);
+      logger.log(applications);
     } else {
       errors.deleteError = deletedApplication.error;
     }
@@ -50,7 +51,7 @@ class MyApplications extends Component {
   };
 
   handleVerifyDelete = (e) => {
-    //console.log("handleVerifyDelete e:", e.currentTarget);
+    //logger.log("handleVerifyDelete e:", e.currentTarget);
     let appDelete = { id: e.currentTarget.id };
     this.setState({ appDelete });
   };
@@ -61,7 +62,7 @@ class MyApplications extends Component {
 
   render() {
     const { applications, appDelete } = this.state;
-    //console.log("appDelete.id:" + appDelete.id);
+    //logger.log("appDelete.id:" + appDelete.id);
     return (
       <div className="border border-primary rounded p-2">
         <h5 className="mb-0">My Job Applications</h5>

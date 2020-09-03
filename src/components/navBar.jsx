@@ -8,7 +8,6 @@ function mapStateToProps(state) {
 }
 
 function NavBar(props) {
-  console.log("navbar props:", props);
   const { currentUser } = props;
   return (
     <div>

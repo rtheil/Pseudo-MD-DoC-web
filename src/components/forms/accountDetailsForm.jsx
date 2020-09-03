@@ -5,6 +5,7 @@ import { Form, Alert } from "react-bootstrap";
 import JoiSchemas from "../../joiSchemas";
 import Formatting from "../../formatting";
 import { update } from "../../services/userService";
+import logger from "../../services/logService";
 
 export default function AccountDetailsForm({ currentUser }) {
   const [account, setAccount] = useState({
@@ -24,7 +25,7 @@ export default function AccountDetailsForm({ currentUser }) {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    //console.log("change", e.target);
+    //logger.log("change", e.target);
     const { id, value } = e.target;
     //account[e.currentTarget.id] = e.currentTarget.value;
     setAccount({ ...account, [id]: value });
@@ -32,7 +33,7 @@ export default function AccountDetailsForm({ currentUser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("state before submit", account);
+    logger.log("state before submit", account);
 
     //are we updating the password?
     let schema, object;
@@ -49,9 +50,9 @@ export default function AccountDetailsForm({ currentUser }) {
 
     //verify first
     const joiErrors = Formatting.formatJoiValidation(schema, object);
-    console.log(joiErrors);
+    logger.log(joiErrors);
     if (joiErrors.count > 0) return setErrors(joiErrors);
-    console.log("VALIDATED");
+    logger.log("VALIDATED");
 
     //change button to loading
     setLoading(true);
@@ -65,7 +66,7 @@ export default function AccountDetailsForm({ currentUser }) {
 
     //call user service to update
     const updatedUser = await update(currentUser, updateObject);
-    console.log("updatedUser");
+    logger.log("updatedUser");
     if (updatedUser.status === 200) {
       //SUCCESS
       setUpdateMessage((prevUpdateMessage) => {
@@ -76,7 +77,7 @@ export default function AccountDetailsForm({ currentUser }) {
       errors.updateError = updatedUser.error;
       setErrors(errors);
     }
-    console.log("updateMessage:", updateMessage);
+    logger.log("updateMessage:", updateMessage);
     setLoading(false);
   };
 

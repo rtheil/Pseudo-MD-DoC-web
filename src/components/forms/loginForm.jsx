@@ -6,6 +6,7 @@ import { Form, Alert } from "react-bootstrap";
 import { login } from "../../services/userService";
 import TextInput from "../formElements/textInput";
 import SubmitButton from "../formElements/submitButton";
+import logger from "../../services/logService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -74,10 +75,10 @@ function LoginForm({ history, currentUser, match, setUser }) {
     setTimeout(async () => {
       //CALL USER SERVICE
       const response = await login(loginInfo);
-      console.log("post-login currentUser:", response);
+      logger.log("post-login currentUser:", response);
       if (response.data && response.data.token) setUser(response.data);
       else {
-        console.log("login errors", response.error);
+        logger.log("login errors", response.error);
         setErrors({ loginError: response.error });
       }
     }, 0);

@@ -15,6 +15,7 @@ import { Container, Row, Col, Alert, Button } from "react-bootstrap";
 import TextInput from "./formElements/textInput";
 import SelectInput from "./formElements/SelectInput";
 import ConfirmDialog from "./formElements/confirmDialog";
+import logger from "../services/logService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -74,7 +75,7 @@ class ApplicationsPage extends Component {
 
     //are we just refreshing filters?
     if (e.target !== null) {
-      console.log("Filter value", e.target.value);
+      logger.log("Filter value", e.target.value);
       applicationFilters[e.target.id] = e.target.value;
     }
 
@@ -102,7 +103,7 @@ class ApplicationsPage extends Component {
     //date filter
     if (applicationFilters.startDateFilter !== "") {
       const startDateFilter = Date.parse(applicationFilters.startDateFilter);
-      //console.log("start date filter", startDateFilter);
+      //logger.log("start date filter", startDateFilter);
       filteredApplications = filteredApplications.filter(
         (app) => Date.parse(app.dateReceived) >= startDateFilter
       );
@@ -111,7 +112,7 @@ class ApplicationsPage extends Component {
       let endDateFilter =
         Date.parse(applicationFilters.endDateFilter) + 172800000; //wtf?
 
-      console.log("end date filter", endDateFilter);
+      logger.log("end date filter", endDateFilter);
       filteredApplications = filteredApplications.filter(
         (app) => Date.parse(app.dateReceived) <= endDateFilter
       );
@@ -130,7 +131,7 @@ class ApplicationsPage extends Component {
   };
 
   handleDelete = async (e) => {
-    console.log("handleDelete e:", e.currentTarget);
+    logger.log("handleDelete e:", e.currentTarget);
     let applications = [...this.state.applications];
     const errors = { ...this.state.applications };
     const applicationId = e.currentTarget.id;
@@ -143,7 +144,7 @@ class ApplicationsPage extends Component {
       applications = applications.filter((item) => {
         return parseInt(item.id) !== parseInt(applicationId);
       });
-      console.log(applications);
+      logger.log(applications);
     } else {
       errors.deleteError = deletedApplication.error;
     }

@@ -6,6 +6,7 @@ import { Alert, Container, Row, Col } from "react-bootstrap";
 import TextInput from "./formElements/textInput";
 import SubmitButton from "./formElements/submitButton";
 import { updateApplicationStatus } from "../services/applicationService";
+import logger from "../services/logService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -60,8 +61,8 @@ class ApplicationView extends Component {
       return <LoadingMessage message="Loading..." />;
 
     //set some vars
-    // console.log("currentUser:", currentUser);
-    // console.log("app top:", application);
+    // logger.log("currentUser:", currentUser);
+    logger.log("app top:", application);
     const status = application.applicationStatus.status;
     const statusId = application.applicationStatus.id;
     const { testScore, loading } = this.state;

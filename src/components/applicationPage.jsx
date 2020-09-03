@@ -9,6 +9,7 @@ import {
   getApplicationById,
   addApplication,
 } from "../services/applicationService";
+import logger from "../services/logService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -72,16 +73,16 @@ class ApplicationPage extends Component {
   }
 
   async loadApplication() {
-    //console.log(this.props.match.params.Id);
+    //logger.log(this.props.match.params.Id);
     if (this.props.match.params.Id !== undefined) {
-      console.log("LOADING");
+      logger.log("LOADING");
       let getApp = await getApplicationById(
         this.props.currentUser.token,
         this.props.match.params.Id
       );
-      console.log(getApp);
+      logger.log(getApp);
       if (getApp.status === 200) {
-        console.log("SUCCESS");
+        logger.log("SUCCESS");
         const application = getApp.data;
         this.setState({ application });
       } else {
@@ -90,7 +91,7 @@ class ApplicationPage extends Component {
       }
     } else {
       if (config.get("helperValues")) {
-        //console.log("LOAD TESTING VALUES");
+        //logger.log("LOAD TESTING VALUES");
         const newApplication = {
           userId: this.props.currentUser.id,
           ApplicationStatusId: 1,
@@ -153,8 +154,8 @@ class ApplicationPage extends Component {
       JoiSchemas.employmentSchema,
       employerItem
     );
-    console.log("employer add errors", errors);
-    //console.log(errors.error.details);
+    logger.log("employer add errors", errors);
+    //logger.log(errors.error.details);
 
     //ADD TO LOCAL ARRAY
     if (errors.count === 0) newApplication.employment.push(employerItem);
@@ -168,11 +169,11 @@ class ApplicationPage extends Component {
 
     //SET THE STATE
     this.setState({ newApplication, errors });
-    //console.log(newApplication);
+    //logger.log(newApplication);
   };
 
   handleRemoveEmployment = ({ target }) => {
-    console.log(target);
+    logger.log(target);
     let newApplication = { ...this.state.newApplication };
     newApplication.employment = newApplication.employment.splice(target.idx, 1);
     this.setState(newApplication);
@@ -194,8 +195,8 @@ class ApplicationPage extends Component {
       JoiSchemas.educationSchema,
       educationItem
     );
-    console.log("education add errors", errors);
-    //console.log(errors.error.details);
+    logger.log("education add errors", errors);
+    //logger.log(errors.error.details);
 
     //ADD TO LOCAL ARRAY
     if (errors.count === 0) newApplication.education.push(educationItem);
@@ -208,11 +209,11 @@ class ApplicationPage extends Component {
 
     //SET STATE
     this.setState({ newApplication, errors });
-    //console.log(newApplication);
+    //logger.log(newApplication);
   };
 
   handleRemoveEducation = ({ target }) => {
-    console.log(target);
+    logger.log(target);
     let newApplication = { ...this.state.newApplication };
     newApplication.education = newApplication.education.splice(target.idx, 1);
     this.setState(newApplication);
@@ -233,8 +234,8 @@ class ApplicationPage extends Component {
       JoiSchemas.referenceSchema,
       referenceItem
     );
-    console.log("Reference add errors", errors);
-    //console.log(errors.error.details);
+    logger.log("Reference add errors", errors);
+    //logger.log(errors.error.details);
 
     //ADD TO LOCAL ARRAY
     if (errors.count === 0) newApplication.references.push(referenceItem);
@@ -246,18 +247,18 @@ class ApplicationPage extends Component {
 
     //SET STATE
     this.setState({ newApplication, errors });
-    //console.log(newApplication);
+    //logger.log(newApplication);
   };
 
   handleRemoveReference = ({ target }) => {
-    console.log(target);
+    logger.log(target);
     let newApplication = { ...this.state.newApplication };
     newApplication.references = newApplication.references.splice(target.idx, 1);
     this.setState(newApplication);
   };
 
   handleChange = (e) => {
-    console.log("handleChange", e);
+    logger.log("handleChange", e);
     const newApplication = { ...this.state.newApplication };
     if (e.currentTarget.id.includes("Phone"))
       newApplication[e.currentTarget.id] = Formatting.formatPhoneNumber(
@@ -273,7 +274,7 @@ class ApplicationPage extends Component {
   };
 
   handleSubmit = async (e) => {
-    console.log("HANDLESUBMIT");
+    logger.log("HANDLESUBMIT");
     e.preventDefault();
     const newApplication = { ...this.state.newApplication };
 
@@ -304,7 +305,7 @@ class ApplicationPage extends Component {
       JoiSchemas.applicationSchema,
       appItem
     );
-    console.log("validate errors", errors);
+    logger.log("validate errors", errors);
     this.setState({ errors });
     if (errors.count > 0) return;
 
@@ -323,7 +324,7 @@ class ApplicationPage extends Component {
     );
 
     //SUCCESS. SUBMIT THE FORM TO API.
-    console.log("VALIDATE SUCCESS", newApplication);
+    logger.log("VALIDATE SUCCESS", newApplication);
     this.setState({ loading: true });
 
     const addApp = await addApplication(
@@ -340,7 +341,7 @@ class ApplicationPage extends Component {
   };
 
   render() {
-    //console.log("app:", this.state.application);
+    //logger.log("app:", this.state.application);
     const { application } = this.state;
     if (this.props.currentUser.token === undefined)
       this.props.history.push("/login");

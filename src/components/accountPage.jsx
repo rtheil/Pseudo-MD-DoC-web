@@ -6,7 +6,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useEffect } from "react";
 
 function mapStateToProps(state) {
-  console.log("mapstatetoprops");
   return { currentUser: state.currentUser };
 }
 
