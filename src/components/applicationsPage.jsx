@@ -13,7 +13,7 @@ import {
 import Formatting from "../formatting";
 import { Container, Row, Col, Alert, Button } from "react-bootstrap";
 import TextInput from "./formElements/textInput";
-import SelectInput from "./formElements/SelectInput";
+import SelectInput from "./formElements/selectInput";
 import ConfirmDialog from "./formElements/confirmDialog";
 import logger from "../services/logService";
 

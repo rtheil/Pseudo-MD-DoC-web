@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import TextInput from "../formElements/textInput";
-import SelectInput from "../formElements/SelectInput";
+import SelectInput from "../formElements/selectInput";
 import ButtonInput from "../formElements/buttonInput";
 import SubmitButton from "../formElements/submitButton";
 import logger from "../../services/logService";
