@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 //import axios from "axios";
 import ApplicationPage from "./applicationPage";
 import { Link } from "react-router-dom";
@@ -8,11 +8,13 @@ import LoadingMessage from "./loadingMessage";
 import {
   getApplications,
   getApplicationStatuses,
+  deleteApplication,
 } from "../services/applicationService";
 import Formatting from "../formatting";
-import { Container, Row, Col, Alert } from "react-bootstrap";
+import { Container, Row, Col, Alert, Button } from "react-bootstrap";
 import TextInput from "./formElements/textInput";
 import SelectInput from "./formElements/SelectInput";
+import ConfirmDialog from "./formElements/confirmDialog";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
@@ -32,6 +34,7 @@ class ApplicationsPage extends Component {
     applicationid: null,
     errors: {},
     loading: true,
+    appDeleteId: null,
   };
 
   async componentDidMount() {
@@ -66,11 +69,14 @@ class ApplicationsPage extends Component {
   }
 
   handleFilterChange = (e) => {
-    //console.log("FILTER", e.target);
-    console.log("Filter value", e.target.value);
     const applicationFilters = { ...this.state.applicationFilters };
     let filteredApplications = [...this.state.applications];
-    applicationFilters[e.target.id] = e.target.value;
+
+    //are we just refreshing filters?
+    if (e.target !== null) {
+      console.log("Filter value", e.target.value);
+      applicationFilters[e.target.id] = e.target.value;
+    }
 
     //status filter
     if (parseInt(applicationFilters.statusFilter) !== 0) {
@@ -113,6 +119,36 @@ class ApplicationsPage extends Component {
 
     this.setState({ filteredApplications, applicationFilters });
     //this.setState({ applicationFilters });
+  };
+
+  handleVerifyDelete = (e) => {
+    this.setState({ appDeleteId: e.target.id });
+  };
+
+  handleCancelDelete = (e) => {
+    this.setState({ appDeleteId: null });
+  };
+
+  handleDelete = async (e) => {
+    console.log("handleDelete e:", e.currentTarget);
+    let applications = [...this.state.applications];
+    const errors = { ...this.state.applications };
+    const applicationId = e.currentTarget.id;
+    const deletedApplication = await deleteApplication(
+      this.props.currentUser.token,
+      applicationId
+    );
+    if (deletedApplication.status === 200) {
+      //deleted, now update state
+      applications = applications.filter((item) => {
+        return parseInt(item.id) !== parseInt(applicationId);
+      });
+      console.log(applications);
+    } else {
+      errors.deleteError = deletedApplication.error;
+    }
+    this.setState({ errors, applications });
+    this.handleFilterChange(e);
   };
 
   render() {
@@ -174,39 +210,73 @@ class ApplicationsPage extends Component {
           </Row>
         </Alert>
 
-        <table className="table">
-          <thead className="thead thead-dark">
-            <tr>
-              <th>Name</th>
-              <th>Date Received</th>
-              <th>City, State</th>
-              <th>App Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredApplications.map((app) => (
-              <tr key={app.id}>
-                <td>
-                  {app.firstName} {app.lastName}
-                </td>
-                <td>{Formatting.formatDate(app.dateReceived)}</td>
-                <td>
-                  {app.city}, {app.state}
-                </td>
-                <td>{app.applicationStatus.status}</td>
-                <td>
-                  <Link
-                    to={"/applications/" + app.id}
-                    className="btn btn-primary btn-sm mb-2"
+        <Container>
+          <Row className="bg-dark text-white font-weight-bold mb-1">
+            <Col>Name</Col>
+            <Col>Date Received</Col>
+            <Col>City, State</Col>
+            <Col sm={3}>App Status</Col>
+            <Col>Actions</Col>
+          </Row>
+          {filteredApplications.map((app) => {
+            const appStatus = Formatting.formatApplicationStatus(
+              app.applicationStatus
+            );
+            return (
+              <Fragment key={app.id}>
+                <Row className="border-top border-dark pb-1 pt-1">
+                  <Col>
+                    {app.firstName} {app.lastName}
+                  </Col>
+                  <Col>{Formatting.formatDate(app.dateReceived)}</Col>
+                  <Col>
+                    {app.city}, {app.state}
+                  </Col>
+                  <Col
+                    sm={3}
+                    className={
+                      "text-center bg-" +
+                      appStatus.color +
+                      " text-" +
+                      appStatus.textColor
+                    }
                   >
-                    View
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    {app.applicationStatus.status}
+                  </Col>
+                  <Col>
+                    <Link
+                      to={"/applications/" + app.id}
+                      className="btn btn-primary btn-sm"
+                    >
+                      View
+                    </Link>
+                    &nbsp;
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      id={app.id}
+                      onClick={this.handleVerifyDelete}
+                    >
+                      Delete
+                    </Button>
+                  </Col>
+                </Row>
+                {parseInt(this.state.appDeleteId) === app.id && (
+                  <Row className="pt-1">
+                    <Col className="text-right">
+                      <ConfirmDialog
+                        message="Are you sure you want to delete this application?"
+                        handleYes={this.handleDelete}
+                        handleNo={this.handleCancelDelete}
+                        id={app.id}
+                      />
+                    </Col>
+                  </Row>
+                )}
+              </Fragment>
+            );
+          })}
+        </Container>
       </Container>
     );
   }
