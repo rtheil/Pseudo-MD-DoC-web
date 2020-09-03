@@ -84,7 +84,7 @@ class MyApplications extends Component {
               );
               return (
                 <Fragment key={app.id}>
-                  <Row className="border-bottom border-dark pb-1 mb-2">
+                  <Row className="border-top border-dark pb-1 pt-1">
                     <Col lg={1}>{app.id}</Col>
                     <Col lg={2}>{Formatting.formatDate(app.dateReceived)}</Col>
                     <Col
