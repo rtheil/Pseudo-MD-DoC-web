@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Row, Container, Col, Button, Alert } from "react-bootstrap";
+import React, { Component, Fragment } from "react";
+import { Row, Container, Col, Button } from "react-bootstrap";
 import LoadingMessage from "./loadingMessage";
 import Formatting from "../formatting";
 import { Link } from "react-router-dom";
@@ -7,32 +7,30 @@ import {
   deleteApplication,
   getApplications,
 } from "../services/applicationService";
+import ConfirmDialog from "./formElements/confirmDialog";
 
 class MyApplications extends Component {
   constructor(props) {
     super(props);
     console.log("constructor props:", props);
-    this.state = { errors: {}, appDelete: {} };
+    this.state = { applications: [], errors: {}, appDelete: {} };
   }
 
   async componentDidMount() {
-    const currentUser = { ...this.props.currentUser };
+    const { currentUser } = this.props;
+
     //get my applications
     const getApps = await getApplications(currentUser.token, currentUser.id);
     if (getApps.status === 200) {
-      //success
-      //applications = getApps.data;
-      this.setState({ applications: getApps.data, loading: false });
+      this.setState({ applications: getApps.data });
     } else {
-      //error
-      //errors.getError = getApps.error;
-      this.setState({ errors: getApps.error, loading: false });
+      this.setState({ errors: getApps.error });
     }
   }
 
   handleDelete = async (e) => {
     console.log("handleDelete e:", e.currentTarget);
-    let applications = { ...this.state.applications };
+    let applications = [...this.state.applications];
     const errors = { ...this.state.applications };
     const applicationId = e.currentTarget.id;
     const deletedApplication = await deleteApplication(
@@ -46,9 +44,9 @@ class MyApplications extends Component {
       });
       console.log(applications);
     } else {
-      errors.deleteError = deleteApplication.error;
+      errors.deleteError = deletedApplication.error;
     }
-    this.setState({ loading: false, errors, applications });
+    this.setState({ errors, applications });
   };
 
   handleVerifyDelete = (e) => {
@@ -77,14 +75,14 @@ class MyApplications extends Component {
             <Col>Status</Col>
             <Col lg={3}>Actions</Col>
           </Row>
-          {!applications && <LoadingMessage />}
-          {applications &&
+          {!applications.length > 0 && <LoadingMessage />}
+          {applications.length > 0 &&
             applications.map((app) => {
               const appStatus = Formatting.formatApplicationStatus(
                 app.applicationStatus
               );
               return (
-                <React.Fragment key={app.id}>
+                <Fragment key={app.id}>
                   <Row className="border-bottom border-dark pb-1 mb-2">
                     <Col lg={1}>{app.id}</Col>
                     <Col lg={2}>{Formatting.formatDate(app.dateReceived)}</Col>
@@ -120,31 +118,16 @@ class MyApplications extends Component {
                   {parseInt(appDelete.id) === app.id && (
                     <Row>
                       <Col className="text-right">
-                        <Alert variant="danger">
-                          Are you sure you want to delete this application?
-                          &nbsp;&nbsp;&nbsp;
-                          <Button
-                            variant="success"
-                            size="sm"
-                            onClick={this.handleDelete}
-                            id={app.id}
-                            className="pl-4 pr-4"
-                          >
-                            Yes
-                          </Button>{" "}
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            className="pl-4 pr-4"
-                            onClick={this.handleCancelDelete}
-                          >
-                            No
-                          </Button>
-                        </Alert>
+                        <ConfirmDialog
+                          message="Are you sure you want to delete this application?"
+                          handleYes={this.handleDelete}
+                          handleNo={this.handleCancelDelete}
+                          id={app.id}
+                        />
                       </Col>
                     </Row>
                   )}
-                </React.Fragment>
+                </Fragment>
               );
             })}
         </Container>
