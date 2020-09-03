@@ -45,7 +45,10 @@ function LoginForm({ history, currentUser, match, setUser }) {
   });
 
   function handleLogin() {
-    if (currentUser.token !== undefined) history.push("/applications");
+    if (currentUser.token !== undefined) {
+      if (currentUser.administrator) history.push("/applications");
+      else history.push("/account");
+    }
   }
 
   function handleLogout() {
