@@ -66,6 +66,10 @@ class ApplicationView extends Component {
     const status = application.applicationStatus.status;
     const statusId = application.applicationStatus.id;
     const { testScore, loading } = this.state;
+    const appColors = Formatting.formatApplicationStatus(
+      application.applicationStatus
+    );
+    logger.log("App Colors", appColors);
 
     return (
       <Container>
@@ -143,7 +147,17 @@ class ApplicationView extends Component {
             </Alert>
           </>
         )}
-        {/* <Link to="/applications">Back to Applications list</Link> */}
+        {!currentUser.administrator && (
+          <Alert variant="info">
+            <strong>Application Status</strong>
+            <Alert
+              variant={appColors.color}
+              className={"text-" + appColors.text}
+            >
+              {appColors.status}
+            </Alert>
+          </Alert>
+        )}
         <table className="table table-sm">
           <thead className="thead-dark">
             <tr>
