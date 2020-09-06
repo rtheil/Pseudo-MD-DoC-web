@@ -160,12 +160,14 @@ class ApplicationPage extends Component {
     //ADD TO LOCAL ARRAY
     if (errors.count === 0) newApplication.employment.push(employerItem);
 
-    //REMOVE FROM STATE TO EMPTY FIELDS (UNCOMMENT FOR PRODUCTION)
-    // newApplication.employerName = "";
-    // newApplication.employerStartDate = "";
-    // newApplication.employerEndDate = "";
-    // newApplication.employerPhoneNumber = "";
-    // newApplication.employerJobTitle = "";
+    //empty the fields
+    if (!config.get("helperValues")) {
+      newApplication.employerName = "";
+      newApplication.employerStartDate = "";
+      newApplication.employerEndDate = "";
+      newApplication.employerPhoneNumber = "";
+      newApplication.employerJobTitle = "";
+    }
 
     //SET THE STATE
     this.setState({ newApplication, errors });
@@ -201,11 +203,13 @@ class ApplicationPage extends Component {
     //ADD TO LOCAL ARRAY
     if (errors.count === 0) newApplication.education.push(educationItem);
 
-    //REMOVE FROM STATE (UNCOMMENT FOR PRODUCTION)
-    // newApplication.schoolName = "";
-    // newApplication.schoolStartDate = "";
-    // newApplication.schoolEndDate = "";
-    // newApplication.schoolDegree = "";
+    //empty the fields
+    if (!config.get("helperValues")) {
+      newApplication.schoolName = "";
+      newApplication.schoolStartDate = "";
+      newApplication.schoolEndDate = "";
+      newApplication.schoolDegree = "";
+    }
 
     //SET STATE
     this.setState({ newApplication, errors });
@@ -240,10 +244,12 @@ class ApplicationPage extends Component {
     //ADD TO LOCAL ARRAY
     if (errors.count === 0) newApplication.references.push(referenceItem);
 
-    //REMOVE FROM STATE (UNCOMMENT FOR PRODUCTION)
-    // newApplication.referenceName = "";
-    // newApplication.referencePhoneNumber = "";
-    // newApplication.referenceRelation = "";
+    //empty the fields
+    if (!config.get("helperValues")) {
+      newApplication.referenceName = "";
+      newApplication.referencePhoneNumber = "";
+      newApplication.referenceRelation = "";
+    }
 
     //SET STATE
     this.setState({ newApplication, errors });
