@@ -80,6 +80,7 @@ function LoginForm({ history, currentUser, match, setUser }) {
       else {
         logger.log("login errors", response.error);
         setErrors({ loginError: response.error });
+        setLoading(false);
       }
     }, 0);
   };
