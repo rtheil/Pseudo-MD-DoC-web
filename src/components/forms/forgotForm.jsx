@@ -130,6 +130,8 @@ export default function ForgotForm({ match }) {
     } else {
       setErrors({ forgotError: forgotStatus.error });
     }
+
+    setLoading(false);
   };
 
   if (token !== undefined) {
