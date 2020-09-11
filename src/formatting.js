@@ -38,10 +38,10 @@ class Formatting {
     return cleaned;
   }
 
-  static formatJoiValidation(schema, item) {
+  static formatJoiValidation(schema, item, abortEarly = true) {
     //VALIDATE
     const results = schema.validate(item, {
-      abortEarly: true,
+      abortEarly: abortEarly,
     });
 
     //IF ERRORS, LOOP

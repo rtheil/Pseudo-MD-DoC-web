@@ -309,7 +309,8 @@ class ApplicationPage extends Component {
     // //CHECK PERSONAL INFO
     const errors = Formatting.formatJoiValidation(
       JoiSchemas.applicationSchema,
-      appItem
+      appItem,
+      false
     );
     logger.log("validate errors", errors);
     this.setState({ errors });
