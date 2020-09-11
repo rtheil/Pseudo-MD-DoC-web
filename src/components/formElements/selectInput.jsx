@@ -7,16 +7,20 @@ export default function SelectInput({
   value,
   onChange,
   options = [
+    { value: undefined, text: "" },
     { value: false, text: "No" },
     { value: true, text: "Yes" },
   ],
+  error,
 }) {
+  let className = "mr-sm-2";
+  if (error) className += " form-error-field";
   return (
     <Form.Group as={Col}>
       <Form.Label>{label}</Form.Label>
       <Form.Control
         as="select"
-        className="mr-sm-2"
+        className={className}
         // sm={size}
         size="sm"
         id={name}
@@ -30,6 +34,7 @@ export default function SelectInput({
           </option>
         ))}
       </Form.Control>
+      {error && error !== "" && <div className="form-error">{error}</div>}
     </Form.Group>
   );
 }
