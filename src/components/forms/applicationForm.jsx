@@ -349,13 +349,16 @@ const ApplicationForm = ({
             <strong>One or more errors</strong>
             <br />
             {Object.keys(errors).map((error, i) => {
-              if (error !== "count")
-                return (
-                  <React.Fragment key={i}>
-                    -{errors[error]}
-                    <br />
-                  </React.Fragment>
-                );
+              return (
+                <React.Fragment key={i}>
+                  {error !== "count" && (
+                    <>
+                      -{errors[error]}
+                      <br />
+                    </>
+                  )}
+                </React.Fragment>
+              );
             })}
           </Alert>
         )}
