@@ -6,6 +6,13 @@ import ButtonInput from "../formElements/buttonInput";
 import SubmitButton from "../formElements/submitButton";
 import logger from "../../services/logService";
 
+const MultiMessage = () => (
+  <span className="" style={{ fontSize: 10 }}>
+    {" "}
+    - Fill fields and click + button to add to application
+  </span>
+);
+
 const ApplicationForm = ({
   state,
   handleSubmit,
@@ -134,6 +141,7 @@ const ApplicationForm = ({
               {errors.employment}
             </span>
           )}
+          <MultiMessage />
         </div>
         <Form.Row>
           <ButtonInput
@@ -218,6 +226,7 @@ const ApplicationForm = ({
               {errors.education}
             </span>
           )}
+          <MultiMessage />
         </div>
         <Form.Row>
           <ButtonInput
@@ -289,6 +298,7 @@ const ApplicationForm = ({
               {errors.references}
             </span>
           )}
+          <MultiMessage />
         </div>
         <Form.Row>
           <ButtonInput
