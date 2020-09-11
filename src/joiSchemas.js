@@ -32,9 +32,9 @@ class JoiSchemas {
       .regex(this.socialSecurityNumberRegex)
       .message("Invalid SSN")
       .label("SSN"),
-    isUsCitizen: Joi.boolean(),
-    hasFelony: Joi.boolean(),
-    willDrugTest: Joi.boolean(),
+    isUsCitizen: Joi.boolean().required().label("US Citizen"),
+    hasFelony: Joi.boolean().required().label("Felony Conviction"),
+    willDrugTest: Joi.boolean().required().label("Drug Test"),
     employment: Joi.array().min(1).required().label("Employment History"),
     education: Joi.array().min(1).required().label("Education"),
     references: Joi.array().min(1).required().label("References"),

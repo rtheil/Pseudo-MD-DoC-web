@@ -35,9 +35,9 @@ class ApplicationPage extends Component {
       homePhone: "",
       cellPhone: "",
       socialSecurityNumber: "",
-      isUsCitizen: "",
-      hasFelony: "",
-      willDrugTest: "",
+      isUsCitizen: undefined,
+      hasFelony: undefined,
+      willDrugTest: undefined,
 
       //EMPLOYMENT
       employment: [],

@@ -53,6 +53,7 @@ class Formatting {
         /*eslint no-useless-escape: "off"*/
         msg = msg.replace(/\"/gm, "");
         msg = msg.replace("is not allowed to", "can't");
+        msg = msg.replace("be a boolean", "be chosen");
         errors[item.path[0]] = msg;
         count++;
       }

@@ -117,21 +117,24 @@ const ApplicationForm = ({
           />
           <SelectInput
             name="isUsCitizen"
-            label="US Citizen?"
+            label="Are you a US citizen?"
             value={newApplication.isUsCitizen}
             onChange={handleChange}
+            error={errors.isUsCitizen}
           />
           <SelectInput
             name="hasFelony"
-            label="Felony Conviction"
+            label="Do you have a felony conviction?"
             value={newApplication.hasFelony}
             onChange={handleChange}
+            error={errors.hasFelony}
           />
           <SelectInput
             name="willDrugTest"
-            label="Drug Test?"
+            label="Will you take a drug test?"
             value={newApplication.willDrugTest}
             onChange={handleChange}
+            error={errors.willDrugTest}
           />
         </Form.Row>
         <div className="p-1 mt-2 app-section-bar">
