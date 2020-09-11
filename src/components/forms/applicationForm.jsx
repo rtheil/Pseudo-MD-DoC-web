@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import TextInput from "../formElements/textInput";
 import SelectInput from "../formElements/selectInput";
 import ButtonInput from "../formElements/buttonInput";
@@ -344,6 +344,21 @@ const ApplicationForm = ({
           </div>
         </Form.Row>
         <div className="p-1 mt-2 mb-2 app-section-bar">Review and Submit</div>
+        {errors.count > 0 && (
+          <Alert variant="danger">
+            <strong>One or more errors</strong>
+            <br />
+            {Object.keys(errors).map((error, i) => {
+              if (error !== "count")
+                return (
+                  <React.Fragment key={i}>
+                    -{errors[error]}
+                    <br />
+                  </React.Fragment>
+                );
+            })}
+          </Alert>
+        )}
         <SubmitButton text="Submit" loading={loading} />
       </Form>
     </div>
