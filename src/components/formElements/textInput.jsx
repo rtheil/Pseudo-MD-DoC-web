@@ -9,7 +9,7 @@ export default function TextInput({
   value,
   size,
   error,
-  col = Col,
+  as = Col,
   text,
 }) {
   let className = "";
@@ -17,7 +17,7 @@ export default function TextInput({
 
   //RETURN
   return (
-    <Form.Group as={col} controlId={name} sm={size}>
+    <Form.Group as={as} controlId={name} sm={size}>
       <Form.Label size="sm">{label}</Form.Label>
       <Form.Control
         placeholder={label}

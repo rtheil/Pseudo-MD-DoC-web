@@ -124,7 +124,7 @@ export default function RegisterForm({ match }) {
               label="Your Name"
               onChange={handleCreateChange}
               value={createInfo.name}
-              col="div"
+              as="div"
               error={errors.name}
             />
             <TextInput
@@ -133,7 +133,7 @@ export default function RegisterForm({ match }) {
               label="Email Address"
               onChange={handleCreateChange}
               value={createInfo.emailAddress}
-              col="div"
+              as="div"
               error={errors.emailAddress}
             />
             <TextInput
@@ -143,7 +143,7 @@ export default function RegisterForm({ match }) {
               text="Minimum 8 characters"
               onChange={handleCreateChange}
               value={createInfo.password}
-              col="div"
+              as="div"
               error={errors.password}
             />
             <TextInput
@@ -152,7 +152,7 @@ export default function RegisterForm({ match }) {
               label="Confirm Password"
               onChange={handleCreateChange}
               value={createInfo.confirmPassword}
-              col="div"
+              as="div"
               error={errors.confirmPassword}
             />
             <SubmitButton text="Submit" loading={loading} />

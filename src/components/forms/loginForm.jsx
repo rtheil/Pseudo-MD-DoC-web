@@ -95,7 +95,7 @@ function LoginForm({ history, currentUser, match, setUser }) {
           label="Email Address"
           onChange={handleLoginChange}
           value={loginInfo.emailAddress}
-          col="div"
+          as="div"
           required={true}
         />
         <TextInput
@@ -104,7 +104,7 @@ function LoginForm({ history, currentUser, match, setUser }) {
           label="Password"
           onChange={handleLoginChange}
           value={loginInfo.password}
-          col="div"
+          as="div"
         />
         <Form.Group controlId="saveInfo">
           <Form.Check

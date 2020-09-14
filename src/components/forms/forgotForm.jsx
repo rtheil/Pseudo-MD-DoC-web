@@ -156,7 +156,7 @@ export default function ForgotForm({ match }) {
                 text="Minimum 8 characters"
                 onChange={handleForgotChange}
                 value={forgotInfo.password}
-                col="div"
+                as="div"
                 error={errors.password}
               />
               <TextInput
@@ -165,7 +165,7 @@ export default function ForgotForm({ match }) {
                 label="Confirm Password"
                 onChange={handleForgotChange}
                 value={forgotInfo.confirmPassword}
-                col="div"
+                as="div"
                 error={errors.confirmPassword}
               />
               <Form.Control
@@ -204,7 +204,7 @@ export default function ForgotForm({ match }) {
                 label="Email Address"
                 onChange={handleForgotChange}
                 value={forgotInfo.emailAddress}
-                col="div"
+                as="div"
                 error={errors.emailAddress}
               />
               <SubmitButton text="Submit" loading={loading} />

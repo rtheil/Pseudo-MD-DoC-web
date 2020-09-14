@@ -94,7 +94,7 @@ export default function AccountDetailsForm({ currentUser }) {
           label="Your Name"
           onChange={handleChange}
           value={account.name}
-          col="div"
+          as="div"
           error={errors.name}
         />
         <TextInput
@@ -103,7 +103,7 @@ export default function AccountDetailsForm({ currentUser }) {
           label="Email Address"
           value={account.emailAddress}
           error={errors.emailAddress}
-          col="div"
+          as="div"
         />
         <TextInput
           type="password"
@@ -112,7 +112,7 @@ export default function AccountDetailsForm({ currentUser }) {
           text="Minimum 8 characters"
           onChange={handleChange}
           value={account.password}
-          col="div"
+          as="div"
           error={errors.password}
         />
         <TextInput
@@ -121,7 +121,7 @@ export default function AccountDetailsForm({ currentUser }) {
           label="Confirm Password"
           onChange={handleChange}
           value={account.confirmPassword}
-          col="div"
+          as="div"
           error={errors.confirmPassword}
         />
         <SubmitButton text="Submit" loading={loading} />
