@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import * as Sentry from "@sentry/react";
+//import { Integrations } from "@sentry/tracing";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 import App from "./App";
@@ -9,15 +11,12 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 
-import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
-
 //SENTRY
 Sentry.init({
   dsn:
     "https://34dc7faf811141fb8bf25024c8fbb6d2@o442970.ingest.sentry.io/5415790",
-  integrations: [new Integrations.BrowserTracing()],
-  tracesSampleRate: 1.0, //performance
+  // integrations: [new Integrations.BrowserTracing()],
+  // tracesSampleRate: 1.0, //performance
 });
 
 //DEV CONFIG

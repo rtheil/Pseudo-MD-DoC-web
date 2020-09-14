@@ -1,8 +1,15 @@
 import config from "react-global-configuration";
+import * as Sentry from "@sentry/react";
+
 function init() {}
 
 function log(...data) {
   if (config.get("consoleLogging")) console.log(...data);
 }
 
-export default { init, log };
+function error(...data) {
+  log("ERROR", ...data);
+  Sentry.captureException(...data);
+}
+
+export default { init, log, error };

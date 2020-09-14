@@ -13,19 +13,19 @@ axios.interceptors.response.use(
       error.response &&
       error.response.status >= 400 &&
       error.response.status < 500;
-    //logger.log("expected error:", error.response.data.message);
     if (expectedError) {
-      logger.log("interceptor error:", error);
-      //return Promise.reject({ error: error.response.data.message });
-      //return { error: error.response.data.message };
+      logger.error("interceptor error:", error);
     }
-    logger.log("unexpected error:", error.response);
-    if (error.response)
+    if (error.response) {
+      logger.error("unexpected error:", error.response);
       return {
         error: error.response.data.message,
         status: error.response.status,
       };
-    else return { error: "No response from server", status: 500 };
+    } else {
+      logger.error("No response from server");
+      return { error: "No response from server", status: 500 };
+    }
   }
 );
 
