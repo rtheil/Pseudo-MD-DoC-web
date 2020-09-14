@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row, Container, Col, Button } from "react-bootstrap";
+import { Row, Container, Col, Button, Alert } from "react-bootstrap";
 import LoadingMessage from "./loadingMessage";
 import Formatting from "../formatting";
 import { Link } from "react-router-dom";
@@ -14,19 +14,26 @@ class MyApplications extends Component {
   constructor(props) {
     super(props);
     logger.log("constructor props:", props);
-    this.state = { applications: [], errors: {}, appDelete: {} };
+    this.state = {
+      applications: [],
+      errors: {},
+      appDelete: {},
+      loading: false,
+    };
   }
 
   async componentDidMount() {
     const { currentUser } = this.props;
 
     //get my applications
+    this.setState({ loading: true });
     const getApps = await getApplications(currentUser.token, currentUser.id);
     if (getApps.status === 200) {
       this.setState({ applications: getApps.data });
     } else {
       this.setState({ errors: getApps.error });
     }
+    this.setState({ loading: false });
   }
 
   handleDelete = async (e) => {
@@ -61,7 +68,7 @@ class MyApplications extends Component {
   };
 
   render() {
-    const { applications, appDelete } = this.state;
+    const { applications, appDelete, loading } = this.state;
     //logger.log("appDelete.id:" + appDelete.id);
     return (
       <div className="border border-primary rounded p-2">
@@ -76,7 +83,10 @@ class MyApplications extends Component {
             <Col>Status</Col>
             <Col lg={3}>Actions</Col>
           </Row>
-          {!applications.length > 0 && <LoadingMessage />}
+          {!applications.length > 0 && loading && <LoadingMessage />}
+          {applications.length === 0 && !loading && (
+            <Alert variant="secondary">No Applications submitted</Alert>
+          )}
           {applications.length > 0 &&
             applications.map((app) => {
               const appStatus = Formatting.formatApplicationStatus(
