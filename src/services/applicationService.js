@@ -26,7 +26,7 @@ export async function getApplicationById(token, applicationId) {
 }
 
 export async function addApplication(token, application) {
-  logger.log("applicationService.getApplications input", application);
+  logger.log("applicationService.addApplication input", application);
   let returnValue = await http.post(
     config.get("api.url") + "/Applications",
     application,
@@ -34,7 +34,7 @@ export async function addApplication(token, application) {
       headers: { Authorization: "Bearer " + token },
     }
   );
-
+  logger.log("addApplication return:", returnValue);
   return returnValue;
 }
 
@@ -46,7 +46,6 @@ export async function deleteApplication(token, id) {
       headers: { Authorization: "Bearer " + token },
     }
   );
-
   logger.log("deleteApplication return:", returnValue);
   return returnValue;
 }
