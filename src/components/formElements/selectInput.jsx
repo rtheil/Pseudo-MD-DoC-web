@@ -12,11 +12,12 @@ export default function SelectInput({
     { value: true, text: "Yes" },
   ],
   error,
+  as = Col,
 }) {
   let className = "mr-sm-2";
   if (error) className += " form-error-field";
   return (
-    <Form.Group as={Col}>
+    <Form.Group as={as}>
       <Form.Label>{label}</Form.Label>
       <Form.Control
         as="select"
