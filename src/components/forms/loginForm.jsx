@@ -71,18 +71,15 @@ function LoginForm({ history, currentUser, match, setUser }) {
     //CHANGE BUTTON
     setLoading(true);
 
-    //FAKE DELAY
-    setTimeout(async () => {
-      //CALL USER SERVICE
-      const response = await login(loginInfo);
-      logger.log("post-login currentUser:", response);
-      if (response.data && response.data.token) setUser(response.data);
-      else {
-        logger.log("login errors", response.error);
-        setErrors({ loginError: response.error });
-        setLoading(false);
-      }
-    }, 0);
+    //CALL USER SERVICE
+    const response = await login(loginInfo);
+    logger.log("post-login currentUser:", response);
+    if (response.data && response.data.token) setUser(response.data);
+    else {
+      logger.log("login errors", response.error);
+      setErrors({ loginError: response.error });
+      setLoading(false);
+    }
   };
 
   return (
