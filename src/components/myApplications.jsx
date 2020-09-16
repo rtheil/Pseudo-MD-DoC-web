@@ -12,7 +12,7 @@ import logger from "../services/logService";
 
 class MyApplications extends Component {
   constructor(props) {
-    super(props);
+    super();
     logger.log("constructor props:", props);
     this.state = {
       applications: [],

@@ -14,7 +14,7 @@ function mapStateToProps(state) {
 
 class ApplicationView extends Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = {
       application: props.application,
       testScore: "",
