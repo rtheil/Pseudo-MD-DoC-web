@@ -34,7 +34,7 @@ config.set(
   {
     api: { url: "https://md-doc-api.azurewebsites.net/api" },
     helperValues: false,
-    consoleLogging: true,
+    consoleLogging: false,
   },
   { environment: "production" }
 );
