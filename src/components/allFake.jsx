@@ -66,6 +66,11 @@ const AllFake = () => {
                     react-router-dom
                   </a>
                 </li>
+                <li>
+                  <a href="https://www.npmjs.com/package/@sentry/react">
+                    @sentry/react logging
+                  </a>
+                </li>
               </ul>
             </li>
             <li>
