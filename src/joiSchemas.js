@@ -2,9 +2,9 @@ import Joi from "@hapi/joi";
 
 class JoiSchemas {
   //RULE VALUES
-  static passwordRegex = /^(?=.*[A-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()])\S{8,}$/;
+  static passwordRegex = /^(?=.*[A-z])(?=.*[A-Z])(?=.*[0-9])(?=.*)\S{8,}$/;
   static passwordError =
-    "Password must be at least 8 characters long, and have at least one uppercase letter, one lowercase letter, one number, and one special character.";
+    "Password must be at least 10 characters long, and have at least one uppercase letter, one lowercase letter, and one number.";
   static phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
   static socialSecurityNumberRegex = /^\d{3}-\d{2}-\d{4}$/;
 
