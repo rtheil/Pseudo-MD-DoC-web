@@ -149,7 +149,7 @@ class ApplicationsPage extends Component {
       errors.deleteError = deletedApplication.error;
     }
     this.setState({ errors, applications });
-    this.handleFilterChange(e);
+    this.handleFilterChange({ target: null });
   };
 
   render() {
