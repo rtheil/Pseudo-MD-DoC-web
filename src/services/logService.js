@@ -9,7 +9,7 @@ function log(...data) {
 
 function error(...data) {
   log("ERROR", ...data);
-  Sentry.captureException(new Error(...data));
+  Sentry.captureException(new Error(data[data.length - 1]));
 }
 
 export default { init, log, error };
