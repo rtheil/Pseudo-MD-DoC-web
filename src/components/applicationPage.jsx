@@ -264,7 +264,7 @@ class ApplicationPage extends Component {
   };
 
   handleChange = (e) => {
-    logger.log("handleChange", e);
+    logger.log("handleChange", e.currentTarget);
     const newApplication = { ...this.state.newApplication };
     if (e.currentTarget.id.includes("Phone"))
       newApplication[e.currentTarget.id] = Formatting.formatPhoneNumber(
@@ -275,11 +275,6 @@ class ApplicationPage extends Component {
       newApplication[e.currentTarget.id] = Formatting.formatSsn(
         e.currentTarget.value
       );
-    else if (
-      e.currentTarget.value === "true" ||
-      e.currentTarget.value === "false"
-    )
-      newApplication[e.currentTarget.id] = !!e.currentTarget.value;
     else newApplication[e.currentTarget.id] = e.currentTarget.value;
     this.setState({ newApplication });
   };
@@ -303,13 +298,15 @@ class ApplicationPage extends Component {
       socialSecurityNumber: Formatting.formatSsn(
         newApplication.socialSecurityNumber
       ),
-      isUsCitizen: newApplication.isUsCitizen,
-      hasFelony: newApplication.hasFelony,
-      willDrugTest: newApplication.willDrugTest,
+      isUsCitizen: newApplication.isUsCitizen == "true",
+      hasFelony: newApplication.hasFelony == "true",
+      willDrugTest: newApplication.willDrugTest == "true",
       employment: newApplication.employment,
       education: newApplication.education,
       references: newApplication.references,
     };
+    logger.log("appItem:", appItem);
+    logger.log("newApplication:", newApplication);
 
     // //CHECK PERSONAL INFO
     const errors = Formatting.formatJoiValidation(
@@ -322,16 +319,10 @@ class ApplicationPage extends Component {
     if (errors.count > 0) return;
 
     // //CLEAN SOME ITEMS FOR API
-    newApplication.homePhone = Formatting.formatPhoneNumber(
-      newApplication.homePhone,
-      true
-    );
-    newApplication.cellPhone = Formatting.formatPhoneNumber(
-      newApplication.cellPhone,
-      true
-    );
-    newApplication.socialSecurityNumber = Formatting.formatSsn(
-      newApplication.socialSecurityNumber,
+    appItem.homePhone = Formatting.formatPhoneNumber(appItem.homePhone, true);
+    appItem.cellPhone = Formatting.formatPhoneNumber(appItem.cellPhone, true);
+    appItem.socialSecurityNumber = Formatting.formatSsn(
+      appItem.socialSecurityNumber,
       true
     );
 
@@ -339,10 +330,7 @@ class ApplicationPage extends Component {
     logger.log("VALIDATE SUCCESS", newApplication);
     this.setState({ loading: true });
 
-    const addApp = await addApplication(
-      this.props.currentUser.token,
-      newApplication
-    );
+    const addApp = await addApplication(this.props.currentUser.token, appItem);
     if (addApp.status === 201) {
       this.props.history.push("/applications/" + addApp.data.id);
     } else {
