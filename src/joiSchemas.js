@@ -14,7 +14,7 @@ class JoiSchemas {
   static applicationSchema = Joi.object({
     userId: Joi.number().greater(0),
     firstName: Joi.string().required().min(2).label("First Name"),
-    middleInitial: Joi.string().required().max(1).label("MI"),
+    middleInitial: Joi.string().max(1).label("MI"),
     lastName: Joi.string().required().min(2).label("Last Name"),
     address: Joi.string().required().min(5).label("Address"),
     city: Joi.string().required().min(2).label("City"),
