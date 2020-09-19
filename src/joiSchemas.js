@@ -19,7 +19,10 @@ class JoiSchemas {
     address: Joi.string().required().min(5).label("Address"),
     city: Joi.string().required().min(2).label("City"),
     state: Joi.string().required().min(2).max(2).label("State"),
-    zipCode: Joi.string().required().min(5).max(5).label("Zip Code"), //change to regex \d{5}
+    zipCode: Joi.string()
+      .regex(/^\d{5}$/)
+      .message("Invalid Zip Code")
+      .label("Zip Code"), //change to regex \d{5}
     homePhone: Joi.string()
       .regex(this.phoneRegex)
       .message("Invalid Phone Number")
