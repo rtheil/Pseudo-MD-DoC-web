@@ -143,21 +143,40 @@ class ApplicationPage extends Component {
     //SET UP EMPLOYMENT OBJECT
     let employerItem = {
       employerName: newApplication.employerName,
+      employerStartDate: newApplication.employerStartDate,
+      employerEndDate: newApplication.employerEndDate,
+      employerPhoneNumber: newApplication.employerPhoneNumber,
+      position: newApplication.employerJobTitle,
+    };
+
+    //VALIDATE FIRST
+    let errors = Formatting.formatJoiValidation(
+      JoiSchemas.employmentSchema,
+      employerItem
+    );
+    logger.log("employer add errors", errors);
+
+    //check date range
+    if (
+      new Date(newApplication.employerStartDate) >
+      new Date(newApplication.employerEndDate)
+    ) {
+      logger.log("start greater than end");
+      errors = {
+        employerStartDate: "Start date must be less than end date",
+        ...errors,
+      };
+      errors.count++;
+    }
+
+    //ADD TO LOCAL ARRAY
+    employerItem = {
+      employerName: newApplication.employerName,
       startDate: newApplication.employerStartDate,
       endDate: newApplication.employerEndDate,
       phone: newApplication.employerPhoneNumber,
       position: newApplication.employerJobTitle,
     };
-
-    //VALIDATE FIRST
-    const errors = Formatting.formatJoiValidation(
-      JoiSchemas.employmentSchema,
-      employerItem
-    );
-    logger.log("employer add errors", errors);
-    //logger.log(errors.error.details);
-
-    //ADD TO LOCAL ARRAY
     if (errors.count === 0) newApplication.employment.push(employerItem);
 
     //empty the fields
@@ -187,20 +206,38 @@ class ApplicationPage extends Component {
     //LOCAL EDUCATION ITEM
     let educationItem = {
       schoolName: newApplication.schoolName,
-      startDate: newApplication.schoolStartDate,
-      endDate: newApplication.schoolEndDate,
+      schoolStartDate: newApplication.schoolStartDate,
+      schoolEndDate: newApplication.schoolEndDate,
       degree: newApplication.schoolDegree,
     };
 
     //VALIDATE FIRST
-    const errors = Formatting.formatJoiValidation(
+    let errors = Formatting.formatJoiValidation(
       JoiSchemas.educationSchema,
       educationItem
     );
     logger.log("education add errors", errors);
-    //logger.log(errors.error.details);
+
+    //check date range
+    if (
+      new Date(newApplication.schoolStartDate) >
+      new Date(newApplication.schoolEndDate)
+    ) {
+      logger.log("start greater than end");
+      errors = {
+        schoolStartDate: "Start date must be less than end date",
+        ...errors,
+      };
+      errors.count++;
+    }
 
     //ADD TO LOCAL ARRAY
+    educationItem = {
+      schoolName: newApplication.schoolName,
+      startDate: newApplication.schoolStartDate,
+      endDate: newApplication.schoolEndDate,
+      degree: newApplication.schoolDegree,
+    };
     if (errors.count === 0) newApplication.education.push(educationItem);
 
     //empty the fields
@@ -229,7 +266,7 @@ class ApplicationPage extends Component {
     //LOCAL REFERENCE ITEM
     let referenceItem = {
       name: newApplication.referenceName,
-      phoneNumber: newApplication.referencePhoneNumber,
+      referencePhoneNumber: newApplication.referencePhoneNumber,
       relation: newApplication.referenceRelation,
     };
 
@@ -242,6 +279,11 @@ class ApplicationPage extends Component {
     //logger.log(errors.error.details);
 
     //ADD TO LOCAL ARRAY
+    referenceItem = {
+      name: newApplication.referenceName,
+      phoneNumber: newApplication.referencePhoneNumber,
+      relation: newApplication.referenceRelation,
+    };
     if (errors.count === 0) newApplication.references.push(referenceItem);
 
     //empty the fields
@@ -298,9 +340,9 @@ class ApplicationPage extends Component {
       socialSecurityNumber: Formatting.formatSsn(
         newApplication.socialSecurityNumber
       ),
-      isUsCitizen: newApplication.isUsCitizen == "true",
-      hasFelony: newApplication.hasFelony == "true",
-      willDrugTest: newApplication.willDrugTest == "true",
+      isUsCitizen: newApplication.isUsCitizen === "true",
+      hasFelony: newApplication.hasFelony === "true",
+      willDrugTest: newApplication.willDrugTest === "true",
       employment: newApplication.employment,
       education: newApplication.education,
       references: newApplication.references,

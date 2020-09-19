@@ -19,7 +19,7 @@ class JoiSchemas {
     address: Joi.string().required().min(5).label("Address"),
     city: Joi.string().required().min(2).label("City"),
     state: Joi.string().required().min(2).max(2).label("State"),
-    zipCode: Joi.string().required().min(5).max(5).label("Zip Code"),
+    zipCode: Joi.string().required().min(5).max(5).label("Zip Code"), //change to regex \d{5}
     homePhone: Joi.string()
       .regex(this.phoneRegex)
       .message("Invalid Phone Number")
@@ -42,9 +42,9 @@ class JoiSchemas {
 
   static employmentSchema = Joi.object({
     employerName: Joi.string().required().min(3).label("Employer Name"),
-    startDate: Joi.date().required().label("Start Date"),
-    endDate: Joi.date().required().label("End Date"),
-    phone: Joi.string()
+    employerStartDate: Joi.date().required().label("Start Date"),
+    employerEndDate: Joi.date().required().label("End Date"),
+    employerPhoneNumber: Joi.string()
       .regex(this.phoneRegex)
       .message("Invalid Phone Number")
       .label("Phone Number"),
@@ -53,14 +53,14 @@ class JoiSchemas {
 
   static educationSchema = Joi.object({
     schoolName: Joi.string().required().min(3).label("School Name"),
-    startDate: Joi.date().required().label("Start Date"),
-    endDate: Joi.date().required().label("End Date"),
+    schoolStartDate: Joi.date().required().label("Start Date"),
+    schoolEndDate: Joi.date().required().label("End Date"),
     degree: Joi.string().required().min(3).label("Degree"),
   });
 
   static referenceSchema = Joi.object({
     name: Joi.string().required().min(3).label("Name"),
-    phoneNumber: Joi.string()
+    referencePhoneNumber: Joi.string()
       .regex(this.phoneRegex)
       .message("Invalid Phone Number")
       .label("Phone Number"),

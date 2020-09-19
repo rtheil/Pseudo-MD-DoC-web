@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Container, Row, Col } from "react-bootstrap";
 import TextInput from "../formElements/textInput";
 import SelectInput from "../formElements/selectInput";
 import ButtonInput from "../formElements/buttonInput";
@@ -28,16 +28,19 @@ const ApplicationForm = ({
   logger.log("error:", errors.error);
   logger.log("state", state);
   return (
-    <div className="container-lg mb-5">
+    <Container className="mb-5">
       <Form onSubmit={handleSubmit}>
-        <div className="p-1 mt-2 app-section-bar">Personal Information</div>
-        <Form.Row>
+        <Row className="pl-3 p-1 mt-2 app-section-bar">
+          Personal Information
+        </Row>
+        <Row xs={1} lg={3}>
           <TextInput
             name="firstName"
             onChange={handleChange}
             label="First Name"
             value={newApplication.firstName}
             error={errors.firstName}
+            as={Form.Col}
           />
           <TextInput
             name="middleInitial"
@@ -45,7 +48,7 @@ const ApplicationForm = ({
             label="MI"
             value={newApplication.middleInitial}
             error={errors.middleInitial}
-            size="1"
+            as={Form.Col}
           />
           <TextInput
             name="lastName"
@@ -53,23 +56,25 @@ const ApplicationForm = ({
             label="Last Name"
             value={newApplication.lastName}
             error={errors.lastName}
+            as={Form.Col}
           />
-        </Form.Row>
-        <Form.Row>
+        </Row>
+        <Row>
           <TextInput
             name="address"
             onChange={handleChange}
             label="Street Address"
             value={newApplication.address}
             error={errors.address}
+            as={Form.Col}
           />
           <TextInput
             name="city"
             onChange={handleChange}
             label="City"
-            size="2"
             value={newApplication.city}
             error={errors.city}
+            as={Form.Col}
           />
           <TextInput
             name="state"
@@ -77,18 +82,18 @@ const ApplicationForm = ({
             label="State"
             value={newApplication.state}
             error={errors.state}
-            size="1"
+            as={Form.Col}
           />
           <TextInput
             name="zipCode"
             onChange={handleChange}
             label="Zip"
-            size="1"
             value={newApplication.zipCode}
             error={errors.zipCode}
+            as={Form.Col}
           />
-        </Form.Row>
-        <Form.Row>
+        </Row>
+        <Row>
           <TextInput
             name="homePhone"
             onChange={handleChange}
@@ -96,6 +101,7 @@ const ApplicationForm = ({
             value={newApplication.homePhone}
             error={errors.homePhone}
             size="5"
+            as={Col}
           />
           <TextInput
             name="cellPhone"
@@ -104,9 +110,10 @@ const ApplicationForm = ({
             value={newApplication.cellPhone}
             error={errors.cellPhone}
             size="5"
+            as={Col}
           />
-        </Form.Row>
-        <Form.Row>
+        </Row>
+        <Row>
           <TextInput
             name="socialSecurityNumber"
             onChange={handleChange}
@@ -114,6 +121,7 @@ const ApplicationForm = ({
             value={newApplication.socialSecurityNumber}
             error={errors.socialSecurityNumber}
             size="2"
+            as={Col}
           />
           <SelectInput
             name="isUsCitizen"
@@ -121,6 +129,7 @@ const ApplicationForm = ({
             value={newApplication.isUsCitizen}
             onChange={handleChange}
             error={errors.isUsCitizen}
+            as={Col}
           />
           <SelectInput
             name="hasFelony"
@@ -128,6 +137,7 @@ const ApplicationForm = ({
             value={newApplication.hasFelony}
             onChange={handleChange}
             error={errors.hasFelony}
+            as={Col}
           />
           <SelectInput
             name="willDrugTest"
@@ -135,18 +145,19 @@ const ApplicationForm = ({
             value={newApplication.willDrugTest}
             onChange={handleChange}
             error={errors.willDrugTest}
+            as={Col}
           />
-        </Form.Row>
+        </Row>
         <div className="p-1 mt-2 app-section-bar">
           Employment History
           {errors.employment && (
-            <span className="ml-3 pl-1 pr-1 rounded form-head-error">
+            <Alert variant="danger" className="p-0 m-0">
               {errors.employment}
-            </span>
+            </Alert>
           )}
           <MultiMessage />
         </div>
-        <Form.Row>
+        <Row>
           <ButtonInput
             name="addEmployment"
             text="&nbsp;+&nbsp;"
@@ -195,9 +206,9 @@ const ApplicationForm = ({
             name="employerJobTitle"
             value={newApplication.employerJobTitle}
             size="2"
-            error={errors.employerJobTitle}
+            error={errors.position}
           />
-        </Form.Row>
+        </Row>
         <div className="container-lg">
           {state.newApplication.employment !== undefined &&
             state.newApplication.employment.map((item, i) => {
@@ -225,13 +236,13 @@ const ApplicationForm = ({
         <div className="p-1 mt-2 app-section-bar">
           Education
           {errors.education && (
-            <span className="ml-3 pl-1 pr-1 rounded form-head-error">
+            <Alert variant="danger" className="p-0 m-0">
               {errors.education}
-            </span>
+            </Alert>
           )}
           <MultiMessage />
         </div>
-        <Form.Row>
+        <Row>
           <ButtonInput
             name="addEducation"
             text="&nbsp;+&nbsp;"
@@ -268,7 +279,7 @@ const ApplicationForm = ({
             onChange={handleChange}
             label="Degree"
             value={newApplication.schoolDegree}
-            error={errors.schoolDegree}
+            error={errors.degree}
           />
           <div className="container-lg">
             {state.newApplication.education !== undefined &&
@@ -293,17 +304,17 @@ const ApplicationForm = ({
                 );
               })}
           </div>
-        </Form.Row>
+        </Row>
         <div className="p-1 mt-2 app-section-bar">
           References
           {errors.references && (
-            <span className="ml-3 pl-1 pr-1 rounded form-head-error">
+            <Alert variant="danger" className="p-0 m-0">
               {errors.references}
-            </span>
+            </Alert>
           )}
           <MultiMessage />
         </div>
-        <Form.Row>
+        <Row>
           <ButtonInput
             name="addReference"
             text="&nbsp;+&nbsp;"
@@ -324,7 +335,7 @@ const ApplicationForm = ({
             onChange={handleChange}
             label="Phone Number"
             value={newApplication.referencePhoneNumber}
-            error={errors.phoneNumber}
+            error={errors.referencePhoneNumber}
           />
           <TextInput
             name="referenceRelation"
@@ -355,7 +366,7 @@ const ApplicationForm = ({
                 );
               })}
           </div>
-        </Form.Row>
+        </Row>
         <div className="p-1 mt-2 mb-2 app-section-bar">Review and Submit</div>
         {errors.count > 0 && (
           <Alert variant="danger">
@@ -377,7 +388,7 @@ const ApplicationForm = ({
         )}
         <SubmitButton text="Submit" loading={loading} />
       </Form>
-    </div>
+    </Container>
   );
 };
 
