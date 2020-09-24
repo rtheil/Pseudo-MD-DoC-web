@@ -351,9 +351,9 @@ class ApplicationPage extends Component {
       socialSecurityNumber: Formatting.formatSsn(
         newApplication.socialSecurityNumber
       ),
-      isUsCitizen: newApplication.isUsCitizen === "true",
-      hasFelony: newApplication.hasFelony === "true",
-      willDrugTest: newApplication.willDrugTest === "true",
+      isUsCitizen: newApplication.isUsCitizen,
+      hasFelony: newApplication.hasFelony,
+      willDrugTest: newApplication.willDrugTest,
       employment: newApplication.employment,
       education: newApplication.education,
       references: newApplication.references,
@@ -371,13 +371,16 @@ class ApplicationPage extends Component {
     this.setState({ errors });
     if (errors.count > 0) return;
 
-    // //CLEAN SOME ITEMS FOR API
+    //prepare some items for API
     appItem.homePhone = Formatting.formatPhoneNumber(appItem.homePhone, true);
     appItem.cellPhone = Formatting.formatPhoneNumber(appItem.cellPhone, true);
     appItem.socialSecurityNumber = Formatting.formatSsn(
       appItem.socialSecurityNumber,
       true
     );
+    appItem.isUsCitizen = appItem.isUsCitizen === "true";
+    appItem.hasFelony = appItem.hasFelony === "true";
+    appItem.willDrugTest = appItem.willDrugTest === "true";
 
     //SUCCESS. SUBMIT THE FORM TO API.
     logger.log("VALIDATE SUCCESS", newApplication);
