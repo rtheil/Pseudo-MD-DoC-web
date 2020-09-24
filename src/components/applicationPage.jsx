@@ -177,15 +177,17 @@ class ApplicationPage extends Component {
       phone: newApplication.employerPhoneNumber,
       position: newApplication.employerJobTitle,
     };
-    if (errors.count === 0) newApplication.employment.push(employerItem);
+    if (errors.count === 0) {
+      newApplication.employment.push(employerItem);
 
-    //empty the fields
-    if (!config.get("helperValues")) {
-      newApplication.employerName = "";
-      newApplication.employerStartDate = "";
-      newApplication.employerEndDate = "";
-      newApplication.employerPhoneNumber = "";
-      newApplication.employerJobTitle = "";
+      //empty the fields
+      if (!config.get("helperValues")) {
+        newApplication.employerName = "";
+        newApplication.employerStartDate = "";
+        newApplication.employerEndDate = "";
+        newApplication.employerPhoneNumber = "";
+        newApplication.employerJobTitle = "";
+      }
     }
 
     //SET THE STATE
@@ -238,16 +240,17 @@ class ApplicationPage extends Component {
       endDate: newApplication.schoolEndDate,
       degree: newApplication.schoolDegree,
     };
-    if (errors.count === 0) newApplication.education.push(educationItem);
+    if (errors.count === 0) {
+      newApplication.education.push(educationItem);
 
-    //empty the fields
-    if (!config.get("helperValues")) {
-      newApplication.schoolName = "";
-      newApplication.schoolStartDate = "";
-      newApplication.schoolEndDate = "";
-      newApplication.schoolDegree = "";
+      //empty the fields
+      if (!config.get("helperValues")) {
+        newApplication.schoolName = "";
+        newApplication.schoolStartDate = "";
+        newApplication.schoolEndDate = "";
+        newApplication.schoolDegree = "";
+      }
     }
-
     //SET STATE
     this.setState({ newApplication, errors });
     //logger.log(newApplication);
@@ -284,13 +287,15 @@ class ApplicationPage extends Component {
       phoneNumber: newApplication.referencePhoneNumber,
       relation: newApplication.referenceRelation,
     };
-    if (errors.count === 0) newApplication.references.push(referenceItem);
+    if (errors.count === 0) {
+      newApplication.references.push(referenceItem);
 
-    //empty the fields
-    if (!config.get("helperValues")) {
-      newApplication.referenceName = "";
-      newApplication.referencePhoneNumber = "";
-      newApplication.referenceRelation = "";
+      //empty the fields
+      if (!config.get("helperValues")) {
+        newApplication.referenceName = "";
+        newApplication.referencePhoneNumber = "";
+        newApplication.referenceRelation = "";
+      }
     }
 
     //SET STATE
