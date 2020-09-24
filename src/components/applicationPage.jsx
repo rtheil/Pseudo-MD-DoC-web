@@ -322,7 +322,13 @@ class ApplicationPage extends Component {
       newApplication[e.currentTarget.id] = Formatting.formatSsn(
         e.currentTarget.value
       );
-    else newApplication[e.currentTarget.id] = e.currentTarget.value;
+    else if (e.currentTarget.type === "date") {
+      logger.log("date change");
+      newApplication[e.currentTarget.id] = Formatting.formatInputDate(
+        e.currentTarget.value,
+        false
+      );
+    } else newApplication[e.currentTarget.id] = e.currentTarget.value;
     this.setState({ newApplication });
   };
 
