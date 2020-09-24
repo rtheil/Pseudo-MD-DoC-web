@@ -4,8 +4,8 @@ class Formatting {
     let cleaned = ("" + phoneNumber).replace(/\D/g, "");
     if (cleaned.length > 10) cleaned = cleaned.substring(0, 10);
     if (clean) return cleaned;
-    let pattern = /^(\d{1,3})(\d{0,3})(\d{0,4})$/gm;
-    let matches = pattern.exec(cleaned);
+    const pattern = /^(\d{1,3})(\d{0,3})(\d{0,4})$/gm;
+    const matches = pattern.exec(cleaned);
     if (matches) {
       let out = "(" + matches[1];
       if (matches[2].length >= 1) out += ") " + matches[2];
@@ -18,15 +18,28 @@ class Formatting {
   //FORMAT A ZULU DATE FROM THE API
   static formatDate(date) {
     const d = new Date(date);
-    const ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
-    const mo = new Intl.DateTimeFormat("en", { month: "numeric" }).format(d);
-    const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
-    return mo + "/" + da + "/" + ye;
+    const year = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
+    const month = new Intl.DateTimeFormat("en", { month: "numeric" }).format(d);
+    const day = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+    return month + "/" + day + "/" + year;
+  }
+
+  static formatInputDate(date) {
+    const pattern = /^(\d{4,6})-(\d{1,2})-(\d{1,2})$/;
+    const matches = pattern.exec(date);
+    if (matches) {
+      console.log(matches);
+      let out =
+        matches[1].substring(0, 4) + "-" + matches[2] + "-" + matches[3];
+      return out;
+    }
+    return date;
   }
 
   //FORMAT A SOCIAL SECURITY NUMBER
   static formatSsn(ssn, clean) {
-    const cleaned = ("" + ssn).replace(/\D/g, "");
+    let cleaned = ("" + ssn).replace(/\D/g, "");
+    if (cleaned.length > 9) cleaned = cleaned.substring(0, 9);
     if (clean) return cleaned;
     const matches = cleaned.match(/^(\d{1,3})(\d{0,2})(\d{0,4})$/);
     if (matches) {
