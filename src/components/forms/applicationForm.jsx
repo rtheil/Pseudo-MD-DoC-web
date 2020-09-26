@@ -9,7 +9,7 @@ import logger from "../../services/logService";
 const MultiMessage = () => (
   <span className="" style={{ fontSize: 10 }}>
     {" "}
-    - Fill fields and click + button to add to application
+    Fill fields and click + button to add to application
   </span>
 );
 
@@ -148,7 +148,7 @@ const ApplicationForm = ({
             as={Col}
           />
         </Row>
-        <div className="p-1 mt-2 app-section-bar">
+        <Row className="p-1 mt-2 app-section-bar row-cols-1">
           Employment History
           {errors.employment && (
             <Alert variant="danger" className="p-0 m-0">
@@ -156,16 +156,18 @@ const ApplicationForm = ({
             </Alert>
           )}
           <MultiMessage />
-        </div>
+        </Row>
         <Row>
-          <ButtonInput
-            name="addEmployment"
-            text="&nbsp;+&nbsp;"
-            label="&nbsp;"
-            variant="success"
-            size="auto"
-            onClick={handleAddEmployment}
-          />
+          <Col sm={1}>
+            <ButtonInput
+              name="addEmployment"
+              text="&nbsp;+&nbsp;"
+              label="&nbsp;"
+              variant="success"
+              size="sm"
+              onClick={handleAddEmployment}
+            />
+          </Col>
           <TextInput
             onChange={handleChange}
             label="Employer Name"
@@ -209,31 +211,30 @@ const ApplicationForm = ({
             error={errors.position}
           />
         </Row>
-        <div className="container-lg">
-          {state.newApplication.employment !== undefined &&
-            state.newApplication.employment.map((item, i) => {
-              return (
-                <div key={item.employerName + i} className="row mb-1">
-                  <div className="ml-1 pl-1">
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={handleRemoveEmployment}
-                      idx={i}
-                    >
-                      &nbsp;-&nbsp;
-                    </Button>
-                  </div>
-                  <div className="col">{item.employerName}</div>
-                  <div className="col">{item.startDate}</div>
-                  <div className="col">{item.endDate}</div>
-                  <div className="col">{item.phone}</div>
-                  <div className="col">{item.position}</div>
-                </div>
-              );
-            })}
-        </div>
-        <div className="p-1 mt-2 app-section-bar">
+        {state.newApplication.employment !== undefined &&
+          state.newApplication.employment.map((item, i) => {
+            return (
+              <Row key={item.employerName + i} className="">
+                <Col className="">
+                  <ButtonInput
+                    name="deleteEmployment"
+                    text="&nbsp;X&nbsp;"
+                    label=""
+                    variant="danger"
+                    size="sm"
+                    onClick={handleRemoveEmployment}
+                    idx={i}
+                  ></ButtonInput>
+                </Col>
+                <Col className="col-sm-3">{item.employerName}</Col>
+                <Col className="col-sm-2">{item.startDate}</Col>
+                <Col className="col-sm-2">{item.endDate}</Col>
+                <Col className="col-sm-2">{item.phone}</Col>
+                <Col className="col-sm-2">{item.position}</Col>
+              </Row>
+            );
+          })}
+        <Row className="p-1 mt-2 app-section-bar row-cols-1">
           Education
           {errors.education && (
             <Alert variant="danger" className="p-0 m-0">
@@ -241,16 +242,18 @@ const ApplicationForm = ({
             </Alert>
           )}
           <MultiMessage />
-        </div>
+        </Row>
         <Row>
-          <ButtonInput
-            name="addEducation"
-            text="&nbsp;+&nbsp;"
-            label="&nbsp;"
-            variant="success"
-            size="auto"
-            onClick={handleAddEducation}
-          />
+          <Col sm={1}>
+            <ButtonInput
+              name="addEducation"
+              text="&nbsp;+&nbsp;"
+              label="&nbsp;"
+              variant="success"
+              size="sm"
+              onClick={handleAddEducation}
+            />
+          </Col>
           <TextInput
             name="schoolName"
             onChange={handleChange}
@@ -285,27 +288,28 @@ const ApplicationForm = ({
             {state.newApplication.education !== undefined &&
               state.newApplication.education.map((item, i) => {
                 return (
-                  <div key={item.schoolName + i} className="row mb-1">
-                    <div className="ml-1 pl-1">
-                      <Button
+                  <Row key={item.schoolName + i} className="">
+                    <Col sm={1} className="">
+                      <ButtonInput
+                        name="deleteEducation"
+                        text="&nbsp;X&nbsp;"
+                        label=""
                         variant="danger"
                         size="sm"
                         onClick={handleRemoveEducation}
                         idx={i}
-                      >
-                        &nbsp;-&nbsp;
-                      </Button>
-                    </div>
-                    <div className="col">{item.schoolName}</div>
-                    <div className="col">{item.startDate}</div>
-                    <div className="col">{item.endDate}</div>
-                    <div className="col">{item.degree}</div>
-                  </div>
+                      ></ButtonInput>
+                    </Col>
+                    <Col className="col">{item.schoolName}</Col>
+                    <Col className="col">{item.startDate}</Col>
+                    <Col className="col">{item.endDate}</Col>
+                    <Col className="col">{item.degree}</Col>
+                  </Row>
                 );
               })}
           </div>
         </Row>
-        <div className="p-1 mt-2 app-section-bar">
+        <Row className="p-1 mt-2 app-section-bar row-cols-1">
           References
           {errors.references && (
             <Alert variant="danger" className="p-0 m-0">
@@ -313,16 +317,18 @@ const ApplicationForm = ({
             </Alert>
           )}
           <MultiMessage />
-        </div>
+        </Row>
         <Row>
-          <ButtonInput
-            name="addReference"
-            text="&nbsp;+&nbsp;"
-            label="&nbsp;"
-            variant="success"
-            size="auto"
-            onClick={handleAddReference}
-          />
+          <Col sm={1}>
+            <ButtonInput
+              name="addReference"
+              text="&nbsp;+&nbsp;"
+              label="&nbsp;"
+              variant="success"
+              size="sm"
+              onClick={handleAddReference}
+            />
+          </Col>
           <TextInput
             name="referenceName"
             onChange={handleChange}
@@ -344,30 +350,31 @@ const ApplicationForm = ({
             value={newApplication.referenceRelation}
             error={errors.relation}
           />
-          <div className="container-lg">
-            {state.newApplication.references !== undefined &&
-              state.newApplication.references.map((item, i) => {
-                return (
-                  <div key={item.referenceName + "_" + i} className="row mb-1">
-                    <div className="ml-1 pl-1">
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={handleRemoveReference}
-                        idx={i}
-                      >
-                        &nbsp;-&nbsp;
-                      </Button>
-                    </div>
-                    <div className="col">{item.name}</div>
-                    <div className="col">{item.phoneNumber}</div>
-                    <div className="col">{item.relation}</div>
-                  </div>
-                );
-              })}
-          </div>
         </Row>
-        <div className="p-1 mt-2 mb-2 app-section-bar">Review and Submit</div>
+        {state.newApplication.references !== undefined &&
+          state.newApplication.references.map((item, i) => {
+            return (
+              <Row key={item.referenceName + "_" + i} className="">
+                <Col sm={1} className="">
+                  <ButtonInput
+                    name="deleteReference"
+                    text="&nbsp;X&nbsp;"
+                    label=""
+                    variant="danger"
+                    size="sm"
+                    onClick={handleRemoveReference}
+                    idx={i}
+                  ></ButtonInput>
+                </Col>
+                <Col className="col">{item.name}</Col>
+                <Col className="col">{item.phoneNumber}</Col>
+                <Col className="col">{item.relation}</Col>
+              </Row>
+            );
+          })}
+        <Row className="p-1 mt-2 mb-2 app-section-bar row-cols-1">
+          Review and Submit
+        </Row>
         {errors.count > 0 && (
           <Alert variant="danger">
             <strong>One or more errors</strong>

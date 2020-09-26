@@ -8,12 +8,17 @@ export default function ButtonInput({
   variant = "primary",
   size,
   onClick,
+  idx,
 }) {
   return (
     <Form.Group as={Col} controlId={name} sm={size}>
-      <Form.Label size="sm">{label}</Form.Label>
-      <br />
-      <Button variant={variant} size="sm" onClick={onClick}>
+      {label && (
+        <>
+          <Form.Label size={size}>{label}</Form.Label>
+          <br />
+        </>
+      )}
+      <Button variant={variant} size={size} onClick={onClick} idx={idx}>
         {text}
       </Button>
     </Form.Group>
