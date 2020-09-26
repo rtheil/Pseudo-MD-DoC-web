@@ -11,7 +11,7 @@ export default function AccountDetailsForm({ currentUser }) {
   const [account, setAccount] = useState({
     name: currentUser.name,
     emailAddress: currentUser.emailAddress,
-    password: "",
+    newPassword: "",
     confirmPassword: "",
     administrator: currentUser.administrator,
   });
@@ -37,7 +37,7 @@ export default function AccountDetailsForm({ currentUser }) {
 
     //are we updating the password?
     let schema, object;
-    if (account.password === "" && account.confirmPassword === "") {
+    if (account.newPassword === "" && account.confirmPassword === "") {
       schema = JoiSchemas.updateUserSchema();
       object = {
         name: account.name,
@@ -45,12 +45,17 @@ export default function AccountDetailsForm({ currentUser }) {
       };
     } else {
       schema = JoiSchemas.registerUserSchema();
-      object = account;
+      object = {
+        name: account.name,
+        emailAddress: account.emailAddress,
+        password: account.newPassword,
+        confirmPassword: account.confirmPassword,
+      };
     }
 
     //verify first
     const joiErrors = Formatting.formatJoiValidation(schema, object);
-    logger.log(joiErrors);
+    logger.log("joiErrors", joiErrors);
     if (joiErrors.count > 0) return setErrors(joiErrors);
     logger.log("VALIDATED");
 
@@ -61,7 +66,7 @@ export default function AccountDetailsForm({ currentUser }) {
     let updateObject = {
       name: account.name,
       emailAddress: account.emailAddress,
-      password: account.password,
+      password: account.newPassword,
     };
 
     //call user service to update
@@ -107,18 +112,18 @@ export default function AccountDetailsForm({ currentUser }) {
         />
         <TextInput
           type="password"
-          name="password"
-          label="Password"
-          text="Minimum 8 characters"
+          name="newPassword"
+          label="New Password"
+          text="Minimum 10 characters"
           onChange={handleChange}
-          value={account.password}
+          value={account.newPassword}
           as="div"
-          error={errors.password}
+          error={errors.newPassword}
         />
         <TextInput
           type="password"
           name="confirmPassword"
-          label="Confirm Password"
+          label="Confirm New Password"
           onChange={handleChange}
           value={account.confirmPassword}
           as="div"

@@ -75,8 +75,6 @@ export default function RegisterForm({ match }) {
       JoiSchemas.registerUserSchema(),
       createInfo
     );
-    if (joiErrors.confirmPassword !== undefined)
-      joiErrors.confirmPassword = "Passwords do not match";
     logger.log("Joi errors:", joiErrors);
 
     if (joiErrors.count > 0) {

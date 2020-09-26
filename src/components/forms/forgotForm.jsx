@@ -90,8 +90,6 @@ export default function ForgotForm({ match }) {
         JoiSchemas.resetPasswordSchema(),
         newPassword
       );
-      if (joiErrors.confirmPassword !== undefined)
-        joiErrors.confirmPassword = "Passwords do not match";
       logger.log(joiErrors);
       if (joiErrors.count > 0) return setErrors(joiErrors);
 

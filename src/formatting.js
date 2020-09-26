@@ -75,10 +75,10 @@ class Formatting {
         errors[item.path[0]] = msg;
         count++;
       }
-    errors.count = count;
-    // if (errors.confirmPassword !== undefined)
-    //   errors.confirmPassword = "Passwords do not match";
+    if (errors.confirmPassword !== undefined)
+      errors.confirmPassword = "Passwords do not match";
 
+    errors.count = count;
     return errors;
   }
 
