@@ -13,11 +13,11 @@ class JoiSchemas {
   //////////////////////////////////////////////////////////
   static applicationSchema = Joi.object({
     userId: Joi.number().greater(0),
-    firstName: Joi.string().required().min(2).label("First Name"),
+    firstName: Joi.string().required().min(2).max(25).label("First Name"),
     middleInitial: Joi.string().allow("").max(1).label("MI"),
-    lastName: Joi.string().required().min(2).label("Last Name"),
-    address: Joi.string().required().min(5).label("Address"),
-    city: Joi.string().required().min(2).label("City"),
+    lastName: Joi.string().required().min(2).max(25).label("Last Name"),
+    address: Joi.string().required().min(5).max(100).label("Address"),
+    city: Joi.string().required().min(2).max(30).label("City"),
     state: Joi.string().required().min(2).max(2).label("State"),
     zipCode: Joi.string()
       .regex(/^\d{5}$/)
@@ -44,30 +44,34 @@ class JoiSchemas {
   });
 
   static employmentSchema = Joi.object({
-    employerName: Joi.string().required().min(3).label("Employer Name"),
+    employerName: Joi.string()
+      .required()
+      .min(3)
+      .max(100)
+      .label("Employer Name"),
     employerStartDate: Joi.date().required().label("Start Date"),
     employerEndDate: Joi.date().required().label("End Date"),
     employerPhoneNumber: Joi.string()
       .regex(this.phoneRegex)
       .message("Invalid Phone Number")
       .label("Phone Number"),
-    position: Joi.string().required().min(5).label("Job Title"),
+    position: Joi.string().required().min(5).max(50).label("Job Title"),
   });
 
   static educationSchema = Joi.object({
-    schoolName: Joi.string().required().min(3).label("School Name"),
+    schoolName: Joi.string().required().min(3).max(100).label("School Name"),
     schoolStartDate: Joi.date().required().label("Start Date"),
     schoolEndDate: Joi.date().required().label("End Date"),
-    degree: Joi.string().required().min(3).label("Degree"),
+    degree: Joi.string().required().min(3).max(50).label("Degree"),
   });
 
   static referenceSchema = Joi.object({
-    name: Joi.string().required().min(3).label("Name"),
+    name: Joi.string().required().min(3).max(50).label("Name"),
     referencePhoneNumber: Joi.string()
       .regex(this.phoneRegex)
       .message("Invalid Phone Number")
       .label("Phone Number"),
-    relation: Joi.string().required().min(3).label("Relation"),
+    relation: Joi.string().required().min(3).max(30).label("Relation"),
   });
 
   ///////////////////////////////////////////////////////////
