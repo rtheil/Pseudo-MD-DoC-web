@@ -28,12 +28,16 @@ export default function AccountDetailsForm({ currentUser }) {
     //logger.log("change", e.target);
     const { id, value } = e.target;
     //account[e.currentTarget.id] = e.currentTarget.value;
-    setAccount({ ...account, [id]: value });
+    setAccount((prevAccount) => {
+      return { ...prevAccount, [id]: value };
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     logger.log("state before submit", account);
+
+    setErrors({});
 
     //are we updating the password?
     let schema, object;
@@ -76,6 +80,9 @@ export default function AccountDetailsForm({ currentUser }) {
       //SUCCESS
       setUpdateMessage((prevUpdateMessage) => {
         return { ...prevUpdateMessage, visible: true };
+      });
+      setAccount((prevAccount) => {
+        return { ...prevAccount, newPassword: "", confirmPassword: "" };
       });
     } else {
       //ERROR
