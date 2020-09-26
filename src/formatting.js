@@ -67,6 +67,11 @@ class Formatting {
         msg = msg.replace(/\"/gm, "");
         msg = msg.replace("is not allowed to", "can't");
         msg = msg.replace("be a boolean", "be chosen");
+        msg = msg.replace(
+          "length must be less than or equal to",
+          "must be fewer than"
+        );
+        msg = msg.replace("characters long", "characters");
         errors[item.path[0]] = msg;
         count++;
       }
