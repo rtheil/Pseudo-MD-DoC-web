@@ -387,6 +387,11 @@ const ApplicationForm = ({
           </Alert>
         )}
         <SubmitButton text="Submit" loading={loading} />
+        {errors && errors.addApp && (
+          <Alert variant="danger" className="mt-2">
+            <strong>Error:</strong> {errors.addApp}
+          </Alert>
+        )}
       </Form>
     </Container>
   );
