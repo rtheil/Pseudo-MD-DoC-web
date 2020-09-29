@@ -103,7 +103,7 @@ function NavBar(props) {
       <Navbar
         expand="md"
         className="font-weight-bold pt-0 pb-0 navbar-dark"
-        style={{ backgroundColor: "#920807" }}
+        style={{ backgroundColor: "#A1291B" }}
       >
         <Navbar.Toggle aria-controls="basic-navbar-nav1 navbar-dark">
           <span className="navbar-toggler-icon"></span>
