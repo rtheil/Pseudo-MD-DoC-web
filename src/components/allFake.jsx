@@ -3,14 +3,18 @@ import React from "react";
 const AllFake = () => {
   return (
     <div className="container text-center">
-      <h3 className="bg-danger text-white mt-3">
-        This web site is entirely fake!
+      <h3 className="text-white mt-3" style={{ backgroundColor: "#1B93A1" }}>
+        This web site is not real
       </h3>
       <div className="d-flex p-2 justify-content-center">
-        <div style={{ width: 600 }}>
-          Welcome to my project. My name is Ricky, and I'm a full-stack engineer
-          of more than 2 decades. This web site is an example of my abilities as
-          a full-stack web application developer.
+        <img src="/images/ricky.jpg" alt="" className="pr-5" />
+        <div style={{ width: 400 }}>
+          Welcome to my project. My name is Ricky, and I've been a software
+          engineer for more than 2 decades. This web site is an example of my
+          abilities as a full-stack web application developer. I specialize in
+          C# .Net Framework/Core applications and web sites with Javascript and
+          React, and am familiar with many other languages. I'm also bilingual,
+          speaking Spanish as a second language.
         </div>
       </div>
       <hr />
