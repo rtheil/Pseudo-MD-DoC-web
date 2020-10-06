@@ -97,16 +97,13 @@ class MyApplications extends Component {
                   <Row className="border-top border-dark pb-1 pt-1">
                     <Col lg={1}>{app.id}</Col>
                     <Col lg={2}>{Formatting.formatDate(app.dateReceived)}</Col>
-                    <Col
-                      className={
-                        "text-center bg-" +
-                        appStatus.color +
-                        " text-" +
-                        appStatus.textColor
-                      }
-                      style={{ paddingTop: 3 }}
-                    >
-                      {app.applicationStatus.status}
+                    <Col>
+                      <Alert
+                        variant={appStatus.color}
+                        className="pt-1 pb-1 m-0"
+                      >
+                        <strong>{app.applicationStatus.status}</strong>
+                      </Alert>{" "}
                     </Col>
                     <Col lg={3} className="d-flex">
                       <Link

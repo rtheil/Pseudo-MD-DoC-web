@@ -233,16 +233,10 @@ class ApplicationsPage extends Component {
                   <Col>
                     {app.city}, {app.state}
                   </Col>
-                  <Col
-                    sm={3}
-                    className={
-                      "text-center bg-" +
-                      appStatus.color +
-                      " text-" +
-                      appStatus.textColor
-                    }
-                  >
-                    {app.applicationStatus.status}
+                  <Col sm={3}>
+                    <Alert variant={appStatus.color} className="pt-1 pb-1 m-0">
+                      <strong>{app.applicationStatus.status}</strong>
+                    </Alert>
                   </Col>
                   <Col>
                     <Link
