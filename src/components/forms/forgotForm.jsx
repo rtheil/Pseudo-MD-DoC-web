@@ -75,6 +75,7 @@ export default function ForgotForm({ match }) {
 
   const handleForgotSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
 
     let forgotStatus, successMessage;
     if (forgotInfo.token !== "") {
