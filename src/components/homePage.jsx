@@ -17,12 +17,12 @@ export default function HomePage() {
           <div className="font-weight-bold">Top Links</div>
           <ul>
             <li>
-              <Link to="/fake" className="btn-sm">
+              <Link to="/jobs" className="btn-sm">
                 Becoming a Correctional Officer
               </Link>
             </li>
             <li>
-              <Link to="/fake" className="btn-sm">
+              <Link to="/jobs" className="btn-sm">
                 Careers at Public Safety
               </Link>
             </li>
