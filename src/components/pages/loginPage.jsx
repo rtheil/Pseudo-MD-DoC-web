@@ -1,8 +1,8 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import ForgotForm from "./forms/forgotForm";
-import LoginForm from "./forms/loginForm";
-import RegisterForm from "./forms/registerForm";
+import ForgotForm from "../forms/forgotForm";
+import LoginForm from "../forms/loginForm";
+import RegisterForm from "../forms/registerForm";
 
 export default function LoginPage() {
   return (

@@ -1,7 +1,7 @@
 import React from "react";
-import HomePage from "./components/homePage";
-import ApplicationsPage from "./components/applicationsPage";
-import ApplicationPage from "./components/applicationPage";
+import HomePage from "./components/pages/homePage";
+import ApplicationsPage from "./components/pages/applicationsPage";
+import ApplicationPage from "./components/pages/applicationPage";
 import {
   BrowserRouter as Router,
   Route,
@@ -9,13 +9,13 @@ import {
   Redirect,
 } from "react-router-dom";
 import NavBar from "./components/navBar";
-import JobsPage from "./components/jobsPage";
-import AllFake from "./components/allFake";
+import JobsPage from "./components/pages/jobsPage";
+import AllFake from "./components/pages/allFake";
 import Footer from "./components/footer";
-import LoginPage from "./components/loginPage";
+import LoginPage from "./components/pages/loginPage";
 import { connect } from "react-redux";
-import AccountPage from "./components/accountPage";
-import Testing from "./components/testing";
+import AccountPage from "./components/pages/accountPage";
+import Testing from "./components/pages/testing";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };

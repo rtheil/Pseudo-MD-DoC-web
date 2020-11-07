@@ -4,18 +4,18 @@ import ApplicationPage from "./applicationPage";
 import { Link } from "react-router-dom";
 //import config from "react-global-configuration";
 import { connect } from "react-redux";
-import LoadingMessage from "./loadingMessage";
+import LoadingMessage from "../loadingMessage";
 import {
   getApplications,
   getApplicationStatuses,
   deleteApplication,
-} from "../services/applicationService";
-import Formatting from "../formatting";
+} from "../../services/applicationService";
+import Formatting from "../../formatting";
 import { Container, Row, Col, Alert, Button } from "react-bootstrap";
-import TextInput from "./formElements/textInput";
-import SelectInput from "./formElements/selectInput";
-import ConfirmDialog from "./formElements/confirmDialog";
-import logger from "../services/logService";
+import TextInput from "../formElements/textInput";
+import SelectInput from "../formElements/selectInput";
+import ConfirmDialog from "../formElements/confirmDialog";
+import logger from "../../services/logService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };

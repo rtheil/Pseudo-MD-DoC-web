@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import AccountDetailsForm from "./forms/accountDetailsForm";
-import MyApplications from "./myApplications";
+import AccountDetailsForm from "../forms/accountDetailsForm";
+import MyApplications from "../myApplications";
 import { Container, Row, Col } from "react-bootstrap";
 import { useEffect } from "react";
 

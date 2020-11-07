@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import config from "react-global-configuration";
-import ApplicationView from "./applicationView";
-import Formatting from "../formatting";
+import ApplicationView from "../applicationView";
+import Formatting from "../../formatting";
 import { connect } from "react-redux";
-import ApplicationForm from "./forms/applicationForm";
-import JoiSchemas from "../joiSchemas";
+import ApplicationForm from "../forms/applicationForm";
+import JoiSchemas from "../../joiSchemas";
 import {
   getApplicationById,
   addApplication,
-} from "../services/applicationService";
-import logger from "../services/logService";
+} from "../../services/applicationService";
+import logger from "../../services/logService";
 
 function mapStateToProps(state) {
   return { currentUser: state.currentUser };
